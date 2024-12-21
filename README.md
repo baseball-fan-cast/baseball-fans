@@ -1,4 +1,3 @@
-
 ## **Personalized Fan Highlights ⚙️**
 
 &nbsp;
@@ -16,14 +15,16 @@
 ## **Installation 🧰**
 
 1. Clone the repository
-2.  Install dependencies of the project.
+2. Install dependencies of the project.
 
 ```shell
     npm install
 ```
 
 3. Run the project.
+
 ```shell
     npm run dev
 ```
+
 ## **📢 Demo link**

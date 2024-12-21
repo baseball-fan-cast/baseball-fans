@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import { LANGUAGES } from '../constants/index';
+import React from 'react';
 
 const isActive = ({ isActive }: any) => `link ${isActive ? 'active' : ''}`
 

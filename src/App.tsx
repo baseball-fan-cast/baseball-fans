@@ -3,22 +3,19 @@ import { Menu } from './components/Menu';
 import { About } from './pages/About';
 import { Home } from './pages/Home';
 import { Suspense } from 'react';
-
-
+import React from 'react';
 
 const App = () => {
-
   return (
-    <Suspense fallback='loading'>
+    <Suspense fallback="loading">
       <BrowserRouter>
         <Menu />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </BrowserRouter>
     </Suspense>
-  )
-}
-export default App
-
+  );
+};
+export default App;
