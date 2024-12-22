@@ -4,7 +4,6 @@ import { Flex, Text, Button, Box } from '@radix-ui/themes';
 import { useMediaQuery } from 'react-responsive';
 
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
-// import { CustomSearch } from '../components/CustomSearch';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
 
@@ -35,9 +34,18 @@ export const Menu = () => {
           <Button variant="classic" className="p-3 bg-black rounded">
             <Text className="text-white">{t('viewAll')}</Text>
           </Button>
-          <AvatarBadge content="Atlanta Braves" />
-          <AvatarBadge content="Chicago Cubs" />
-          <AvatarBadge content="Matthew Boyd" />
+          <AvatarBadge content="Atlanta Braves" data={[{ src: '', fallback: 'A' }]} />
+          <AvatarBadge
+            content="Chicago Cubs"
+            data={[{ src: 'src/assets/chicagoCubs.svg', fallback: 'CN' }]}
+          />
+          <AvatarBadge
+            content="Matthew Boyd"
+            data={[
+              { src: 'src/assets/chicagoCubs.svg', fallback: 'CN' },
+              { src: 'src/assets/images/Player1.png', fallback: 'CN' }
+            ]}
+          />
         </Flex>
         <Box className="w-[300px] justify-between p-4 items-center">
           <ReactSearchAutocomplete
