@@ -25,22 +25,13 @@ const items = [
 
 export const Menu = () => {
   const { t } = useTranslation();
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   return (
     <Box className="m-5 px-2">
-      {/* <div >
-            <NavLink className={isActive} to="/">
-              {t('home')}
-            </NavLink>
-            <NavLink className={isActive} to="/about">
-              {t('about')}
-            </NavLink>
-          </div> */}
-
       <Flex direction={isMobile ? 'column' : 'row'} align="center" justify="between">
         <Flex align="center" className="gap-4" direction={isMobile ? 'column' : 'row'}>
-          <Text>{t('following')}</Text>
+          <Text className="px-4 w-[100px] ">{t('following')}</Text>
           <Button variant="classic" className="p-3 bg-black rounded">
             <Text className="text-white">{t('viewAll')}</Text>
           </Button>

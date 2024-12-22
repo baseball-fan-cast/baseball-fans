@@ -1,19 +1,25 @@
 import React from 'react';
 import { Flex, Text, Box, Avatar } from '@radix-ui/themes';
 import ReactPlayer from 'react-player/lazy';
+import { useMediaQuery } from 'react-responsive';
 
 interface ICustomPlayerProps {
   url: string;
 }
 
 export const CustomPlayer = ({ url }: ICustomPlayerProps) => {
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
+
   return (
-    <Box className="bg-slate-100 rounded-lg pb-3">
+    <Box
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-3`}
+      style={{ borderRadius: '10px', overflow: 'hidden' }}
+    >
       <ReactPlayer
         url={url}
         style={{ borderRadius: '10px' }}
         controls
-        width="400px"
+        width={isMobile ? '100%' : '400px'}
         height="60%"
         //  onDuration={onDuration}
       />
