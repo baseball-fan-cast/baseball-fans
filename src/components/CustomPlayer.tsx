@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 interface IAvatarData {
   src: string;
   fallback: string;
+  title: string;
 }
 interface ICustomPlayerProps {
   url: string;
@@ -18,14 +19,14 @@ export const CustomPlayer = ({ url, avatarData }: ICustomPlayerProps) => {
 
   return (
     <Box
-      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4`}
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 flex-1`}
       style={{ borderRadius: '10px', overflow: 'hidden' }}
     >
       <ReactPlayer
         url={url}
         style={{ borderRadius: '10px' }}
         controls
-        width={isMobile ? '100%' : '400px'}
+        width={'100%'}
         height="60%"
         //  onDuration={onDuration}
       />
@@ -39,7 +40,7 @@ export const CustomPlayer = ({ url, avatarData }: ICustomPlayerProps) => {
             <AvatarImage src={avatarData.src} />
             <AvatarFallback className="bg-cyan-500">{avatarData.fallback}</AvatarFallback>
           </Avatar>
-          <Text className="mx-2">Atlanta Braves</Text>
+          <Text className="mx-2">{avatarData.title}</Text>
         </Flex>
       </Box>
     </Box>
