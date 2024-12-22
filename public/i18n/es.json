@@ -4,6 +4,7 @@
   "about": "Sobre mí",
   "home": "Inicio",
   "user": "Mi nombre es: {{name}}",
-  "following": "Following",
-  "viewAll": "View All"
+  "following": "Siguiente",
+  "viewAll": "Ver todo",
+  "searchForTeamPlayers": "Búsqueda de equipo, jugadores"
 }

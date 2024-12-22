@@ -1,0 +1,5 @@
+# Ignore all JavaScript files in the `build` directory
+build/**/*.js
+
+# Ignore a ui file
+./src/components/ui

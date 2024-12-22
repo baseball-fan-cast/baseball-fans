@@ -10,24 +10,16 @@ import { AvatarBadge } from '../components/AvatarBadge';
 
 const items = [
   {
-    id: 0,
-    name: 'Cobol'
-  },
-  {
     id: 1,
-    name: 'JavaScript'
+    name: 'Atlanta Braves'
   },
   {
     id: 2,
-    name: 'Basic'
+    name: 'Chicago Cubs'
   },
   {
     id: 3,
-    name: 'PHP'
-  },
-  {
-    id: 4,
-    name: 'Java'
+    name: 'Matthew Boyd'
   }
 ];
 
@@ -60,8 +52,7 @@ export const Menu = () => {
           <ReactSearchAutocomplete
             items={items}
             showClear
-            placeholder="Search"
-            showIcon={false}
+            placeholder={`${t('searchForTeamPlayers')}`}
             styling={{
               borderRadius: '4px'
             }}
