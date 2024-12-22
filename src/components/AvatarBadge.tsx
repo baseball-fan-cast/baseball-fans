@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, Badge, Flex } from '@radix-ui/themes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-interface Idata {
+interface IAvatarData {
   src: string;
   fallback: string;
 }
 interface IAvatarBadgeProps {
   content: string;
-  data?: Idata[];
+  data?: IAvatarData[];
 }
 
 export const AvatarBadge = ({ content, data }: IAvatarBadgeProps) => {

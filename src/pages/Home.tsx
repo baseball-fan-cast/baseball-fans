@@ -26,9 +26,18 @@ export const Home = () => {
           justify="between"
           className="w-full gap-x-2 w-10/12"
         >
-          <CustomPlayer url="https://www.youtube.com/shorts/f6_ThAKOtfU?feature=share" />
-          <CustomPlayer url="https://youtu.be/_GT3pzzWRH4" />
-          <CustomPlayer url="https://www.youtube.com/shorts/f6_ThAKOtfU?feature=share" />
+          <CustomPlayer
+            url="https://www.youtube.com/shorts/f6_ThAKOtfU?feature=share"
+            avatarData={{ src: '', fallback: 'A' }}
+          />
+          <CustomPlayer
+            url="https://youtu.be/_GT3pzzWRH4"
+            avatarData={{ src: 'src/assets/chicagoCubs.svg', fallback: 'CN' }}
+          />
+          <CustomPlayer
+            url="https://www.youtube.com/shorts/f6_ThAKOtfU?feature=share"
+            avatarData={{ src: 'src/assets/images/Player1.png', fallback: 'CN' }}
+          />
         </Flex>
         <Separator className="my-6" />
         <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>

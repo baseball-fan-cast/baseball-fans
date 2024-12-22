@@ -47,7 +47,7 @@ export const Menu = () => {
             ]}
           />
         </Flex>
-        <Box className="w-[300px] justify-between p-4 items-center">
+        <Box className="w-[400px] justify-between p-4 items-center">
           <ReactSearchAutocomplete
             items={items}
             showClear
