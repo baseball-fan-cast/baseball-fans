@@ -1,36 +1,81 @@
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
-import { LANGUAGES } from '../constants/index';
 import React from 'react';
+import { Flex, Text, Button, Box } from '@radix-ui/themes';
+import { useMediaQuery } from 'react-responsive';
 
-const isActive = ({ isActive }: boolean) => `link ${isActive ? 'active' : ''}`;
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+// import { CustomSearch } from '../components/CustomSearch';
+import { CustomSelect } from '../components/CustomSelect';
+import { AvatarBadge } from '../components/AvatarBadge';
+
+const items = [
+  {
+    id: 0,
+    name: 'Cobol'
+  },
+  {
+    id: 1,
+    name: 'JavaScript'
+  },
+  {
+    id: 2,
+    name: 'Basic'
+  },
+  {
+    id: 3,
+    name: 'PHP'
+  },
+  {
+    id: 4,
+    name: 'Java'
+  }
+];
 
 export const Menu = () => {
-  const { i18n, t } = useTranslation();
-
-  const onChangeLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang_code = e.target.value;
-    i18n.changeLanguage(lang_code);
-  };
+  const { t } = useTranslation();
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
 
   return (
-    <nav>
-      <div>
-        <NavLink className={isActive} to="/">
-          {t('home')}
-        </NavLink>
-        <NavLink className={isActive} to="/about">
-          {t('about')}
-        </NavLink>
-      </div>
+    <Box className="m-5 px-2">
+      {/* <div >
+            <NavLink className={isActive} to="/">
+              {t('home')}
+            </NavLink>
+            <NavLink className={isActive} to="/about">
+              {t('about')}
+            </NavLink>
+          </div> */}
 
-      <select defaultValue={i18n.language} onChange={onChangeLang}>
-        {LANGUAGES.map(({ code, label }) => (
-          <option key={code} value={code}>
-            {label}
-          </option>
-        ))}
-      </select>
-    </nav>
+      <Flex direction={isMobile ? 'column' : 'row'} align="center" justify="between">
+        <Flex align="center" className="gap-4" direction={isMobile ? 'column' : 'row'}>
+          <Text>{t('following')}</Text>
+          <Button variant="classic" className="p-3 bg-black rounded">
+            <Text className="text-white">{t('viewAll')}</Text>
+          </Button>
+          <AvatarBadge content="Atlanta Braves" />
+          <AvatarBadge content="Chicago Cubs" />
+          <AvatarBadge content="Matthew Boyd" />
+        </Flex>
+        <Box className="w-[300px] justify-between p-4 items-center">
+          <ReactSearchAutocomplete
+            items={items}
+            showClear
+            placeholder="Search"
+            showIcon={false}
+            styling={{
+              borderRadius: '4px'
+            }}
+            autoFocus
+            showNoResults
+            formatResult={({ name }) => (
+              <span style={{ display: 'block', textAlign: 'left' }}>{name}</span>
+            )}
+          />
+        </Box>
+        <Box>
+          <CustomSelect />
+        </Box>
+      </Flex>
+    </Box>
   );
 };

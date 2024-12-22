@@ -3,5 +3,7 @@
   "label": "Selecciona otro lenguaje!",
   "about": "Sobre mí",
   "home": "Inicio",
-  "user": "Mi nombre es: {{name}}"
+  "user": "Mi nombre es: {{name}}",
+  "following": "Following",
+  "viewAll": "View All"
 }
