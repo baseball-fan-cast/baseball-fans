@@ -12,9 +12,9 @@ interface IData {
 }
 interface IFilterByData {
   filterData: IData[];
-  selectedItems: IData;
-  onRemove: (value: string) => '';
-  onSelect: (value: string) => '';
+  selectedItems: string[];
+  onRemove: (value: string) => void;
+  onSelect: (value: string) => void;
 }
 
 export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFilterByData) => {
@@ -48,7 +48,7 @@ export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFil
           </Command>
         </PopoverContent>
       </Popover>
-      {selectedItems?.map((label) => (
+      {selectedItems?.map((label: string) => (
         <Button
           key={label}
           className="rounded-lg mx-2 pr-5 bg-slate-100"

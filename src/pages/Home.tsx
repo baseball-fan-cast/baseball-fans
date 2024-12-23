@@ -26,13 +26,13 @@ const filterByData = [
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
     setSelectedItems(filtered);
   };
-  const onSelect = (value) => {
+  const onSelect = (value: string) => {
     if (selectedItems.includes(value)) {
       onRemove(value);
     } else {
