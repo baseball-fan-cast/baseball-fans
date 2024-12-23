@@ -47,7 +47,7 @@ export const Home = () => {
       </Container>
       <Container className="border-y"></Container>
       <Separator />
-      <Box className=" mx-9 px-32 justify-center">
+      <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center`}>
         <Flex justify="between" className="py-9">
           <FilterBy
             filterData={filterByData}
