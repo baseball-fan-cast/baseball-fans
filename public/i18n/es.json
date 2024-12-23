@@ -6,5 +6,6 @@
   "user": "Mi nombre es: {{name}}",
   "following": "Siguiente",
   "viewAll": "Ver todo",
-  "searchForTeamPlayers": "Búsqueda de equipo, jugadores"
+  "searchForTeamPlayers": "Búsqueda de equipo, jugadores",
+  "filterBy": "Filtrar por"
 }

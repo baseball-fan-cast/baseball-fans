@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
-import { Flex, Box, Text } from '@radix-ui/themes';
+import { Flex, Box, Text, Button } from '@radix-ui/themes';
 import { CustomPlayer } from '../components/CustomPlayer';
 import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
+import { FilterBy } from '../components/FilterBy';
+
+const filterByData = [
+  {
+    value: 'Highlight Clips',
+    label: 'Highlight Clips'
+  },
+  {
+    value: 'Headlines',
+    label: 'Headlinest'
+  },
+  {
+    value: 'Coming Schedule',
+    label: 'Coming Schedule'
+  }
+];
 
 export const Home = () => {
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const onRemove = (value: string) => {
+    const filtered = selectedItems.filter((element) => element !== value);
+    setSelectedItems(filtered);
+  };
+  const onSelect = (value) => {
+    if (selectedItems.includes(value)) {
+      onRemove(value);
+    } else {
+      setSelectedItems([...selectedItems, value]);
+    }
+  };
 
   return (
     <Box>
@@ -18,7 +48,18 @@ export const Home = () => {
       <Container className="border-y"></Container>
       <Separator />
       <Box className=" mx-9 px-32 justify-center">
-        <Text as="div" className="font-bold my-5 text-2xl">
+        <Flex justify="between" className="py-9">
+          <FilterBy
+            filterData={filterByData}
+            onSelect={onSelect}
+            onRemove={onRemove}
+            selectedItems={selectedItems}
+          />
+          <Button className="opacity-50" onClick={() => setSelectedItems([])}>
+            Clear Filters
+          </Button>
+        </Flex>
+        <Text as="div" className="font-bold mb-5 text-2xl">
           Highlight Clips and Replays
         </Text>
         <Flex
