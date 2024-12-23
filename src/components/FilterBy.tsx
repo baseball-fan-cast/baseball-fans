@@ -20,12 +20,12 @@ interface IFilterByData {
 export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFilterByData) => {
   const { t } = useTranslation();
   return (
-    <Flex>
+    <Flex wrap="wrap">
       <Popover>
         <PopoverTrigger asChild>
           <Button
             role="combobox"
-            className="w-[200px] justify-between rounded border-solid p-2 border-inherit mx-2"
+            className="w-[200px] justify-between rounded border-solid p-2 border-inherit m-2"
           >
             {t('filterBy')}
             <ChevronDown className="ml-2 h-4 w-4 shrink-0" />
@@ -51,7 +51,7 @@ export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFil
       {selectedItems?.map((label: string) => (
         <Button
           key={label}
-          className="rounded-lg mx-2 pr-5 bg-slate-100"
+          className="rounded-lg m-2 p-2 pr-5 bg-slate-100"
           onClick={() => onRemove(label)}
         >
           <X className="mx-2 p-1" />
