@@ -7,7 +7,16 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     host: '0.0.0.0', // Listen on all interfaces
-    port: 8080 // Use port 8080
+    port: 8080, // Use port 8080,
+    cors: false,
+    proxy: {
+      '/api': {
+        target: 'https://statsapi.mlb.com/api/v1',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   },
   resolve: {
     alias: {

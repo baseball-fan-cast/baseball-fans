@@ -32,6 +32,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/themes": "^3.1.6",
     "@svgr/rollup": "^8.1.0",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -72,5 +73,6 @@
     "extends": [
       "react-app"
     ]
-  }
+  },
+  "proxy": "http://statsapi.mlb.com/api/v1"
 }

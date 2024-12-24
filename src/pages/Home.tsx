@@ -7,6 +7,7 @@ import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { FilterBy } from '../components/FilterBy';
+// import DataService from '@/services/DataService';
 
 const filterByData = [
   {
@@ -39,6 +40,20 @@ export const Home = () => {
       setSelectedItems([...selectedItems, value]);
     }
   };
+
+  //   const getPlayer = (id: string) => {
+  //     DataService.getPlayer(id)
+  //       .then((response: any) => {
+  //         console.log(response.data);
+  //       })
+  //       .catch((err: Error) => {
+  //         console.error('Error response:');
+  //       });
+  //   };
+  //
+  //   useEffect(() => {
+  //     getPlayer('660271');
+  //   }, []);
 
   return (
     <Box>
