@@ -8,7 +8,7 @@ import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
 
 interface IMenuProps {
-  searchData: never;
+  searchData: never[];
 }
 
 export const Menu = ({ searchData }: IMenuProps) => {

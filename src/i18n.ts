@@ -3,7 +3,9 @@ import i18nBackend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
 const getCurrentHost =
-  import.meta.env.MODE === 'development' ? 'http://localhost:8080' : 'http:future';
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:8080'
+    : 'http://baseball-fan-cast-288548494819.us-central1.run.app/';
 
 i18n
   .use(i18nBackend)
