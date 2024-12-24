@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
 import { Flex, Box, Text, Button } from '@radix-ui/themes';
@@ -7,7 +7,7 @@ import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { FilterBy } from '../components/FilterBy';
-// import DataService from '@/services/DataService';
+import DataService from '@/services/DataService';
 
 const filterByData = [
   {
@@ -28,7 +28,7 @@ export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
+  const [searchData, setSearchData] = useState<never[]>([]);
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
     setSelectedItems(filtered);
@@ -41,24 +41,25 @@ export const Home = () => {
     }
   };
 
-  //   const getPlayer = (id: string) => {
-  //     DataService.getPlayer(id)
-  //       .then((response: any) => {
-  //         console.log(response.data);
-  //       })
-  //       .catch((err: Error) => {
-  //         console.error('Error response:');
-  //       });
-  //   };
-  //
-  //   useEffect(() => {
-  //     getPlayer('660271');
-  //   }, []);
+  const getAllTeams = () => {
+    DataService.getAllTeams()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .then((response: any) => {
+        setSearchData(response.data?.teams);
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      });
+  };
+
+  useEffect(() => {
+    getAllTeams();
+  }, []);
 
   return (
     <Box>
       <Container className="m-5">
-        <Menu />
+        <Menu searchData={searchData} />
       </Container>
       <Container className="border-y"></Container>
       <Separator />

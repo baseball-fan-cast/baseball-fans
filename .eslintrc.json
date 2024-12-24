@@ -17,11 +17,11 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks"],
-  "ignorePatterns": ["src/components/ui/*"],
+  "ignorePatterns": ["src/components/ui/*", "/dist/assets"],
   "files": ["src/shadcn/ui/**/*.{ts,tsx}"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "error",
     "react/prop-types": "off",
     "prettier/prettier": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",

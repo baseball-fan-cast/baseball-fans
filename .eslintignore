@@ -3,3 +3,6 @@ build/**/*.js
 
 # Ignore a ui file
 ./src/components/ui
+
+dist
+/dist/assets

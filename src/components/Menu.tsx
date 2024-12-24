@@ -7,22 +7,11 @@ import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
 
-const items = [
-  {
-    id: 1,
-    name: 'Atlanta Braves'
-  },
-  {
-    id: 2,
-    name: 'Chicago Cubs'
-  },
-  {
-    id: 3,
-    name: 'Matthew Boyd'
-  }
-];
+interface IMenuProps {
+  searchData: never;
+}
 
-export const Menu = () => {
+export const Menu = ({ searchData }: IMenuProps) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -49,7 +38,7 @@ export const Menu = () => {
         </Flex>
         <Box className="w-[300px] justify-between p-4 items-center flex-1">
           <ReactSearchAutocomplete
-            items={items}
+            items={searchData}
             showClear
             placeholder={`${t('searchForTeamPlayers')}`}
             styling={{
@@ -57,9 +46,9 @@ export const Menu = () => {
             }}
             autoFocus
             showNoResults
-            formatResult={({ name }) => (
-              <span style={{ display: 'block', textAlign: 'left' }}>{name}</span>
-            )}
+            formatResult={({ name }) => {
+              return <span style={{ display: 'block', textAlign: 'left' }}>{name}</span>;
+            }}
           />
         </Box>
         <Box>
