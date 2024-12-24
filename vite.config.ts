@@ -10,11 +10,11 @@ export default defineConfig({
     port: 8080, // Use port 8080,
     cors: false,
     proxy: {
-      '/api': {
-        target: 'https://statsapi.mlb.com/api/v1',
+      '/v1': {
+        target: 'http://statsapi.mlb.com/api/v1',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/v1/, '')
       }
     }
   },

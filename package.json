@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite --host",
-    "build": "tsc && vite build",
+    "start": "vite --host --mode production",
+    "dev": "vite --host --mode development",
+    "build": "tsc && vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ./src/**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy": "gcloud run deploy baseball-fan-cast"
   },
   "husky": {
     "hooks": {

@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Flex, Text, Button, Box } from '@radix-ui/themes';
-import { useMediaQuery } from 'react-responsive';
-
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
@@ -13,12 +11,11 @@ interface IMenuProps {
 
 export const Menu = ({ searchData }: IMenuProps) => {
   const { t } = useTranslation();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   return (
     <Box className="m-5 px-2">
-      <Flex direction={isMobile ? 'column' : 'row'} align="center" justify="between">
-        <Flex align="center" className="gap-4" direction={isMobile ? 'column' : 'row'}>
+      <Flex wrap="wrap" align="center" justify="between">
+        <Flex align="center" className="gap-4" wrap="wrap">
           <Text className="px-4 w-[100px] ">{t('following')}</Text>
           <Button variant="classic" className="p-3 bg-black rounded">
             <Text className="text-white">{t('viewAll')}</Text>
@@ -44,6 +41,7 @@ export const Menu = ({ searchData }: IMenuProps) => {
             styling={{
               borderRadius: '4px'
             }}
+            className="min-w-[250px]"
             autoFocus
             showNoResults
             formatResult={({ name }) => {
