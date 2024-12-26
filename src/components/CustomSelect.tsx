@@ -19,9 +19,9 @@ export const CustomSelect = () => {
   };
 
   return (
-    <Flex className=" p-3 m-5">
+    <Flex>
       <Select onValueChange={onValueChange} defaultValue={i18n.language}>
-        <SelectTrigger className="w-[150px] p-3 border-0">
+        <SelectTrigger className="min-w-[150px] p-3 border-0 h-14">
           <SelectValue placeholder="Select language" defaultValue={i18n.language} />
         </SelectTrigger>
         <SelectContent>

@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Flex, Text, Button, Box } from '@radix-ui/themes';
-import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+// import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
+import Select from 'react-select';
 
 interface IMenuProps {
   searchData: never[];
@@ -12,9 +13,16 @@ interface IMenuProps {
 export const Menu = ({ searchData }: IMenuProps) => {
   const { t } = useTranslation();
 
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      height: 56,
+      minHeight: 56
+    })
+  };
   return (
     <Box className="m-5 px-2">
-      <Flex wrap="wrap" align="center" justify="between">
+      <Flex wrap="wrap" align="center" justify="between" className="gap-7">
         <Flex align="center" className="gap-4" wrap="wrap">
           <Text className="px-4 w-[100px] ">{t('following')}</Text>
           <Button variant="classic" className="p-3 bg-black rounded">
@@ -33,20 +41,32 @@ export const Menu = ({ searchData }: IMenuProps) => {
             ]}
           />
         </Flex>
-        <Box className="w-[300px] justify-between p-4 items-center flex-1">
-          <ReactSearchAutocomplete
+        <Box className="w-[300px] justify-between items-center flex-1">
+          {/* <ReactSearchAutocomplete
             items={searchData}
             showClear
             placeholder={`${t('searchForTeamPlayers')}`}
             styling={{
               borderRadius: '4px'
             }}
-            className="min-w-[250px]"
+            
+            className="min-w-[250px] opacity-100"
             autoFocus
             showNoResults
             formatResult={({ name }) => {
               return <span style={{ display: 'block', textAlign: 'left' }}>{name}</span>;
             }}
+          /> */}
+          <Select
+            placeholder={<Text>{t('searchForTeamPlayers')}</Text>}
+            isMulti
+            name="colors"
+            options={searchData}
+            styles={customStyles}
+            className="min-w-[250px] basic-multi-select whitespace-nowrap h-14"
+            classNamePrefix="select"
+            getOptionValue={(option) => option.id}
+            getOptionLabel={(option) => option.name}
           />
         </Box>
         <Box>
