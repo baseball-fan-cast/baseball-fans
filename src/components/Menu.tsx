@@ -1,25 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Flex, Text, Button, Box } from '@radix-ui/themes';
-// import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
-import Select from 'react-select';
+import { CustomSearch } from '../components/CustomSearch';
 
-interface IMenuProps {
-  searchData: never[];
-}
-
-export const Menu = ({ searchData }: IMenuProps) => {
+export const Menu = () => {
   const { t } = useTranslation();
 
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      height: 56,
-      minHeight: 56
-    })
-  };
   return (
     <Box className="m-5 px-2">
       <Flex wrap="wrap" align="center" justify="between" className="gap-7">
@@ -42,32 +30,7 @@ export const Menu = ({ searchData }: IMenuProps) => {
           />
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
-          {/* <ReactSearchAutocomplete
-            items={searchData}
-            showClear
-            placeholder={`${t('searchForTeamPlayers')}`}
-            styling={{
-              borderRadius: '4px'
-            }}
-            
-            className="min-w-[250px] opacity-100"
-            autoFocus
-            showNoResults
-            formatResult={({ name }) => {
-              return <span style={{ display: 'block', textAlign: 'left' }}>{name}</span>;
-            }}
-          /> */}
-          <Select
-            placeholder={<Text>{t('searchForTeamPlayers')}</Text>}
-            isMulti
-            name="colors"
-            options={searchData}
-            styles={customStyles}
-            className="min-w-[250px] basic-multi-select whitespace-nowrap h-14"
-            classNamePrefix="select"
-            getOptionValue={(option) => option.id}
-            getOptionLabel={(option) => option.name}
-          />
+          <CustomSearch />
         </Box>
         <Box>
           <CustomSelect />

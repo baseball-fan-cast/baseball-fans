@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
 import { Flex, Box, Text, Button } from '@radix-ui/themes';
@@ -8,6 +8,8 @@ import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { FilterBy } from '../components/FilterBy';
 import DataService from '@/services/DataService';
+import gameContext from '../context/GameContext';
+import { AvatarBadge } from '../components/AvatarBadge';
 
 const filterByData = [
   {
@@ -28,11 +30,15 @@ export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [searchData, setSearchData] = useState<never[]>([]);
+
+  const [scheduleData, setScheduleData] = useState<never[]>([]);
+  const { searchBy } = useContext(gameContext);
+
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
     setSelectedItems(filtered);
   };
+
   const onSelect = (value: string) => {
     if (selectedItems.includes(value)) {
       onRemove(value);
@@ -40,12 +46,12 @@ export const Home = () => {
       setSelectedItems([...selectedItems, value]);
     }
   };
-
-  const getAllTeams = () => {
-    DataService.getAllTeams()
+  console.log('searchBy', searchBy, scheduleData);
+  const getSeasonSchedule = (year) => {
+    DataService.getSeasonSchedule(year)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
-        setSearchData(response.data?.teams);
+        setScheduleData(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -53,17 +59,33 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    getAllTeams();
+    getSeasonSchedule('2024');
   }, []);
 
   return (
     <Box>
       <Container className="m-5">
-        <Menu searchData={searchData} />
+        <Menu />
       </Container>
       <Container className="border-y"></Container>
       <Separator />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center`}>
+        <Flex align="center" className="gap-4" wrap="wrap">
+          {/* // data={[
+              { src: 'src/assets/chicagoCubs.svg', fallback: 'CN' },
+              { src: 'src/assets/images/Player1.png', fallback: 'CN' }
+            ]} */}
+          {searchBy?.map(({ name, icon, playerIcon, abbreviation }) => (
+            <AvatarBadge
+              key={name}
+              content={name}
+              data={[
+                { src: icon, fallback: abbreviation },
+                ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])
+              ]}
+            />
+          ))}
+        </Flex>
         <Flex justify="between" align="baseline" className="py-9">
           <FilterBy
             filterData={filterByData}
