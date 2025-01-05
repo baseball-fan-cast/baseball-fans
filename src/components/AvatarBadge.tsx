@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, Badge, Flex } from '@radix-ui/themes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import gameContext from '../context/GameContext';
+import { ContentContext } from '../context/ContentContextProvider';
 // import { X } from 'lucide-react';
 
 interface IAvatarData {
@@ -15,7 +15,7 @@ interface IAvatarBadgeProps {
 
 export const AvatarBadge = ({ content, data }: IAvatarBadgeProps) => {
   if (!data) return null;
-  const { searchBy, setSearchBy } = useContext(gameContext);
+  const { searchBy, setSearchBy } = useContext(ContentContext);
 
   const onRemove = () => {
     const filtered = searchBy.filter(({ name }) => name !== content);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
 import { Flex, Box, Text, Button } from '@radix-ui/themes';
@@ -7,8 +7,8 @@ import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { FilterBy } from '../components/FilterBy';
-import DataService from '@/services/DataService';
-import gameContext from '../context/GameContext';
+// import DataService from '@/services/DataService';
+import { ContentContext } from '../context/ContentContextProvider';
 import { AvatarBadge } from '../components/AvatarBadge';
 
 const filterByData = [
@@ -31,8 +31,8 @@ export const Home = () => {
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const [scheduleData, setScheduleData] = useState<never[]>([]);
-  const { searchBy } = useContext(gameContext);
+  // const [scheduleData, setScheduleData] = useState<never[]>([]);
+  const { searchBy } = useContext(ContentContext);
 
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
@@ -46,21 +46,21 @@ export const Home = () => {
       setSelectedItems([...selectedItems, value]);
     }
   };
-  console.log('searchBy', searchBy, scheduleData);
-  const getSeasonSchedule = (year) => {
-    DataService.getSeasonSchedule(year)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((response: any) => {
-        setScheduleData(response.data);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      });
-  };
+  // console.log('searchBy', searchBy, scheduleData);
+  // const getSeasonSchedule = (year) => {
+  //   DataService.getSeasonSchedule(year)
+  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //     .then((response: any) => {
+  //       setScheduleData(response.data);
+  //     })
+  //     .catch((err: Error) => {
+  //       console.error('Error response:', err);
+  //     });
+  // };
 
-  useEffect(() => {
-    getSeasonSchedule('2024');
-  }, []);
+  // useEffect(() => {
+  //   getSeasonSchedule('2024');
+  // }, []);
 
   return (
     <Box>
@@ -71,10 +71,6 @@ export const Home = () => {
       <Separator />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center`}>
         <Flex align="center" className="gap-4" wrap="wrap">
-          {/* // data={[
-              { src: 'src/assets/chicagoCubs.svg', fallback: 'CN' },
-              { src: 'src/assets/images/Player1.png', fallback: 'CN' }
-            ]} */}
           {searchBy?.map(({ name, icon, playerIcon, abbreviation }) => (
             <AvatarBadge
               key={name}

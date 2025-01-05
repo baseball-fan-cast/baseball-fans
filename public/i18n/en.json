@@ -7,5 +7,7 @@
   "following": "Following",
   "viewAll": "View All",
   "searchForTeamPlayers": "Search for team, players",
-  "filterBy": "Filter by"
+  "filterBy": "Filter by",
+  "teams": "Teams",
+  "players": "Players"
 }

@@ -1,23 +1,46 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, ReactNode } from 'react';
 import { Text } from '@radix-ui/themes';
 import Select from 'react-select';
 import DataService from '@/services/DataService';
-import gameContext from '../context/GameContext';
+import { ContentContext } from '../context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
+
+type ITeams = {
+  id: number;
+  name: string;
+};
+type ITeamsData = {
+  teams: ITeams[];
+};
+type ITeamsResponse = {
+  data: ITeamsData;
+};
+
+type IPlayers = {
+  id: number;
+  fullName: string;
+};
+type IPlayersData = {
+  people: IPlayers[];
+};
+type IPlayersResponse = {
+  data: IPlayersData;
+};
+type IData = {
+  label: string | ReactNode;
+  options: ITeams[] | IPlayers[];
+};
 
 export const CustomSearch = () => {
   const { t } = useTranslation();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<any>([]);
-  const [teams, setTeams] = useState<never[]>([]);
-  const [players, setPlayers] = useState<never[]>([]);
-  const { searchBy, setSearchBy } = useContext(gameContext);
+  const [data, setData] = useState<IData[]>([]);
+  const [teams, setTeams] = useState<ITeams[]>([]);
+  const [players, setPlayers] = useState<IPlayers[]>([]);
+  const { searchBy, setSearchBy } = useContext(ContentContext);
 
   const getAllTeams = () => {
     DataService.getAllTeams()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((response: any) => {
+      .then((response: ITeamsResponse) => {
         setTeams(response.data?.teams);
       })
       .catch((err: Error) => {
@@ -27,8 +50,7 @@ export const CustomSearch = () => {
 
   const getAllPlayers = () => {
     DataService.getAllPlayers()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((response: any) => {
+      .then((response: IPlayersResponse) => {
         const data = response.data?.people.map((player) => {
           return { ...player, name: player.fullName };
         });
@@ -65,11 +87,11 @@ export const CustomSearch = () => {
       );
       setData([
         {
-          label: 'Teams',
+          label: <Text>{t('teams')}</Text>,
           options: filteredTeams
         },
         {
-          label: 'Players',
+          label: <Text>{t('players')}</Text>,
           options: filteredPlayers
         }
       ]);
@@ -107,6 +129,7 @@ export const CustomSearch = () => {
       getOptionLabel={(option) => option.name}
       onChange={handleSelect}
       isClearable
+      value=""
     />
   );
 };

@@ -7,5 +7,7 @@
   "following": "続く",
   "viewAll": "すべて表示",
   "searchForTeamPlayers": "チーム、選手を検索",
-  "filterBy": "フィルター"
+  "filterBy": "フィルター",
+  "teams": "Teams",
+  "players": "Players"
 }
