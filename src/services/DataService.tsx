@@ -1,4 +1,4 @@
-import { http } from '../http-common';
+import { http, client } from '../http-common';
 import axios from 'axios';
 
 const getAllTeams = () => {
@@ -30,11 +30,17 @@ export const getIcon = async (id: string) => {
     });
 };
 
+const login = (token) => {
+  const body = { idToken: token };
+  return client.post<never>('/auth/login', body);
+};
+
 const DataService = {
   getPlayer,
   getAllTeams,
   getAllPlayers,
-  getSeasonSchedule
+  getSeasonSchedule,
+  login
 };
 
 export default DataService;

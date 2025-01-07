@@ -15,6 +15,12 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/v1/, '')
+      },
+      '/v2': {
+        target: 'https://baseball-fans-445201-288548494819.us-central1.run.app',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/v2/, '')
       }
     }
   },

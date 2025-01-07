@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "firebase": "^11.1.0",
     "i18next": "22.4.9",
     "i18next-http-backend": "2.1.1",
     "lucide-react": "^0.469.0",

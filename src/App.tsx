@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { Routes as Router, Route, Navigate, Outlet } from 'react-router-dom';
 import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
 
 const PrivateRoutes = () => {
   const { authenticated } = useContext(AuthContext);
@@ -31,6 +32,7 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<HomePage />} />
           </Route>
