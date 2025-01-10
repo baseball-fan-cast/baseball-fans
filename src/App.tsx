@@ -9,9 +9,8 @@ import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 
 const PrivateRoutes = () => {
-  const { authenticated } = useContext(AuthContext);
-
-  if (!authenticated) return <Navigate to="/login" replace />;
+  const { token } = useContext(AuthContext);
+  if (!token) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 };

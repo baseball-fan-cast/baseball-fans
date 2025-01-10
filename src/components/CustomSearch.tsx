@@ -64,38 +64,19 @@ export const CustomSearch = () => {
   useEffect(() => {
     getAllTeams();
     getAllPlayers();
-    setData([
-      {
-        label: 'Teams',
-        options: teams
-      },
-      {
-        label: 'Players',
-        options: players
-      }
-    ]);
   }, []);
 
   useEffect(() => {
-    if (searchBy.length) {
-      const filteredTeams = [...teams]?.filter((team) =>
-        searchBy?.every(({ id }) => id !== team?.id)
-      );
-
-      const filteredPlayers = [...players]?.filter((player) =>
-        searchBy?.every(({ id }) => id !== player?.id)
-      );
-      setData([
-        {
-          label: <Text>{t('teams')}</Text>,
-          options: filteredTeams
-        },
-        {
-          label: <Text>{t('players')}</Text>,
-          options: filteredPlayers
-        }
-      ]);
-    }
+    setData([
+      {
+        label: <Text>{t('teams')}</Text>,
+        options: [...teams]?.filter((team) => searchBy?.every(({ id }) => id !== team?.id))
+      },
+      {
+        label: <Text>{t('players')}</Text>,
+        options: [...players]?.filter((player) => searchBy?.every(({ id }) => id !== player?.id))
+      }
+    ]);
   }, [searchBy, teams, players]);
 
   const customStyles = {
