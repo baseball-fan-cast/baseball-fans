@@ -7,7 +7,6 @@ import { CustomSearch } from '../components/CustomSearch';
 
 export const Menu = () => {
   const { t } = useTranslation();
-
   return (
     <Box className="m-5 px-2">
       <Flex wrap="wrap" align="center" justify="between" className="gap-7">
@@ -17,7 +16,7 @@ export const Menu = () => {
             <Text className="text-white">{t('viewAll')}</Text>
           </Button>
           <AvatarBadge content="Atlanta Braves" data={[{ src: '', fallback: 'A' }]} />
-          <AvatarBadge
+          {/* <AvatarBadge
             content="Chicago Cubs"
             data={[{ src: 'src/assets/chicagoCubs.svg', fallback: 'CN' }]}
           />
@@ -27,13 +26,18 @@ export const Menu = () => {
               { src: 'src/assets/chicagoCubs.svg', fallback: 'CN' },
               { src: 'src/assets/images/Player1.png', fallback: 'CN' }
             ]}
-          />
+          /> */}
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
         </Box>
         <Box>
           <CustomSelect />
+        </Box>
+        <Box>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 w-full rounded">
+            Log out
+          </button>
         </Box>
       </Flex>
     </Box>

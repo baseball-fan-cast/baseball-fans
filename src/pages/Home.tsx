@@ -61,6 +61,7 @@ export const Home = () => {
   // useEffect(() => {
   //   getSeasonSchedule('2024');
   // }, []);
+  console.count();
 
   return (
     <Box>

@@ -4,28 +4,8 @@ import Select from 'react-select';
 import DataService from '@/services/DataService';
 import { ContentContext } from '../context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
+import { IPlayers, IPlayersResponse, ITeams, ITeamsResponse } from '@/types';
 
-type ITeams = {
-  id: number;
-  name: string;
-};
-type ITeamsData = {
-  teams: ITeams[];
-};
-type ITeamsResponse = {
-  data: ITeamsData;
-};
-
-type IPlayers = {
-  id: number;
-  fullName: string;
-};
-type IPlayersData = {
-  people: IPlayers[];
-};
-type IPlayersResponse = {
-  data: IPlayersData;
-};
 type IData = {
   label: string | ReactNode;
   options: ITeams[] | IPlayers[];
@@ -38,8 +18,8 @@ export const CustomSearch = () => {
   const [players, setPlayers] = useState<IPlayers[]>([]);
   const { searchBy, setSearchBy } = useContext(ContentContext);
 
-  const getAllTeams = () => {
-    DataService.getAllTeams()
+  const getAllTeams = async () => {
+    await DataService.getAllTeams()
       .then((response: ITeamsResponse) => {
         setTeams(response.data?.teams);
       })
@@ -48,8 +28,8 @@ export const CustomSearch = () => {
       });
   };
 
-  const getAllPlayers = () => {
-    DataService.getAllPlayers()
+  const getAllPlayers = async () => {
+    await DataService.getAllPlayers()
       .then((response: IPlayersResponse) => {
         const data = response.data?.people.map((player) => {
           return { ...player, name: player.fullName };
