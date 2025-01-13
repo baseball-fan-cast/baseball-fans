@@ -9,5 +9,11 @@
   "searchForTeamPlayers": "Search for team, players",
   "filterBy": "Filter by",
   "teams": "Teams",
-  "players": "Players"
+  "players": "Players",
+  "next": "Next",
+  "back": "Back",
+  "skip": "Skip",
+  "welcome_hint": "Your answers to the next few questions will help us create the personalize content for you",
+  "select_lang": "Select your language",
+  "select_team": "What team & players are you interested in?"
 }

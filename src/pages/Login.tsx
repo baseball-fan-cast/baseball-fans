@@ -23,7 +23,7 @@ export const Login = () => {
       setToken(token);
       // await DataService.login(token);
       setAuthenticated(true);
-      navigate('/');
+      navigate('/follow');
     } catch (error) {
       console.error('Error login:', error);
     }

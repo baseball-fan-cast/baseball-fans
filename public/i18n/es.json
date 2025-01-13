@@ -8,6 +8,12 @@
   "viewAll": "Ver todo",
   "searchForTeamPlayers": "Búsqueda de equipo, jugadores",
   "filterBy": "Filtrar por",
-  "teams": "Teams",
-  "players": "Players"
+  "teams": "Equipos",
+  "players": "Jugadores",
+  "next": "Siguiente",
+  "back": "Atrás",
+  "skip": "Saltar",
+  "welcome_hint": "Sus respuestas a las siguientes preguntas nos ayudarán a crear el contenido personalizado para usted",
+  "select_lang": "Seleccione su idioma",
+  "select_team": "¿En qué equipo y jugadores estás interesado?"
 }

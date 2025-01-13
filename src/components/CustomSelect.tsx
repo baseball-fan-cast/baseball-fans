@@ -19,7 +19,7 @@ export const CustomSelect = () => {
   };
 
   return (
-    <Flex>
+    <Flex className="border rounded">
       <Select onValueChange={onValueChange} defaultValue={i18n.language}>
         <SelectTrigger className="min-w-[150px] p-3 border-0 h-14">
           <SelectValue placeholder="Select language" defaultValue={i18n.language} />

@@ -11,12 +11,12 @@ type IData = {
   options: ITeams[] | IPlayers[];
 };
 
-export const CustomSearch = () => {
+export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
   const { t } = useTranslation();
   const [data, setData] = useState<IData[]>([]);
   const [teams, setTeams] = useState<ITeams[]>([]);
   const [players, setPlayers] = useState<IPlayers[]>([]);
-  const { searchBy, setSearchBy } = useContext(ContentContext);
+  const { searchBy, setSearchBy, followers, setFollowers } = useContext(ContentContext);
 
   const getAllTeams = async () => {
     await DataService.getAllTeams()
@@ -47,17 +47,18 @@ export const CustomSearch = () => {
   }, []);
 
   useEffect(() => {
+    const filterBy = [...searchBy, ...followers];
     setData([
       {
         label: <Text>{t('teams')}</Text>,
-        options: [...teams]?.filter((team) => searchBy?.every(({ id }) => id !== team?.id))
+        options: [...teams]?.filter((team) => filterBy?.every(({ id }) => id !== team?.id))
       },
       {
         label: <Text>{t('players')}</Text>,
-        options: [...players]?.filter((player) => searchBy?.every(({ id }) => id !== player?.id))
+        options: [...players]?.filter((player) => filterBy?.every(({ id }) => id !== player?.id))
       }
     ]);
-  }, [searchBy, teams, players]);
+  }, [searchBy, followers, teams, players]);
 
   const customStyles = {
     control: (base) => ({
@@ -75,7 +76,12 @@ export const CustomSearch = () => {
     const playerIcon = isPlayer
       ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
       : null;
-    setSearchBy([...searchBy, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
+
+    if (isFollowing) {
+      setFollowers([...followers, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
+    } else {
+      setSearchBy([...searchBy, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
+    }
   };
 
   return (
