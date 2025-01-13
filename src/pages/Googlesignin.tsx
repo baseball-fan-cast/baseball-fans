@@ -5,6 +5,7 @@ import React from 'react';
 
 export const Googlesignin = () => {
   const navigate = useNavigate();
+
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);

@@ -3,14 +3,13 @@ import { auth, googleProvider } from '../config/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import React from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Google = () => {
+export const Google = (isLogin) => {
   const navigate = useNavigate();
 
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      navigate('/signin');
+      navigate(isLogin ? '/' : '/signin');
     } catch (error) {
       console.error('Error signing up with Google:', error);
     }

@@ -17,6 +17,7 @@ export const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState(initialValues);
   const [isError, setIsError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -29,41 +30,56 @@ export const Signup = () => {
   const validateForm = (values) => {
     const errors = initialValues;
 
-    if (!values.firstName) {
+    if (!values.firstName && touched.firstName) {
       errors.firstName = 'First name is required';
-    } else if (values.firstName.length <= 3) {
+    } else if (values.firstName.length < 2 && touched.firstName) {
       errors.firstName = 'Must be 3 characters or more';
+    } else {
+      errors.firstName = '';
     }
 
-    if (!values.lastName) {
+    if (!values.lastName && touched.lastName) {
       errors.lastName = 'Last name is required';
-    } else if (values.lastName.length <= 3) {
+    } else if (values.lastName.length < 2 && touched.lastName) {
       errors.lastName = 'Must be 3 characters or more';
+    } else {
+      errors.lastName = '';
     }
 
-    if (!values.email) {
+    if (!values.email && touched.email) {
       errors.email = 'Email is required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email) && touched.email) {
       errors.email = 'Invalid email address';
+    } else {
+      errors.email = '';
     }
 
-    if (!values.password) {
+    if (!values.password && touched.password) {
       errors.password = 'Password number is required';
-    } else if (values.password.length <= 8) {
+    } else if (values.password.length < 6 && touched.password) {
       errors.password = 'Password length must be more than 7';
+    } else {
+      errors.password = '';
     }
 
-    if (values.password !== values.confirmPassword) {
-      errors.password = 'Password does not match!';
+    if (values.password != values.confirmPassword && touched.confirmPassword) {
+      console.log(
+        'values.password != values.confirmPassword',
+        values.password,
+        values.confirmPassword
+      );
+      errors.confirmPassword = 'Password does not match!';
+    } else {
+      errors.confirmPassword = '';
     }
-    setIsError(!!errors.firstName || !!errors.lastName || !!errors.password || !!errors.email);
+
     setErrors(errors);
     return errors;
   };
 
   const onSubmitSignupForm = async (e) => {
     e.preventDefault();
-    validateForm(formData);
+    setIsError(!!errors.firstName || !!errors.lastName || !!errors.password || !!errors.email);
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, formData.email, formData.password).then(
@@ -97,6 +113,7 @@ export const Signup = () => {
 
   const handleChange = (value, label) => {
     setFormData({ ...formData, [`${label}`]: value });
+    validateForm(formData);
     setTouched({ ...touched, [`${label}`]: 'Y' });
     setIsError(false);
   };
@@ -118,9 +135,9 @@ export const Signup = () => {
                   </h2>
                 </div>
 
-                {/* <div className='mt-4 text-xs' style={{ color: "red" }}>
-                                    {errors && errors}
-                                </div> */}
+                <div className="mt-4 text-xs" style={{ color: 'red' }}>
+                  {isError && 'All fields are required'}
+                </div>
 
                 <div>
                   <form className="mt-8 space-y-6" onSubmit={onSubmitSignupForm}>
@@ -211,7 +228,18 @@ export const Signup = () => {
                           className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                           placeholder="Confirm Password"
                         />
+                        <span
+                          className="flex justify-around items-center"
+                          onClick={() => setIsVisible(!isVisible)}
+                        >
+                          {/* <Icon class="absolute mr-10" icon={icon} size={25}/> */}
+                        </span>
                       </div>
+                      <p className="text-xs" style={{ color: 'red' }}>
+                        {errors.confirmPassword &&
+                          touched.confirmPassword &&
+                          errors.confirmPassword}
+                      </p>
                     </div>
 
                     <div>

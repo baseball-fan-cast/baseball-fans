@@ -1,12 +1,28 @@
 import { useTranslation } from 'react-i18next';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Flex, Text, Button, Box } from '@radix-ui/themes';
 import { CustomSelect } from '../components/CustomSelect';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
+import { signOut } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export const Menu = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { setToken } = useContext(AuthContext);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setToken('');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
   return (
     <Box className="m-5 px-2">
       <Flex wrap="wrap" align="center" justify="between" className="gap-7">
@@ -16,17 +32,6 @@ export const Menu = () => {
             <Text className="text-white">{t('viewAll')}</Text>
           </Button>
           <AvatarBadge content="Atlanta Braves" data={[{ src: '', fallback: 'A' }]} />
-          {/* <AvatarBadge
-            content="Chicago Cubs"
-            data={[{ src: 'src/assets/chicagoCubs.svg', fallback: 'CN' }]}
-          />
-          <AvatarBadge
-            content="Matthew Boyd"
-            data={[
-              { src: 'src/assets/chicagoCubs.svg', fallback: 'CN' },
-              { src: 'src/assets/images/Player1.png', fallback: 'CN' }
-            ]}
-          /> */}
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
@@ -35,7 +40,7 @@ export const Menu = () => {
           <CustomSelect />
         </Box>
         <Box>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 w-full rounded">
+          <button className="bg-blue-700 text-white rounded-xl py-2 px-4" onClick={handleSignOut}>
             Log out
           </button>
         </Box>

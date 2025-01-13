@@ -2,8 +2,9 @@ import React, { useState, useContext } from 'react';
 import { auth } from '../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
-// import { Googlesignin } from './Googlesignin';
+// import { Google } from './Google';
 import { AuthContext } from '../context/AuthContext';
+import { Logo } from '@/components/Logo';
 // import DataService from '@/services/DataService';
 
 export const Login = () => {
@@ -30,7 +31,8 @@ export const Login = () => {
 
   return (
     <div className="grid md:grid-cols-1 h-screen justify-center">
-      <div className="flex md:w-2/5  mx-auto flex-col justify-center h-screen ">
+      <div className="flex md:w-2/5  mx-auto flex-col justify-center h-screen">
+        <Logo className="w-[100px]" />
         <h2 className="text-2xl text-center font-bold mb-2">Sign In</h2>
         <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
           <div>
@@ -73,7 +75,7 @@ export const Login = () => {
           </p>
 
           {/* <p className="text-center font-bold">or</p>
-          <Googlesignin /> */}
+          <Google isLogin={true} /> */}
         </form>
       </div>
     </div>
