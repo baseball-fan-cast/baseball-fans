@@ -76,6 +76,7 @@ export const Home = () => {
             <AvatarBadge
               key={name}
               content={name}
+              isClearable
               data={[
                 { src: icon, fallback: abbreviation },
                 ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])

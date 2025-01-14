@@ -30,15 +30,13 @@ export const Login = () => {
   };
 
   return (
-    <div className="grid md:grid-cols-1 h-screen justify-center">
-      <div className="flex md:w-2/5  mx-auto flex-col justify-center h-screen">
-        <Logo className="w-[100px]" />
-        <h2 className="text-2xl text-center font-bold mb-2">Sign In</h2>
-        <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
+    <div className="grid md:grid-cols-1 h-screen justify-center bg-sky-950">
+      <div className="flex md:w-2/5 h-auto m-auto flex-col justify-center bg-white px-4 py-9">
+        <Logo className="w-[100px] m-4 " />
+        <h2 className="text-2xl font-bold my-2 px-4">Sign In</h2>
+        <form className="mt-8 space-y-6 px-4" onSubmit={handleSignIn}>
           <div>
-            <label htmlFor="email-address" className="sr-only">
-              Email address
-            </label>
+            <label htmlFor="email-address">Email address</label>
             <input
               type="email"
               id="email"
@@ -50,9 +48,7 @@ export const Login = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="sr-only">
-              Password
-            </label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -64,12 +60,12 @@ export const Login = () => {
             />
           </div>
 
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 w-full">
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 w-full rounded-2xl">
             Sign In
           </button>
           <p className="mt-10 text-sm text-center">
-            Are you new?
-            <NavLink to="/signup" className="underline text-tertiary text-blue-500">
+            New to MLB?
+            <NavLink to="/signup" className="pl-2 text-tertiary text-blue-500">
               Sign up
             </NavLink>
           </p>

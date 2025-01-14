@@ -11,9 +11,18 @@ interface IAvatarData {
 interface IAvatarBadgeProps {
   content: string;
   data?: IAvatarData[];
+  isSelected?: boolean;
+  isClearable?: boolean;
+  onSelect?: () => void;
 }
 
-export const AvatarBadge = ({ content, data }: IAvatarBadgeProps) => {
+export const AvatarBadge = ({
+  content,
+  data,
+  isSelected,
+  isClearable,
+  onSelect
+}: IAvatarBadgeProps) => {
   if (!data) return null;
   const { searchBy, setSearchBy, followers, setFollowers } = useContext(ContentContext);
 
@@ -25,10 +34,14 @@ export const AvatarBadge = ({ content, data }: IAvatarBadgeProps) => {
   };
 
   return (
-    <Badge color="blue" className="py-2 px-3 rounded-lg">
+    <Badge
+      color={isSelected ? 'crimson' : 'blue'}
+      className={`py-2 px-3 rounded-lg ${isSelected ? 'brown' : 'blue'}`}
+      onClick={onSelect}
+    >
       <Flex align="center" justify="between" className="gap-2">
         {/* opacity-0 hover:opacity-100  */}
-        <X className="text-slate-800" onClick={onRemove} />
+        {!isClearable ? null : <X className="text-slate-800" onClick={onRemove} />}
         <Flex className="relative">
           <Avatar className=" bg-slate-300">
             <AvatarImage src={data[0]?.src} />

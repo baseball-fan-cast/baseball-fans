@@ -15,11 +15,11 @@ export const WelcomeStep = () => {
       <h2 className="text-2xl text-center font-bold mb-2">Bienvenida</h2>
       <h2 className="text-2xl text-center font-bold mb-2">いらっしゃいませ</h2>
       <h2
-        className={`text-xl text-center font-bold border-b border-black ${isMobile ? 'w-5/6' : 'w-3/6'}`}
+        className={`text-xl text-center font-bold border-b border-black ${isMobile ? 'w-5/6' : 'w-1/6'}`}
       >
         {auth?.currentUser?.displayName}
       </h2>
-      <Text className={`my-4 ${isMobile ? 'w-5/6' : 'w-3/6'} text-center text-slate-400`}>
+      <Text className={`my-4 ${isMobile ? 'w-5/6' : 'w-2/6'} text-center text-slate-400`}>
         {t('welcome_hint')}
       </Text>
       <div

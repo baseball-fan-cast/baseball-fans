@@ -13,6 +13,8 @@ type IGameContext = {
   setSearchBy: (data: any) => void;
   followers: any;
   setFollowers: (data: any) => void;
+  selectedFollower: any;
+  setSelectedFollower: (data: any) => void;
 };
 
 const initialValue = {
@@ -21,7 +23,9 @@ const initialValue = {
   searchBy: [],
   setSearchBy: () => {},
   followers: [],
-  setFollowers: () => {}
+  setFollowers: () => {},
+  selectedFollower: {},
+  setSelectedFollower: () => {}
 };
 
 const ContentContext = createContext<IGameContext>(initialValue);
@@ -30,6 +34,7 @@ const ContentContextProvider = ({ children }: Props) => {
   const [searchData, setSearchData] = useState(null);
   const [searchBy, setSearchBy] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const [selectedFollower, setSelectedFollower] = useState({});
 
   const value = useMemo(() => {
     return {
@@ -38,9 +43,20 @@ const ContentContextProvider = ({ children }: Props) => {
       searchBy,
       setSearchBy,
       followers,
-      setFollowers
+      setFollowers,
+      selectedFollower,
+      setSelectedFollower
     };
-  }, [searchData, setSearchData, searchBy, setSearchBy, followers, setFollowers]);
+  }, [
+    searchData,
+    setSearchData,
+    searchBy,
+    setSearchBy,
+    followers,
+    setFollowers,
+    selectedFollower,
+    setSelectedFollower
+  ]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
 };
