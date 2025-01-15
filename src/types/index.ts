@@ -1,6 +1,7 @@
 export type ITeams = {
-  id: number;
+  id: number | string;
   name: string;
+  locationName: string;
 };
 
 export type ITeamsData = {

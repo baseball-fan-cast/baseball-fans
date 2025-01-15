@@ -9,6 +9,10 @@ const getAllPlayers = () => {
   return http.get<never>('/sports/1/players');
 };
 
+const getPlayersByTeam = (id: string) => {
+  return http.get<never>(`/teams/${id}/roster?season=2024`);
+};
+
 // const getPlayer = (id: string) => {
 //   return http.get<never>(`/people/${id}`);
 // };
@@ -39,6 +43,7 @@ const DataService = {
   // getPlayer,
   getAllTeams,
   getAllPlayers,
+  getPlayersByTeam,
   // getSeasonSchedule,
   login
 };
