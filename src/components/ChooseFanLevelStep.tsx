@@ -153,7 +153,7 @@ export const ChooseFanLevelStep = () => {
           </div>
         ))}
       </div>
-      <div className=" w-ful grid grid-cols-2 gap-3 my-5">
+      <div className=" w-ful grid grid-cols-2 gap-3 my-5 min-h-[250px]">
         {tabsData?.[selectedTab]?.data.map((content) => (
           <div
             key={content.name}
