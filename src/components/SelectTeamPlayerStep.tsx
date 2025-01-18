@@ -17,6 +17,7 @@ export const SelectTeamPlayerStep = () => {
   const [players, setPlayers] = useState<IPlayers[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<ITeams[]>([]);
   const [viewPlayers, setViewPlayers] = useState(false);
+  const [selectedTeamDetail, setSelectedTeamDetail] = useState<ITeams>();
 
   const getAllTeams = async () => {
     await DataService.getAllTeams()
@@ -62,6 +63,7 @@ export const SelectTeamPlayerStep = () => {
     const { id } = team;
     getPlayersByTeam(id);
     setViewPlayers(true);
+    setSelectedTeamDetail(team);
   };
 
   const renderTeams = () => (
@@ -102,12 +104,21 @@ export const SelectTeamPlayerStep = () => {
 
   const renderPlayers = () => (
     <div>
-      <ChevronLeft onClick={() => setViewPlayers(false)} />
+      <div className="flex items-center gap-2" onClick={() => setViewPlayers(false)}>
+        <ChevronLeft />
+        <Avatar className="flex justify-center pl-3">
+          <AvatarImage
+            className="bg-red-700 rounded-full"
+            src={`https://midfield.mlbstatic.com/v1/team/${selectedTeamDetail?.id}/spots/50`}
+          />
+        </Avatar>
+        <Text>{selectedTeamDetail?.name}</Text>
+      </div>
       <div className="flex flex-wrap gap-4 mt-9 m-auto">
         {players?.slice(0, 20)?.map(({ person }) => {
           return (
             <div
-              className={`p-4 border rounded-md relative min-w-[250px] ${selectedTeam.find(({ id }) => id === person?.id) ? 'bg-slate-50' : 'bg-white'}`}
+              className={`p-4 border rounded-md relative min-w-[250px] py-9 ${selectedTeam.find(({ id }) => id === person?.id) ? 'bg-slate-50' : 'bg-white'}`}
               key={person.id}
             >
               <Avatar className="flex justify-center">
@@ -124,8 +135,16 @@ export const SelectTeamPlayerStep = () => {
                 checked={!!selectedTeam.find(({ id }) => id === person?.id)}
                 className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
+              {/* {person.fullName?.split(' ').map(name => (
+                <Text as="div" key={ name} className="font-bold text-center p-1">
+                  {name}
+              </Text>
+              ))} */}
+              <Text as="div" className="text-center mt-4">
+                {person.fullName?.split(' ')[0]}
+              </Text>
               <Text as="div" className="font-bold text-center">
-                {person.fullName}
+                {person.fullName?.split(' ')[1]}
               </Text>
             </div>
           );
@@ -133,8 +152,7 @@ export const SelectTeamPlayerStep = () => {
       </div>
     </div>
   );
-  console.log('ALL players', players);
-  console.log('selectedTeam', selectedTeam);
+
   return (
     <div className="flex flex-col w-ful gap-1 min-h-[300px]">
       <Text className="text-2xl font-bold mb-2">{t('select_team')}</Text>

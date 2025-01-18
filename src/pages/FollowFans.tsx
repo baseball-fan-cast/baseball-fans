@@ -4,6 +4,7 @@ import { Logo } from '@/components/Logo';
 import { WelcomeStep } from '@/components/WelcomeStep';
 import { useTranslation } from 'react-i18next';
 import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
+import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
 
 export const FollowFans = () => {
   const navigate = useNavigate();
@@ -19,11 +20,11 @@ export const FollowFans = () => {
     {
       step: 1,
       component: <SelectTeamPlayerStep />
+    },
+    {
+      step: 2,
+      component: <ChooseFanLevelStep />
     }
-    // {
-    //     step: 2,
-    //     component: <div>SOmething else</div>
-    // }
   ];
 
   const goBack = () => {
