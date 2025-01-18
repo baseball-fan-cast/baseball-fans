@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Text } from '@radix-ui/themes';
 // import { useTranslation } from 'react-i18next';
-// import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 import { X } from 'lucide-react';
 
 export const ChooseFanLevelStep = () => {
   //   const { t } = useTranslation();
-  //     const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selectedLevel, setSelectedLevel] = useState({ id: 1, level: '', description: '' });
   const [selectedTab, setSelectedTab] = useState('View All');
   const [selectedFeed, setSelectedFeed] = useState<string[]>([]);
@@ -107,11 +107,11 @@ export const ChooseFanLevelStep = () => {
       <Text as="div" className="text-center text-slate-500 mb-2">
         Let us know where you stands in your MLB journey, and well personalize your experience
       </Text>
-      <div className="flex gap-5 my-5">
+      <div className="flex gap-5 my-5 flex-wrap">
         {levels.map(({ level, description, id }) => (
           <div
             key={level}
-            className={`border rounded-md w-[250px] py-5 px-3 ${selectedLevel?.id == id ? 'bg-slate-50 border-current' : 'bg-white  border-inherit'}`}
+            className={`border rounded-md ${isMobile ? '' : 'w-[250px]'} py-5 px-3 ${selectedLevel?.id == id ? 'bg-slate-50 border-current' : 'bg-white  border-inherit'}`}
             onClick={() => onSelectLevel({ level, description, id })}
           >
             <Text as="div" className="font-bold text-center mb-2 py-5">
@@ -142,7 +142,7 @@ export const ChooseFanLevelStep = () => {
           </Button>
         ))}
       </div>
-      <div className="flex w-ful justify-center items-center gap-5">
+      <div className="flex w-ful justify-center items-center gap-5 flex-wrap">
         {tabs.map((tab) => (
           <div
             key={tab}
