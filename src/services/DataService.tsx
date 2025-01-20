@@ -2,11 +2,11 @@ import { http, client } from '../http-common';
 // import axios from 'axios';
 
 const getAllTeams = () => {
-  return http.get<never>('/teams');
+  return client.get<never>('/mlb/teams');
 };
 
 const getAllPlayers = () => {
-  return http.get<never>('/sports/1/players');
+  return client.get<never>('/mlb/players');
 };
 
 const getPlayersByTeam = (id: string) => {

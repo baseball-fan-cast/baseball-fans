@@ -22,7 +22,7 @@ export const SelectTeamPlayerStep = () => {
   const getAllTeams = async () => {
     await DataService.getAllTeams()
       .then((response: ITeamsResponse) => {
-        setTeams(response.data?.teams);
+        setTeams(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

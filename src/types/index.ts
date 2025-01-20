@@ -4,12 +4,8 @@ export type ITeams = {
   locationName: string;
 };
 
-export type ITeamsData = {
-  teams: ITeams[];
-};
-
 export type ITeamsResponse = {
-  data: ITeamsData;
+  data: ITeams[];
 };
 
 export type IPlayers = {
@@ -17,10 +13,6 @@ export type IPlayers = {
   fullName: string;
 };
 
-export type IPlayersData = {
-  people: IPlayers[];
-};
-
 export type IPlayersResponse = {
-  data: IPlayersData;
+  data: IPlayers[];
 };

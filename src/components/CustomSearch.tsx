@@ -21,7 +21,7 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
   const getAllTeams = async () => {
     await DataService.getAllTeams()
       .then((response: ITeamsResponse) => {
-        setTeams(response.data?.teams);
+        setTeams(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -31,7 +31,7 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
   const getAllPlayers = async () => {
     await DataService.getAllPlayers()
       .then((response: IPlayersResponse) => {
-        const data = response.data?.people.map((player) => {
+        const data = response.data?.map((player) => {
           return { ...player, name: player.fullName };
         });
         setPlayers(data);
