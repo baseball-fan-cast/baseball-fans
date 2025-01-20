@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Container, Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
 import { Flex, Box, Text, Button } from '@radix-ui/themes';
@@ -10,6 +10,7 @@ import { FilterBy } from '../components/FilterBy';
 // import DataService from '@/services/DataService';
 import { ContentContext } from '../context/ContentContextProvider';
 import { AvatarBadge } from '../components/AvatarBadge';
+import DataService from '@/services/DataService';
 
 const filterByData = [
   {
@@ -33,6 +34,7 @@ export const Home = () => {
 
   // const [scheduleData, setScheduleData] = useState<never[]>([]);
   const { searchBy } = useContext(ContentContext);
+  const { followers } = useContext(ContentContext);
 
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
@@ -58,9 +60,17 @@ export const Home = () => {
   //     });
   // };
 
-  // useEffect(() => {
-  //   getSeasonSchedule('2024');
-  // }, []);
+  useEffect(() => {
+    const teamsId = followers
+      .filter(({ playerIcon }) => !playerIcon)
+      ?.map(({ id }) => id)
+      ?.join(',');
+    console.log('getTeamsFollowing', teamsId);
+    DataService.getSeasonSchedule(teamsId);
+
+    // DataService.getSubscription();
+  }, []);
+
   console.count();
 
   return (

@@ -54,21 +54,14 @@ export const SelectTeamPlayerStep = () => {
       const filteredFollowers = followers.filter(({ id }) => id !== team.id);
       setFollowers(filteredFollowers);
     } else {
-      const { id, name, abbreviation, isPlayer, currentTeam, teamName } = team || {};
+      const { id, name, abbreviation, currentTeam, teamName } = team || {};
       const teamIcon = !teamName
         ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
         : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
       const playerIcon = !teamName
         ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
         : null;
-      console.log(
-        'id, name, abbreviation, isPlayer, currentTeam',
-        id,
-        name,
-        abbreviation,
-        isPlayer,
-        currentTeam
-      );
+
       const follow = { id, name, icon: teamIcon, abbreviation, playerIcon };
       setSelectedTeam([...selectedTeam, ...[team]]);
       setFollowers([...followers, follow]);
@@ -120,7 +113,7 @@ export const SelectTeamPlayerStep = () => {
 
   const renderPlayers = () => (
     <div>
-      <div className="flex justify-between items-center ">
+      <div className="flex gap-4 mt-9 items-center justify-between">
         <div className="flex items-center gap-2" onClick={() => setViewPlayers(false)}>
           <ChevronLeft />
           <Avatar className="flex justify-center pl-3">
@@ -132,7 +125,7 @@ export const SelectTeamPlayerStep = () => {
           <Text>{selectedTeamDetail?.name}</Text>
         </div>
         <div
-          className={`px-9 py-1 align-center border rounded-md bg-slate-50 ${followers.find(({ id }) => id === selectedTeamDetail?.id) ? 'bg-slate-50' : 'bg-white'}`}
+          className={`px-9 py-1 align-center border rounded-md bg-slate-50  ${followers.find(({ id }) => id === selectedTeamDetail?.id) ? 'bg-slate-50' : 'bg-white'}`}
         >
           <Button onClick={() => onSelectTeam(selectedTeamDetail)}>
             <Text className="font-bold">{t('following')}</Text>
@@ -173,7 +166,7 @@ export const SelectTeamPlayerStep = () => {
       </div>
     </div>
   );
-  console.log('followers', followers);
+
   return (
     <div className="flex flex-col w-ful gap-1 min-h-[300px]">
       <Text className="text-2xl font-bold mb-2">{t('select_team')}</Text>

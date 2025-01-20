@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { WelcomeStep } from '@/components/WelcomeStep';
 import { useTranslation } from 'react-i18next';
 import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
 import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
+import { ContentContext } from '@/context/ContentContextProvider';
+import DataService from '@/services/DataService';
 
 export const FollowFans = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { followers } = useContext(ContentContext);
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
 
   const steps = [
     {
@@ -32,7 +35,25 @@ export const FollowFans = () => {
       setActiveStep(activeStep - 1);
     }
   };
+
+  const followFans = async () => {
+    const teams: number[] = [];
+    const players: number[] = [];
+
+    followers.map(({ id, playerIcon }) => {
+      if (playerIcon) {
+        players.push(id);
+      } else {
+        teams.push(id);
+      }
+    });
+
+    await DataService.updateSubscription(teams, players);
+  };
   const goNext = () => {
+    if (activeStep == 1) {
+      followFans();
+    }
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
     } else {
