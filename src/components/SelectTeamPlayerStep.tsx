@@ -54,8 +54,24 @@ export const SelectTeamPlayerStep = () => {
       const filteredFollowers = followers.filter(({ id }) => id !== team.id);
       setFollowers(filteredFollowers);
     } else {
+      const { id, name, abbreviation, isPlayer, currentTeam, teamName } = team || {};
+      const teamIcon = !teamName
+        ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
+        : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
+      const playerIcon = !teamName
+        ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
+        : null;
+      console.log(
+        'id, name, abbreviation, isPlayer, currentTeam',
+        id,
+        name,
+        abbreviation,
+        isPlayer,
+        currentTeam
+      );
+      const follow = { id, name, icon: teamIcon, abbreviation, playerIcon };
       setSelectedTeam([...selectedTeam, ...[team]]);
-      setFollowers([...followers, team]);
+      setFollowers([...followers, follow]);
     }
   };
 
@@ -93,7 +109,7 @@ export const SelectTeamPlayerStep = () => {
               className="my-3 flex justify-center align-center"
               onClick={() => onSelectPlayers(team)}
             >
-              <Text className="text-slate-500">View Players</Text>
+              <Text className="text-slate-500">{t('view_players')}</Text>
               <ChevronRight />
             </Button>
           </div>
@@ -104,16 +120,26 @@ export const SelectTeamPlayerStep = () => {
 
   const renderPlayers = () => (
     <div>
-      <div className="flex items-center gap-2" onClick={() => setViewPlayers(false)}>
-        <ChevronLeft />
-        <Avatar className="flex justify-center pl-3">
-          <AvatarImage
-            className="bg-red-700 rounded-full"
-            src={`https://midfield.mlbstatic.com/v1/team/${selectedTeamDetail?.id}/spots/50`}
-          />
-        </Avatar>
-        <Text>{selectedTeamDetail?.name}</Text>
+      <div className="flex justify-between items-center ">
+        <div className="flex items-center gap-2" onClick={() => setViewPlayers(false)}>
+          <ChevronLeft />
+          <Avatar className="flex justify-center pl-3">
+            <AvatarImage
+              className="bg-red-700 rounded-full"
+              src={`https://midfield.mlbstatic.com/v1/team/${selectedTeamDetail?.id}/spots/50`}
+            />
+          </Avatar>
+          <Text>{selectedTeamDetail?.name}</Text>
+        </div>
+        <div
+          className={`px-9 py-1 align-center border rounded-md bg-slate-50 ${followers.find(({ id }) => id === selectedTeamDetail?.id) ? 'bg-slate-50' : 'bg-white'}`}
+        >
+          <Button onClick={() => onSelectTeam(selectedTeamDetail)}>
+            <Text className="font-bold">{t('following')}</Text>
+          </Button>
+        </div>
       </div>
+
       <div className="flex flex-wrap gap-4 mt-9 m-auto">
         {players?.slice(0, 20)?.map((person) => {
           return (
@@ -147,7 +173,7 @@ export const SelectTeamPlayerStep = () => {
       </div>
     </div>
   );
-
+  console.log('followers', followers);
   return (
     <div className="flex flex-col w-ful gap-1 min-h-[300px]">
       <Text className="text-2xl font-bold mb-2">{t('select_team')}</Text>
