@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 // import { Google } from './Google';
 import { AuthContext } from '../context/AuthContext';
 import { Logo } from '@/components/Logo';
-// import DataService from '@/services/DataService';
+import DataService from '@/services/DataService';
 
 export const Login = () => {
   const { setToken, setAuthenticated } = useContext(AuthContext);
@@ -21,7 +21,7 @@ export const Login = () => {
       const data = await signInWithEmailAndPassword(auth, email, password);
       const token = await data?.user?.getIdToken();
       setToken(token);
-      // await DataService.login(token);
+      await DataService.login(token);
       setAuthenticated(true);
       navigate('/follow');
     } catch (error) {

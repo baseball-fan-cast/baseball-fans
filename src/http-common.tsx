@@ -10,8 +10,8 @@ const http = axios.create({
 const client = axios.create({
   baseURL: `https://baseball-fans-445201-288548494819.us-central1.run.app`,
   headers: {
-    'Content-type': 'application/json'
-    // Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    'Content-type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`
     // "Access-Control-Allow-Origin": '*'
   }
 });
