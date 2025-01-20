@@ -13,7 +13,8 @@ export type IScheduleData = {
   [key: number]: GroupedDate[];
 };
 
-export const ComingSchedule = ({ subscriptions }: { subscriptions?: string[] }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
 
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
@@ -33,7 +34,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions?: string[] }) 
     'December'
   ];
   const getSeasonSchedule = () => {
-    DataService.getSeasonSchedule(subscriptions?.join(','))
+    DataService.getSeasonSchedule()
       .then((response: IScheduleResponse) => {
         const groupedData = subscriptions?.reduce((result, id) => {
           result[id] = response?.data
@@ -45,6 +46,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions?: string[] }) 
             });
           return result;
         }, {}) as IScheduleData;
+        console.log('groupedData', response?.data);
         setScheduleData(groupedData);
       })
       .catch((err: Error) => {
@@ -53,7 +55,9 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions?: string[] }) 
   };
 
   useEffect(() => {
-    getSeasonSchedule();
+    if (subscriptions?.length > 0) {
+      getSeasonSchedule();
+    }
   }, [subscriptions]);
 
   return (

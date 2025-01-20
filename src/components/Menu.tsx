@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ContentContext } from '@/context/ContentContextProvider';
 
-export const Menu = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
@@ -52,6 +53,7 @@ export const Menu = () => {
               ]}
             />
           ))}
+          {subscriptions?.map((subId) => <div key={subId}>{subId}</div>)}
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />

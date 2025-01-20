@@ -27,12 +27,19 @@ const updateSubscription = (teams: number[], players: number[]) => {
   return client.patch<never>(`/subscription`, body);
 };
 
-// const getPlayer = (id: string) => {
-//   return http.get<never>(`/people/${id}`);
-// };
+const getMedia = () => {
+  return client.get<never>(`/mlb/media/subscribed`);
+};
 
-const getSeasonSchedule = (teamsId) => {
-  console.log(teamsId);
+const getNews = () => {
+  return client.get<never>(`/mlb/news`);
+};
+
+const getSeasonScheduleByIds = (teamIds, playerIds) => {
+  return client.get<never>(`/mlb/schedule?teamIds=${teamIds}&playerIds=${playerIds}`);
+};
+
+const getSeasonSchedule = () => {
   return client.get<never>(`/mlb/schedule/subscribed`);
 };
 
@@ -62,7 +69,10 @@ const DataService = {
   getSubscription,
   putSubscription,
   updateSubscription,
-  getSeasonSchedule
+  getSeasonSchedule,
+  getMedia,
+  getNews,
+  getSeasonScheduleByIds
 };
 
 export default DataService;

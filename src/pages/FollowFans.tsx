@@ -4,7 +4,7 @@ import { Logo } from '@/components/Logo';
 import { WelcomeStep } from '@/components/WelcomeStep';
 import { useTranslation } from 'react-i18next';
 import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
-import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
+// import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
 
@@ -23,11 +23,11 @@ export const FollowFans = () => {
     {
       step: 1,
       component: <SelectTeamPlayerStep />
-    },
-    {
-      step: 2,
-      component: <ChooseFanLevelStep />
     }
+    // {
+    //   step: 2,
+    //   component: <ChooseFanLevelStep />
+    // }
   ];
 
   const goBack = () => {
