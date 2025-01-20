@@ -1,4 +1,4 @@
-import { http, client } from '../http-common';
+import { client } from '../http-common';
 // import axios from 'axios';
 
 const getAllTeams = () => {
@@ -10,7 +10,7 @@ const getAllPlayers = () => {
 };
 
 const getPlayersByTeam = (id: string) => {
-  return http.get<never>(`/teams/${id}/roster?season=2024`);
+  return client.get<never>(`/mlb/players?teamId=${id}&season=2024`);
 };
 
 // const getPlayer = (id: string) => {
@@ -40,11 +40,9 @@ const login = (token) => {
 };
 
 const DataService = {
-  // getPlayer,
   getAllTeams,
   getAllPlayers,
   getPlayersByTeam,
-  // getSeasonSchedule,
   login
 };
 

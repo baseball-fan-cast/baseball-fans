@@ -32,7 +32,7 @@ export const SelectTeamPlayerStep = () => {
   const getPlayersByTeam = async (team) => {
     await DataService.getPlayersByTeam(team)
       .then((response: any) => {
-        setPlayers(response.data?.roster);
+        setPlayers(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -115,7 +115,7 @@ export const SelectTeamPlayerStep = () => {
         <Text>{selectedTeamDetail?.name}</Text>
       </div>
       <div className="flex flex-wrap gap-4 mt-9 m-auto">
-        {players?.slice(0, 20)?.map(({ person }) => {
+        {players?.slice(0, 20)?.map((person) => {
           return (
             <div
               className={`p-4 border rounded-md relative min-w-[250px] py-9 ${selectedTeam.find(({ id }) => id === person?.id) ? 'bg-slate-50' : 'bg-white'}`}
@@ -135,11 +135,6 @@ export const SelectTeamPlayerStep = () => {
                 checked={!!selectedTeam.find(({ id }) => id === person?.id)}
                 className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
-              {/* {person.fullName?.split(' ').map(name => (
-                <Text as="div" key={ name} className="font-bold text-center p-1">
-                  {name}
-              </Text>
-              ))} */}
               <Text as="div" className="text-center mt-4">
                 {person.fullName?.split(' ')[0]}
               </Text>
