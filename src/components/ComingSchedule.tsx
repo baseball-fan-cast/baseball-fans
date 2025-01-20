@@ -1,42 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Text, Flex, Link } from '@radix-ui/themes';
+import DataService from '@/services/DataService';
+import { useTranslation } from 'react-i18next';
+import { IScheduleResponse, ITeamData } from '@/types';
 
-export const ComingSchedule = () => {
-  const items = [
-    '25 February - vs Twins at 1:05 pm EST',
-    '25 February - vs Twins at 1:05 pm EST',
-    '25 February - vs Twins at 1:05 pm EST'
+export type GroupedDate = {
+  gameDate: string;
+  teams: ITeamData;
+};
+
+export type IScheduleData = {
+  [key: number]: GroupedDate[];
+};
+
+export const ComingSchedule = ({ subscriptions }: { subscriptions?: string[] }) => {
+  const { t } = useTranslation();
+
+  const [scheduleData, setScheduleData] = useState<IScheduleData>({});
+
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ];
+  const getSeasonSchedule = () => {
+    DataService.getSeasonSchedule(subscriptions?.join(','))
+      .then((response: IScheduleResponse) => {
+        const groupedData = subscriptions?.reduce((result, id) => {
+          result[id] = response?.data
+            ?.filter(
+              (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
+            )
+            ?.map(({ gameDate, teams }) => {
+              return { gameDate, teams };
+            });
+          return result;
+        }, {}) as IScheduleData;
+        setScheduleData(groupedData);
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      });
+  };
+
+  useEffect(() => {
+    getSeasonSchedule();
+  }, [subscriptions]);
 
   return (
     <Box className="basis-1/2">
       <Text as="div" className="font-bold my-2 text-xl">
-        Coming Schedule
+        {t('coming_schedule')}
       </Text>
-      <Flex direction="column" className="my-3">
-        <Text className="my-2">Atlanta Braves</Text>
-        <ul className="list-disc list-inside">
-          {items.map((item, index) => (
-            <li key={index}>
-              <Link href="#" size="1" color="indigo" className="list-disc" key={index}>
-                {item}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Flex>
-      <Flex direction="column" className="my-5">
-        <Text className="my-2">Chicago Cubs</Text>
-        <ul className="list-disc list-inside">
-          {items.map((item, index) => (
-            <li key={index}>
-              <Link href="#" size="1" color="indigo" className="list-disc" key={index}>
-                {item}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Flex>
+      {Object.entries(scheduleData).map(([key, data]) => {
+        return (
+          <Flex direction="column" className="my-3" key={key}>
+            <Text className="my-2">
+              {data[0]?.teams?.away?.team.id == key
+                ? data[0]?.teams?.away?.team.name
+                : data[0]?.teams?.home?.team.name}
+            </Text>
+            <ul className="list-disc list-inside">
+              {data?.map((item, index) => (
+                <li key={index}>
+                  <Link href="#" size="1" color="indigo" className="list-disc" key={index}>
+                    {`${monthNames[new Date(item?.gameDate)?.getMonth()]} ${new Date(item?.gameDate)?.getDate()}  - vs `}
+                    {key != item.teams.away?.team?.id ? item.teams.away?.team?.name : ''}
+                    {key != item.teams.home?.team?.id ? item.teams.home?.team?.name : ''}
+                    {` at ${new Date(item?.gameDate).toLocaleString('en-US', { hour: 'numeric', hour12: true })?.toLocaleLowerCase()} EST`}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Flex>
+        );
+      })}
     </Box>
   );
 };

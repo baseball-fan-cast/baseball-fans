@@ -32,7 +32,8 @@ const updateSubscription = (teams: number[], players: number[]) => {
 // };
 
 const getSeasonSchedule = (teamsId) => {
-  return client.get<never>(`/mlb/schedule?teamsId=${teamsId}`);
+  console.log(teamsId);
+  return client.get<never>(`/mlb/schedule/subscribed`);
 };
 
 // export const getIcon = async (id: string) => {

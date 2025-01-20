@@ -7,7 +7,6 @@ import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { FilterBy } from '../components/FilterBy';
-// import DataService from '@/services/DataService';
 import { ContentContext } from '../context/ContentContextProvider';
 import { AvatarBadge } from '../components/AvatarBadge';
 import DataService from '@/services/DataService';
@@ -31,10 +30,8 @@ export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
-  // const [scheduleData, setScheduleData] = useState<never[]>([]);
+  const [subscription, setSubscription] = useState<string[]>([]);
   const { searchBy } = useContext(ContentContext);
-  const { followers } = useContext(ContentContext);
 
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
@@ -48,27 +45,13 @@ export const Home = () => {
       setSelectedItems([...selectedItems, value]);
     }
   };
-  // console.log('searchBy', searchBy, scheduleData);
-  // const getSeasonSchedule = (year) => {
-  //   DataService.getSeasonSchedule(year)
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     .then((response: any) => {
-  //       setScheduleData(response.data);
-  //     })
-  //     .catch((err: Error) => {
-  //       console.error('Error response:', err);
-  //     });
-  // };
+
+  const getSubscription = async () => {
+    await DataService.getSubscription().then((response) => setSubscription(response?.data?.teams));
+  };
 
   useEffect(() => {
-    const teamsId = followers
-      .filter(({ playerIcon }) => !playerIcon)
-      ?.map(({ id }) => id)
-      ?.join(',');
-    console.log('getTeamsFollowing', teamsId);
-    DataService.getSeasonSchedule(teamsId);
-
-    // DataService.getSubscription();
+    getSubscription();
   }, []);
 
   console.count();
@@ -138,7 +121,7 @@ export const Home = () => {
         <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>
           <Headlines />
           <Separator orientation="vertical" className="mx-9" />
-          <ComingSchedule />
+          <ComingSchedule subscriptions={subscription} />
         </Flex>
       </Box>
     </Box>
