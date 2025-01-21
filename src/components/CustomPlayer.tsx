@@ -18,10 +18,10 @@ interface ICustomPlayerProps {
 
 export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProps) => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
-  console.log('TEST', url, avatarData, title, date);
+
   return (
     <Box
-      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 flex-1`}
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 w-[300px]`}
       style={{ borderRadius: '10px', overflow: 'hidden' }}
     >
       <ReactPlayer
@@ -29,7 +29,7 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
         style={{ borderRadius: '10px' }}
         controls
         width={'100%'}
-        height="60%"
+        height="50%"
         //  onDuration={onDuration}
       />
       <Box className="p-3">

@@ -6,32 +6,14 @@ import DataService from '@/services/DataService';
 
 export const HighlightClips = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
-  // const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
-
-  const test = [
-    {
-      gamePk: 775323,
-      date: '2024-10-06T00:38:00Z',
-      teams: 'San Diego Padres vs Los Angeles Dodgers'
-    },
-    {
-      gamePk: 775336,
-      date: '2024-10-03T00:38:00Z',
-      teams: 'Atlanta Braves vs San Diego Padres'
-    },
-    {
-      gamePk: 775333,
-      date: '2024-10-02T00:38:80Z',
-      teams: 'Atlanta Braves vs San Diego Padres'
-    }
-  ];
 
   const getHighlightClips = () => {
     DataService.getMedia()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
-        console.log('getHighlightClips response', response?.data);
+        setData(response?.data?.games);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -39,9 +21,10 @@ export const HighlightClips = () => {
   };
 
   useEffect(() => {
-    const test1 = test.map(({ gamePk }) => DataService.getGameContent(gamePk));
+    if (!data?.length) return;
+    const promises = data?.map(({ gamePk }) => DataService.getGameContent(gamePk));
 
-    Promise.allSettled([...test1]).then((responses) => {
+    Promise.allSettled([...promises]).then((responses) => {
       const processedResults = responses.map((response) => {
         if (response.status === 'fulfilled') {
           console.log(response.value?.data);
@@ -66,7 +49,7 @@ export const HighlightClips = () => {
       Promise.all(processedResults) // Process the JSON responses
         .then((data) => setContent(data));
     });
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     getHighlightClips();
@@ -76,10 +59,11 @@ export const HighlightClips = () => {
     <Flex
       direction={isMobile ? 'column' : 'row'}
       justify="between"
-      className="w-full gap-5 w-10/12"
+      className="w-full gap-5 w-10/12 flex flex-wrap"
     >
-      {content?.slice(0, 3)?.map((item) => {
-        const matched = test.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+      {content?.map((item) => {
+        const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+        console.log('matched', matched);
         return (
           <CustomPlayer
             key={item.url}
