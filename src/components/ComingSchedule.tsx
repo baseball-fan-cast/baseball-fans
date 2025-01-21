@@ -50,6 +50,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
             });
           return result;
         }, {}) as IScheduleData;
+
         setScheduleData(groupedData);
         setContent(groupedData);
       })

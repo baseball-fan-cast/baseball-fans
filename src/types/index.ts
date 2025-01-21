@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ITeams = {
   id: number | string;
   name: string;
@@ -59,4 +60,12 @@ export type INewsData = {
 
 export type INewsResponse = {
   data: INewsData;
+};
+
+export type ISubscriptionData = {
+  players: any[];
+  teams: any[];
+};
+export type ISubscriptionResponse = {
+  data: ISubscriptionData;
 };

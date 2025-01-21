@@ -15,6 +15,10 @@ type IGameContext = {
   setFollowers: (data: any) => void;
   selectedFollower: any;
   setSelectedFollower: (data: any) => void;
+  headlines: any;
+  setHeadlines: (data: any) => void;
+  headlinesLoading: boolean;
+  setHeadlinesLoading: (data: any) => void;
 };
 
 const initialValue = {
@@ -25,7 +29,11 @@ const initialValue = {
   followers: [],
   setFollowers: () => {},
   selectedFollower: {},
-  setSelectedFollower: () => {}
+  setSelectedFollower: () => {},
+  headlines: {},
+  setHeadlines: () => {},
+  headlinesLoading: true,
+  setHeadlinesLoading: () => {}
 };
 
 const ContentContext = createContext<IGameContext>(initialValue);
@@ -35,6 +43,8 @@ const ContentContextProvider = ({ children }: Props) => {
   const [searchBy, setSearchBy] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [selectedFollower, setSelectedFollower] = useState({});
+  const [headlines, setHeadlines] = useState({});
+  const [headlinesLoading, setHeadlinesLoading] = useState(true);
 
   const value = useMemo(() => {
     return {
@@ -45,7 +55,11 @@ const ContentContextProvider = ({ children }: Props) => {
       followers,
       setFollowers,
       selectedFollower,
-      setSelectedFollower
+      setSelectedFollower,
+      headlines,
+      setHeadlines,
+      headlinesLoading,
+      setHeadlinesLoading
     };
   }, [
     searchData,
@@ -55,7 +69,11 @@ const ContentContextProvider = ({ children }: Props) => {
     followers,
     setFollowers,
     selectedFollower,
-    setSelectedFollower
+    setSelectedFollower,
+    headlines,
+    setHeadlines,
+    headlinesLoading,
+    setHeadlinesLoading
   ]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;

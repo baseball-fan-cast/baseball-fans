@@ -1,21 +1,24 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Flex, Text, Separator } from '@radix-ui/themes';
+import { Flex, Text, Separator, Spinner } from '@radix-ui/themes';
 import { useMediaQuery } from 'react-responsive';
 import { CustomPlayer } from './CustomPlayer';
 import DataService from '@/services/DataService';
 import { ContentContext } from '@/context/ContentContextProvider';
+import { useTranslation } from 'react-i18next';
 
 export const HighlightClips = () => {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
   const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
   const [clips, setClips] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const { selectedFollower } = useContext(ContentContext);
+  const { selectedFollower, headlines, setHeadlines, headlinesLoading, setHeadlinesLoading } =
+    useContext(ContentContext);
 
   const getHighlightClips = () => {
-    setIsLoading(true);
+    // setHeadlinesLoading(true);
     DataService.getMedia()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
@@ -25,7 +28,7 @@ export const HighlightClips = () => {
         console.error('Error response:', err);
       })
       .finally(() => {
-        setIsLoading(false);
+        // setHeadlinesLoading(false);
       });
   };
 
@@ -34,7 +37,7 @@ export const HighlightClips = () => {
     const promises = data?.map(({ gamePk }) => DataService.getGameContent(gamePk));
 
     Promise.allSettled([...promises]).then((responses) => {
-      setIsLoading(true);
+      setHeadlinesLoading(true);
       const processedResults = responses.map((response) => {
         if (response.status === 'fulfilled') {
           const {
@@ -43,6 +46,10 @@ export const HighlightClips = () => {
           const { playbacks, title, date, keywordsAll } = items[0] || {};
           const { url } = playbacks[0];
           const gamePk = keywordsAll.find(({ type }) => type == 'game_pk')?.value;
+          const content = data?.find((item) => item?.gamePk == gamePk) || {};
+          headlines[`${gamePk}`] = { items: items[0], data: content };
+
+          setHeadlines(headlines);
 
           const contentData = {
             url,
@@ -62,7 +69,7 @@ export const HighlightClips = () => {
         .then((data) => {
           setContent(data);
           setClips(data);
-          setIsLoading(false);
+          setHeadlinesLoading(false);
         });
     });
   }, [data]);
@@ -88,29 +95,35 @@ export const HighlightClips = () => {
   return (
     <>
       <Text as="div" className="font-bold mb-5 text-2xl">
-        Highlight Clips and Replays
+        {t('highlight_clips_replays')}
       </Text>
-      {isLoading ? (
-        'Loading ...'
+      {headlinesLoading ? (
+        <div className="min-h-[250px]">
+          <Spinner />
+        </div>
       ) : (
         <Flex
           direction={isMobile ? 'column' : 'row'}
           justify="between"
           className="w-full gap-5 w-10/12 flex flex-wrap"
         >
-          {clips?.map((item) => {
-            const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+          {clips?.length > 0 ? (
+            clips?.map((item) => {
+              const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
 
-            return (
-              <CustomPlayer
-                key={item.url}
-                url={item.url}
-                avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
-                date={matched?.date}
-                title={item.title}
-              />
-            );
-          })}
+              return (
+                <CustomPlayer
+                  key={item.url}
+                  url={item.url}
+                  avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
+                  date={matched?.date}
+                  title={item.title}
+                />
+              );
+            })
+          ) : (
+            <div className="w-full flex justify-center items-center min-h-[250px]">No data</div>
+          )}
         </Flex>
       )}
       <Separator className="my-6" />

@@ -12,18 +12,17 @@ import DataService from '@/services/DataService';
 import { HighlightClips } from '@/components/HighlightClips';
 import { News } from '@/components/News';
 import { useTranslation } from 'react-i18next';
-
-type ISubscription = {
-  teams: string[] | number[];
-  players: string[] | number[];
-};
+import { ISubscriptionResponse } from '@/types';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const { t } = useTranslation();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [subscription, setSubscription] = useState<ISubscription>();
+  // const [subscription, setSubscription] = useState<ISubscriptionData>();
+  const [subscriptionTeams, setSubscriptionTeams] = useState();
+  const [subscriptionPlayers, setSubscriptionPlayers] = useState();
+
   const { searchBy } = useContext(ContentContext);
 
   const filterByData = [
@@ -54,8 +53,20 @@ export const Home = () => {
     }
   };
 
-  const getSubscription = async () => {
-    await DataService.getSubscription().then((response) => setSubscription(response?.data));
+  const getSubscription = () => {
+    // setIsLoading(true);
+    DataService.getSubscription()
+      .then((response: ISubscriptionResponse) => {
+        console.log('WHY', response?.data);
+        setSubscriptionTeams(response?.data?.teams);
+        setSubscriptionPlayers(response?.data?.players);
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      });
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
 
   useEffect(() => {
@@ -67,7 +78,7 @@ export const Home = () => {
   return (
     <Box>
       <Container className="m-5">
-        <Menu subscriptions={subscription} />
+        <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       </Container>
       <Container className="border-y"></Container>
       <Separator />
@@ -101,13 +112,15 @@ export const Home = () => {
           <HighlightClips />
         ) : null}
         <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>
-          {selectedItems.length == 0 || selectedItems.includes('headlines') ? <Headlines /> : null}
+          {selectedItems.length == 0 || selectedItems.includes('headlines') ? (
+            <Headlines subscriptions={subscriptionTeams} />
+          ) : null}
           {selectedItems.length == 0 ||
           (selectedItems.includes('coming_schedule') && selectedItems.includes('headlines')) ? (
             <Separator orientation="vertical" className="mx-9" />
           ) : null}
           {selectedItems.length == 0 || selectedItems.includes('coming_schedule') ? (
-            <ComingSchedule subscriptions={subscription?.teams} />
+            <ComingSchedule subscriptions={subscriptionTeams} />
           ) : null}
         </Flex>
         <News />
