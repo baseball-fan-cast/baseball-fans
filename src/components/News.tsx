@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from 'react';
-import { Flex } from '@radix-ui/themes';
-import { useMediaQuery } from 'react-responsive';
+import React, { useEffect, useState } from 'react';
 import DataService from '@/services/DataService';
+import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
+import { Text, Link } from '@radix-ui/themes';
+import { INewsItems, INewsResponse } from '@/types';
 
 export const News = () => {
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
+  const [data, setData] = useState<INewsItems[]>([]);
 
   const getNews = () => {
     DataService.getNews()
-      .then((response: any) => {
-        console.log('getNews response', response?.data);
+      .then((response: INewsResponse) => {
+        setData(response?.data?.items);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -22,12 +22,29 @@ export const News = () => {
   }, []);
 
   return (
-    <Flex
-      direction={isMobile ? 'column' : 'row'}
-      justify="between"
-      className="w-full gap-5 w-10/12"
-    >
-      News
-    </Flex>
+    <div className="w-full gap-5 w-10/12">
+      <Text as="div" className="font-bold mb-5 text-2xl">
+        News
+      </Text>
+
+      <div className="w-full gap-5 w-10/12 grid grid-cols-2">
+        {data?.map((item, idx) => {
+          return (
+            <div className="border flex gap-5" key={idx}>
+              <Avatar className="w-[250px] flex">
+                <AvatarImage src={item?.image} alt={item.title} />
+              </Avatar>
+              <div>
+                <Link href={item.link} size="1" color="indigo" className="list-disc">
+                  {item.title}
+                </Link>
+                <Text as="div">{`By ${item.creator}`}</Text>
+                <Text as="div">{new Date(item?.displayDate).toUTCString()}</Text>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };

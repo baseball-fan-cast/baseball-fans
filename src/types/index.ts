@@ -40,3 +40,23 @@ export type ISchedule = {
 export type IScheduleResponse = {
   data: ISchedule[];
 };
+
+export type INewsItems = {
+  creator: string;
+  displayDate: string;
+  displayDateEpoch: string;
+  image: string;
+  link: string;
+  pubDate: string;
+  title: string;
+};
+
+export type INewsData = {
+  count: number;
+  items: INewsItems[];
+  lastUpdated: string;
+};
+
+export type INewsResponse = {
+  data: INewsData;
+};

@@ -11,7 +11,7 @@ export const HighlightClips = () => {
     DataService.getMedia()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
-        console.log('response', response?.data);
+        console.log('getHighlightClips response', response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

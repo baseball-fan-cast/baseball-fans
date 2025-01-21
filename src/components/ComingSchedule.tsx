@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Box, Text, Flex, Link } from '@radix-ui/themes';
 import DataService from '@/services/DataService';
 import { useTranslation } from 'react-i18next';
 import { IScheduleResponse, ITeamData } from '@/types';
+import { ContentContext } from '@/context/ContentContextProvider';
 
 export type GroupedDate = {
   gameDate: string;
@@ -16,6 +17,7 @@ export type IScheduleData = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
+  const { selectedFollower } = useContext(ContentContext);
 
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
 
@@ -34,9 +36,10 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
     'December'
   ];
   const getSeasonSchedule = () => {
+    const groupBy = subscriptions?.map((sub) => sub.id);
     DataService.getSeasonSchedule()
       .then((response: IScheduleResponse) => {
-        const groupedData = subscriptions?.reduce((result, id) => {
+        const groupedData = groupBy?.reduce((result, id) => {
           result[id] = response?.data
             ?.filter(
               (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
@@ -59,6 +62,12 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
       getSeasonSchedule();
     }
   }, [subscriptions]);
+
+  useEffect(() => {
+    if (selectedFollower?.id) {
+      console.log('selectedFollower', selectedFollower);
+    }
+  }, [selectedFollower]);
 
   return (
     <Box className="basis-1/2">

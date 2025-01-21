@@ -25,6 +25,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
       console.error('Error signing out:', error);
     }
   };
+  console.log('Menu subscriptions', subscriptions);
   //bg-black
   return (
     <Box className="m-5 px-2">
@@ -53,7 +54,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
               ]}
             />
           ))}
-          {subscriptions?.map((subId) => <div key={subId}>{subId}</div>)}
+          {/* {subscriptions?.map((subId) => <div key={subId}>{subId}</div>)} */}
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
