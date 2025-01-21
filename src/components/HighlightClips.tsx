@@ -78,7 +78,7 @@ export const HighlightClips = () => {
       justify="between"
       className="w-full gap-5 w-10/12"
     >
-      {content?.map((item) => {
+      {content?.slice(0, 3)?.map((item) => {
         const matched = test.find(({ gamePk }) => item?.gameLink.includes(gamePk));
         return (
           <CustomPlayer

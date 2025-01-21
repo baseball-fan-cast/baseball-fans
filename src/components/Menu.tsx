@@ -14,7 +14,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
-  const { followers, selectedFollower, setSelectedFollower } = useContext(ContentContext);
+  const { selectedFollower, setSelectedFollower } = useContext(ContentContext);
 
   const handleSignOut = async () => {
     try {
@@ -25,8 +25,18 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
       console.error('Error signing out:', error);
     }
   };
-  console.log('Menu subscriptions', subscriptions);
-  //bg-black
+
+  const getIcon = (currentTeam, id, isPlayer) => {
+    const teamIcon = isPlayer
+      ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
+      : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
+    const playerIcon = isPlayer
+      ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
+      : null;
+
+    return { icon: teamIcon, playerIcon: playerIcon };
+  };
+
   return (
     <Box className="m-5 px-2">
       <Flex wrap="wrap" align="center" justify="between" className="gap-7">
@@ -40,7 +50,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
               {t('viewAll')}
             </Text>
           </button>
-          {followers?.map(({ name, icon, playerIcon, abbreviation, ...rest }) => (
+          {/* {followers?.map(({ name, icon, playerIcon, abbreviation, ...rest }) => (
             <AvatarBadge
               key={name}
               content={name}
@@ -53,8 +63,23 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                 ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])
               ]}
             />
-          ))}
-          {/* {subscriptions?.map((subId) => <div key={subId}>{subId}</div>)} */}
+          ))} */}
+          {subscriptions?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
+            const { icon, playerIcon } = getIcon(currentTeam, id, !teamName) || {};
+
+            return (
+              <AvatarBadge
+                key={name}
+                content={name}
+                isSelected={selectedFollower?.name == name}
+                onSelect={() => setSelectedFollower({ name, icon, playerIcon, abbreviation })}
+                data={[
+                  { src: icon, fallback: abbreviation },
+                  ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])
+                ]}
+              />
+            );
+          })}
         </Flex>
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
