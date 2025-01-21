@@ -10,10 +10,12 @@ export const HighlightClips = () => {
   const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
   const [clips, setClips] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { selectedFollower } = useContext(ContentContext);
 
   const getHighlightClips = () => {
+    setIsLoading(true);
     DataService.getMedia()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
@@ -21,6 +23,9 @@ export const HighlightClips = () => {
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -29,6 +34,7 @@ export const HighlightClips = () => {
     const promises = data?.map(({ gamePk }) => DataService.getGameContent(gamePk));
 
     Promise.allSettled([...promises]).then((responses) => {
+      setIsLoading(true);
       const processedResults = responses.map((response) => {
         if (response.status === 'fulfilled') {
           const {
@@ -56,6 +62,7 @@ export const HighlightClips = () => {
         .then((data) => {
           setContent(data);
           setClips(data);
+          setIsLoading(false);
         });
     });
   }, [data]);
@@ -83,25 +90,29 @@ export const HighlightClips = () => {
       <Text as="div" className="font-bold mb-5 text-2xl">
         Highlight Clips and Replays
       </Text>
-      <Flex
-        direction={isMobile ? 'column' : 'row'}
-        justify="between"
-        className="w-full gap-5 w-10/12 flex flex-wrap"
-      >
-        {clips?.map((item) => {
-          const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+      {isLoading ? (
+        'Loading ...'
+      ) : (
+        <Flex
+          direction={isMobile ? 'column' : 'row'}
+          justify="between"
+          className="w-full gap-5 w-10/12 flex flex-wrap"
+        >
+          {clips?.map((item) => {
+            const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
 
-          return (
-            <CustomPlayer
-              key={item.url}
-              url={item.url}
-              avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
-              date={matched?.date}
-              title={item.title}
-            />
-          );
-        })}
-      </Flex>
+            return (
+              <CustomPlayer
+                key={item.url}
+                url={item.url}
+                avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
+                date={matched?.date}
+                title={item.title}
+              />
+            );
+          })}
+        </Flex>
+      )}
       <Separator className="my-6" />
     </>
   );

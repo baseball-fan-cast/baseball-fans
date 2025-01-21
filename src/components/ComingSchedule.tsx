@@ -81,9 +81,9 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
         return (
           <Flex direction="column" className="my-3" key={key}>
             <Text className="my-2">
-              {data[0]?.teams?.away?.team?.id == key
-                ? data[0]?.teams?.away?.team?.name
-                : data[0]?.teams?.home?.team?.name}
+              {data?.[0]?.teams?.away?.team?.id == key
+                ? data?.[0]?.teams?.away?.team?.name
+                : data?.[0]?.teams?.home?.team?.name}
             </Text>
             <ul className="list-disc list-inside">
               {data?.map((item, index) => (
