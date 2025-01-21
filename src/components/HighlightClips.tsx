@@ -86,6 +86,7 @@ export const HighlightClips = () => {
     >
       {clips?.map((item) => {
         const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+        console.log('matched', matched);
         return (
           <CustomPlayer
             key={item.url}

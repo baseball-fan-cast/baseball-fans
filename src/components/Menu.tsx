@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Flex, Text, Box } from '@radix-ui/themes';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
@@ -15,6 +15,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
   const { selectedFollower, setSelectedFollower } = useContext(ContentContext);
+  const [followers, setFollowers] = useState([]);
 
   const handleSignOut = async () => {
     try {
@@ -36,6 +37,15 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
 
     return { icon: teamIcon, playerIcon: playerIcon };
   };
+
+  useEffect(() => {
+    const { teams = [], players = [] } = subscriptions || {};
+    const player =
+      players?.map((player) => {
+        return { ...players, name: player.fullName };
+      }) || [];
+    setFollowers([...teams, ...player]);
+  }, [subscriptions]);
 
   return (
     <Box className="m-5 px-2">
@@ -64,7 +74,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
               ]}
             />
           ))} */}
-          {subscriptions?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
+          {followers?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
             const { icon, playerIcon } = getIcon(currentTeam, id, !teamName) || {};
 
             return (

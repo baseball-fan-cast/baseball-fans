@@ -61,11 +61,11 @@ export const Home = () => {
   }, []);
 
   console.count();
-
+  console.log('subscription', subscription);
   return (
     <Box>
       <Container className="m-5">
-        <Menu subscriptions={subscription?.teams} />
+        <Menu subscriptions={subscription} />
       </Container>
       <Container className="border-y"></Container>
       <Separator />
