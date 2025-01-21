@@ -17,5 +17,8 @@
   "select_lang": "Seleccione su idioma",
   "select_team": "¿En qué equipo y jugadores estás interesado?",
   "view_players": "Ver jugadoras",
-  "coming_schedule": "Próximamente"
+  "coming_schedule": "Próximamente",
+  "clear_filters": "Limpiar filtros",
+  "highlight_clips": "Clips destacados",
+  "headlines": "Titulares"
 }

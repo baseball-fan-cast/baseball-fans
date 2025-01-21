@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { Flex, Button } from '@radix-ui/themes';
@@ -8,7 +8,7 @@ import { Check, ChevronDown, X } from 'lucide-react';
 
 interface IData {
   value: string;
-  label: string;
+  label: string | ReactNode;
 }
 interface IFilterByData {
   filterData: IData[];
@@ -19,6 +19,7 @@ interface IFilterByData {
 
 export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFilterByData) => {
   const { t } = useTranslation();
+
   return (
     <Flex wrap="wrap">
       <Popover>
@@ -55,7 +56,7 @@ export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFil
           onClick={() => onRemove(label)}
         >
           <X className="mx-2 p-1" />
-          {label}
+          {t(`${label}`)}
         </Button>
       ))}
     </Flex>

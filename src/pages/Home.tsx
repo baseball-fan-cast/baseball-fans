@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Container, Separator } from '@radix-ui/themes';
+import { Container, Separator, Text } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
-import { Flex, Box, Text, Button } from '@radix-ui/themes';
+import { Flex, Box, Button } from '@radix-ui/themes';
 import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
@@ -11,21 +11,7 @@ import { AvatarBadge } from '../components/AvatarBadge';
 import DataService from '@/services/DataService';
 import { HighlightClips } from '@/components/HighlightClips';
 import { News } from '@/components/News';
-
-const filterByData = [
-  {
-    value: 'Highlight Clips',
-    label: 'Highlight Clips'
-  },
-  {
-    value: 'Headlines',
-    label: 'Headlinest'
-  },
-  {
-    value: 'Coming Schedule',
-    label: 'Coming Schedule'
-  }
-];
+import { useTranslation } from 'react-i18next';
 
 type ISubscription = {
   teams: string[] | number[];
@@ -34,10 +20,26 @@ type ISubscription = {
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { t } = useTranslation();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [subscription, setSubscription] = useState<ISubscription>();
   const { searchBy } = useContext(ContentContext);
+
+  const filterByData = [
+    {
+      label: <Text>{t('highlight_clips')}</Text>,
+      value: 'highlight_clips'
+    },
+    {
+      label: <Text>{t('headlines')}</Text>,
+      value: 'headlines'
+    },
+    {
+      label: <Text>{t('coming_schedule')}</Text>,
+      value: 'coming_schedule'
+    }
+  ];
 
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
@@ -61,7 +63,7 @@ export const Home = () => {
   }, []);
 
   console.count();
-  console.log('subscription', subscription);
+
   return (
     <Box>
       <Container className="m-5">
@@ -91,18 +93,19 @@ export const Home = () => {
             selectedItems={selectedItems}
           />
           <Button className="opacity-50" onClick={() => setSelectedItems([])}>
-            Clear Filters
+            {t('clear_filters')}
           </Button>
         </Flex>
-        <Text as="div" className="font-bold mb-5 text-2xl">
-          Highlight Clips and Replays
-        </Text>
-        <HighlightClips />
-        <Separator className="my-6" />
+
+        {selectedItems.length == 0 || selectedItems.includes('highlight_clips') ? (
+          <HighlightClips />
+        ) : null}
         <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>
-          <Headlines />
+          {selectedItems.length == 0 || selectedItems.includes('headlines') ? <Headlines /> : null}
           <Separator orientation="vertical" className="mx-9" />
-          <ComingSchedule subscriptions={subscription?.teams} />
+          {selectedItems.length == 0 || selectedItems.includes('coming_schedule') ? (
+            <ComingSchedule subscriptions={subscription?.teams} />
+          ) : null}
         </Flex>
         <News />
       </Box>

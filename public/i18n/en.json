@@ -17,5 +17,8 @@
   "select_lang": "Select your language",
   "select_team": "What team & players are you interested in?",
   "view_players": "View Players",
-  "coming_schedule": "Coming Schedule"
+  "coming_schedule": "Coming Schedule",
+  "clear_filters": "Clear Filters",
+  "highlight_clips": "Highlight Clips",
+  "headlines": "Headlines"
 }

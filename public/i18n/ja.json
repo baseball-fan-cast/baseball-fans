@@ -17,5 +17,8 @@
   "select_lang": "言語を選択してください",
   "select_team": "どのチームと選手に興味がありますか?",
   "view_players": "プレーヤーを表示",
-  "coming_schedule": "今後のスケジュール"
+  "coming_schedule": "今後のスケジュール",
+  "clear_filters": "フィルターをクリア",
+  "highlight_clips": "ハイライトクリップ",
+  "headlines": "見出し"
 }

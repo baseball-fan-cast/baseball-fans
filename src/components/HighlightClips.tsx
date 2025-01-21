@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Flex } from '@radix-ui/themes';
+import { Flex, Text, Separator } from '@radix-ui/themes';
 import { useMediaQuery } from 'react-responsive';
 import { CustomPlayer } from './CustomPlayer';
 import DataService from '@/services/DataService';
@@ -79,24 +79,30 @@ export const HighlightClips = () => {
   }, [selectedFollower]);
 
   return (
-    <Flex
-      direction={isMobile ? 'column' : 'row'}
-      justify="between"
-      className="w-full gap-5 w-10/12 flex flex-wrap"
-    >
-      {clips?.map((item) => {
-        const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
-        console.log('matched', matched);
-        return (
-          <CustomPlayer
-            key={item.url}
-            url={item.url}
-            avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
-            date={matched?.date}
-            title={item.title}
-          />
-        );
-      })}
-    </Flex>
+    <>
+      <Text as="div" className="font-bold mb-5 text-2xl">
+        Highlight Clips and Replays
+      </Text>
+      <Flex
+        direction={isMobile ? 'column' : 'row'}
+        justify="between"
+        className="w-full gap-5 w-10/12 flex flex-wrap"
+      >
+        {clips?.map((item) => {
+          const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+
+          return (
+            <CustomPlayer
+              key={item.url}
+              url={item.url}
+              avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
+              date={matched?.date}
+              title={item.title}
+            />
+          );
+        })}
+      </Flex>
+      <Separator className="my-6" />
+    </>
   );
 };
