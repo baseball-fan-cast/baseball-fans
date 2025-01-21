@@ -35,7 +35,7 @@ export const HighlightClips = () => {
   };
 
   useEffect(() => {
-    if (!data?.length) return;
+    if (!data?.length && !Object.values(highlightClips)?.flat()?.length) return;
     const highlightClipsData = Object.values(highlightClips)?.flat();
 
     const promiseData = [...data, ...highlightClipsData];
@@ -112,7 +112,7 @@ export const HighlightClips = () => {
           justify="between"
           className="w-full gap-5 w-10/12 flex flex-wrap"
         >
-          {clips?.map((item, idx) => {
+          {clips?.slice(0, 5)?.map((item, idx) => {
             const highlightClipsData = Object.values(highlightClips)?.flat();
             const matched = [...data, ...highlightClipsData].find(({ gamePk }) => {
               return item?.gameLink?.includes(gamePk);

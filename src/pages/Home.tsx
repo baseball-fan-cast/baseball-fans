@@ -20,7 +20,6 @@ export const Home = () => {
   const { t } = useTranslation();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  // const [subscription, setSubscription] = useState<ISubscriptionData>();
   const [subscriptionTeams, setSubscriptionTeams] = useState();
   const [subscriptionPlayers, setSubscriptionPlayers] = useState();
 
@@ -54,7 +53,6 @@ export const Home = () => {
   };
 
   const getSubscription = () => {
-    // setIsLoading(true);
     DataService.getSubscription()
       .then((response: ISubscriptionResponse) => {
         setSubscriptionTeams(response?.data?.teams);
@@ -63,9 +61,6 @@ export const Home = () => {
       .catch((err: Error) => {
         console.error('Error response:', err);
       });
-    // .finally(() => {
-    //   setIsLoading(false);
-    // });
   };
 
   useEffect(() => {

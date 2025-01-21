@@ -16,6 +16,10 @@ const getSubscription = () => {
   return client.get<never>(`/subscription`);
 };
 
+const deleteSubscription = () => {
+  return client.delete<never>(`/subscription`);
+};
+
 const putSubscription = (teams = [], players = []) => {
   const body = { teams, players };
   return client.put<never>(`/subscription`, body);
@@ -78,7 +82,8 @@ const DataService = {
   getGameContent,
   getDigest,
   getMediaByTeamId,
-  getScheduleByTeamId
+  getScheduleByTeamId,
+  deleteSubscription
 };
 
 export default DataService;

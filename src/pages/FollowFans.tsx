@@ -13,7 +13,7 @@ export const FollowFans = () => {
   const { t } = useTranslation();
   const { followers } = useContext(ContentContext);
 
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
 
   const steps = [
     {
@@ -50,9 +50,15 @@ export const FollowFans = () => {
 
     await DataService.updateSubscription(teams, players);
   };
+
+  const deleteSubscription = async () => {
+    await DataService.deleteSubscription();
+  };
+
   const goNext = () => {
     if (activeStep == 1) {
       followFans();
+      // deleteSubscription();
     }
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
@@ -93,6 +99,11 @@ export const FollowFans = () => {
           <button className="text-slate-400" onClick={goNextSkip}>
             {activeStep ? `${t('skip')}` : null}
           </button>
+        </div>
+        <div>
+          {activeStep == 1 ? (
+            <button onClick={deleteSubscription}>Remove all subscriptions</button>
+          ) : null}
         </div>
         <div className="mt-9 m-auto mb-5">{steps[activeStep].component}</div>
         <button

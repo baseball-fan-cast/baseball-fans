@@ -66,7 +66,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   };
 
   useEffect(() => {
-    if (subscriptions?.length > 0) {
+    if (subscriptions?.length > 0 || searchBy?.length) {
       getSeasonSchedule();
     }
   }, [subscriptions, teamSchedule, searchBy]);
