@@ -97,7 +97,7 @@ export const HighlightClips = () => {
     }
   }, [selectedFollower]);
 
-  return (
+  return clips?.length > 0 ? (
     <>
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('highlight_clips_replays')}
@@ -112,29 +112,25 @@ export const HighlightClips = () => {
           justify="between"
           className="w-full gap-5 w-10/12 flex flex-wrap"
         >
-          {clips?.length > 0 ? (
-            clips?.map((item, idx) => {
-              const highlightClipsData = Object.values(highlightClips)?.flat();
-              const matched = [...data, ...highlightClipsData].find(({ gamePk }) => {
-                return item?.gameLink?.includes(gamePk);
-              });
+          {clips?.map((item, idx) => {
+            const highlightClipsData = Object.values(highlightClips)?.flat();
+            const matched = [...data, ...highlightClipsData].find(({ gamePk }) => {
+              return item?.gameLink?.includes(gamePk);
+            });
 
-              return (
-                <CustomPlayer
-                  key={idx}
-                  url={item.url}
-                  avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
-                  date={matched?.date}
-                  title={item.title}
-                />
-              );
-            })
-          ) : (
-            <div className="w-full flex justify-center items-center min-h-[250px]">No data</div>
-          )}
+            return (
+              <CustomPlayer
+                key={idx}
+                url={item.url}
+                avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
+                date={matched?.date}
+                title={item.title}
+              />
+            );
+          })}
         </Flex>
       )}
       <Separator className="my-6" />
     </>
-  );
+  ) : null;
 };

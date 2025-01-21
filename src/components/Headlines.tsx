@@ -42,7 +42,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
     }
   }, [selectedFollower]);
 
-  return (
+  return Object.values(data)?.flat()?.length ? (
     <Box className="basis-1/2">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('headlines')}
@@ -69,5 +69,5 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
         </Flex>
       ))}
     </Box>
-  );
+  ) : null;
 };
