@@ -13,6 +13,7 @@ import { HighlightClips } from '@/components/HighlightClips';
 import { News } from '@/components/News';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionResponse } from '@/types';
+import { Digest } from '@/components/Digest';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -94,6 +95,9 @@ export const Home = () => {
               ]}
             />
           ))}
+        </Flex>
+        <Flex justify="between" align="baseline" className="py-9">
+          <Digest />
         </Flex>
         <Flex justify="between" align="baseline" className="py-9">
           <FilterBy
