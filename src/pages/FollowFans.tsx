@@ -60,6 +60,14 @@ export const FollowFans = () => {
       navigate('/');
     }
   };
+
+  const goNextSkip = () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep(activeStep + 1);
+    } else {
+      navigate('/');
+    }
+  };
   return (
     <div>
       <div className="flex bg-sky-950 justify-center py-3">
@@ -82,7 +90,7 @@ export const FollowFans = () => {
               />
             ))}
           </div>
-          <button className="text-slate-400" onClick={goNext}>
+          <button className="text-slate-400" onClick={goNextSkip}>
             {activeStep ? `${t('skip')}` : null}
           </button>
         </div>
