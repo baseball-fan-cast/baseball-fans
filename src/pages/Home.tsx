@@ -102,7 +102,10 @@ export const Home = () => {
         ) : null}
         <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>
           {selectedItems.length == 0 || selectedItems.includes('headlines') ? <Headlines /> : null}
-          <Separator orientation="vertical" className="mx-9" />
+          {selectedItems.length == 0 ||
+          (selectedItems.includes('coming_schedule') && selectedItems.includes('headlines')) ? (
+            <Separator orientation="vertical" className="mx-9" />
+          ) : null}
           {selectedItems.length == 0 || selectedItems.includes('coming_schedule') ? (
             <ComingSchedule subscriptions={subscription?.teams} />
           ) : null}
