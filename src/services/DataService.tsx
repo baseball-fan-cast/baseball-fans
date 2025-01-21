@@ -1,4 +1,4 @@
-import { client } from '../http-common';
+import { http, client } from '../http-common';
 // import axios from 'axios';
 
 const getAllTeams = () => {
@@ -43,6 +43,10 @@ const getSeasonSchedule = () => {
   return client.get<never>(`/mlb/schedule/subscribed`);
 };
 
+const getGameContent = (id) => {
+  return http.get<never>(`/game/${id}/content`);
+};
+
 // export const getIcon = async (id: string) => {
 //   return await axios
 //     .get(` https://midfield.mlbstatic.com/v1/team/${id}/spots/96`)
@@ -72,7 +76,8 @@ const DataService = {
   getSeasonSchedule,
   getMedia,
   getNews,
-  getSeasonScheduleByIds
+  getSeasonScheduleByIds,
+  getGameContent
 };
 
 export default DataService;

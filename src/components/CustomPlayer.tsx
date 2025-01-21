@@ -12,11 +12,13 @@ interface IAvatarData {
 interface ICustomPlayerProps {
   url: string;
   avatarData: IAvatarData;
+  title: string;
+  date: string;
 }
 
-export const CustomPlayer = ({ url, avatarData }: ICustomPlayerProps) => {
+export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProps) => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
-
+  console.log('TEST', url, avatarData, title, date);
   return (
     <Box
       className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 flex-1`}
@@ -32,9 +34,9 @@ export const CustomPlayer = ({ url, avatarData }: ICustomPlayerProps) => {
       />
       <Box className="p-3">
         <Text as="div" className="font-bold my-2">
-          Kyle Tucker traded to the Cubs
+          {title}
         </Text>
-        <Text as="div">December 14.2024</Text>
+        <Text as="div">{date}</Text>
         <Flex align="center" className="my-5">
           <Avatar>
             <AvatarImage src={avatarData.src} />

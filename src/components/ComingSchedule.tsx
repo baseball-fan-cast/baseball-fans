@@ -20,7 +20,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   const { selectedFollower } = useContext(ContentContext);
 
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
-
+  console.log('TEST', subscriptions);
   const monthNames = [
     'January',
     'February',
