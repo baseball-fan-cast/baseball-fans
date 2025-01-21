@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
+import { useTranslation } from 'react-i18next';
 
 export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
+  const { t } = useTranslation();
   const [data, setData] = useState({});
   const [content, setContent] = useState({});
 
-  const { headlines, headlinesLoading, setHeadlinesLoading, selectedFollower } =
+  const { headlines, headlinesLoading, setHeadlinesLoading, selectedFollower, searchBy } =
     useContext(ContentContext);
 
   const getData = () => {
-    const subscriptionsData = subscriptions?.reduce((result, curr) => {
+    const subscriptionsData = [...subscriptions, ...searchBy]?.reduce((result, curr) => {
       result[curr?.name] = Object.values(headlines)
         ?.filter(
           (item) =>
@@ -22,17 +24,15 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
         });
       return result;
     }, {});
-    console.log('subscriptions', subscriptions, Object.values(headlines));
-
     setContent(subscriptionsData);
     setData(subscriptionsData);
   };
 
   useEffect(() => {
-    if (subscriptions?.length > 0) {
+    if (subscriptions?.length > 0 || searchBy?.length > 0) {
       getData();
     }
-  }, [subscriptions, headlinesLoading, setHeadlinesLoading, headlines]);
+  }, [subscriptions, headlinesLoading, setHeadlinesLoading, headlines, searchBy]);
 
   useEffect(() => {
     if (selectedFollower?.id) {
@@ -45,7 +45,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
   return (
     <Box className="basis-1/2">
       <Text as="div" className="font-bold my-2 text-xl">
-        Headlines
+        {t('headlines')}
       </Text>
       {Object.entries(data)?.map(([key, content]) => (
         <Flex direction="column" className="my-3" key={key}>

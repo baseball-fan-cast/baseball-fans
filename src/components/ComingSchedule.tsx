@@ -17,7 +17,7 @@ export type IScheduleData = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
-  const { selectedFollower } = useContext(ContentContext);
+  const { selectedFollower, teamSchedule = {}, searchBy } = useContext(ContentContext);
 
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
   const [content, setContent] = useState<IScheduleData>({});
@@ -36,12 +36,18 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
     'November',
     'December'
   ];
+
   const getSeasonSchedule = () => {
-    const groupBy = subscriptions?.map((sub) => sub.id);
+    const searchByIds = searchBy?.map((item) => item.id);
+    const subscriptionsIds = subscriptions?.map((sub) => sub.id);
+    const groupBy = [...searchByIds, ...subscriptionsIds];
+    const teamsData = Object.values(teamSchedule);
+
     DataService.getSeasonSchedule()
       .then((response: IScheduleResponse) => {
         const groupedData = groupBy?.reduce((result, id) => {
-          result[id] = response?.data
+          const responseData = response?.data || [];
+          result[id] = [...responseData, ...teamsData]
             ?.filter(
               (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
             )
@@ -63,7 +69,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
     if (subscriptions?.length > 0) {
       getSeasonSchedule();
     }
-  }, [subscriptions]);
+  }, [subscriptions, teamSchedule, searchBy]);
 
   useEffect(() => {
     if (selectedFollower?.id) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useContext, useEffect, ReactNode } from 'react';
 import { Text } from '@radix-ui/themes';
 import Select from 'react-select';
@@ -16,7 +17,16 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
   const [data, setData] = useState<IData[]>([]);
   const [teams, setTeams] = useState<ITeams[]>([]);
   const [players, setPlayers] = useState<IPlayers[]>([]);
-  const { searchBy, setSearchBy, followers, setFollowers } = useContext(ContentContext);
+  const {
+    searchBy,
+    setSearchBy,
+    followers,
+    setFollowers,
+    highlightClips = [],
+    setHighlightClips,
+    teamSchedule = [],
+    setTeamSchedule
+  } = useContext(ContentContext);
 
   const getAllTeams = async () => {
     await DataService.getAllTeams()
@@ -67,7 +77,24 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
       minHeight: 56
     })
   };
-  const handleSelect = (value) => {
+
+  const getDataByTeamId = async (id) => {
+    await DataService.getScheduleByTeamId(id)
+      .then((response: any) => {
+        setTeamSchedule({ ...teamSchedule, ...{ [`${id}`]: response?.data } });
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      });
+    await DataService.getMediaByTeamId(id)
+      .then((response: any) => {
+        setHighlightClips({ ...highlightClips, ...{ [`${id}`]: response?.data?.games } });
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      });
+  };
+  const handleSelect = async (value) => {
     if (!value) return;
     const { id, name, abbreviation, isPlayer, currentTeam } = value || {};
     const teamIcon = isPlayer
@@ -81,6 +108,7 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
       setFollowers([...followers, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
     } else {
       setSearchBy([...searchBy, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
+      await getDataByTeamId(id);
     }
   };
 

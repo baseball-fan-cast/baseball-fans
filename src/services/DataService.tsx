@@ -30,12 +30,20 @@ const getMedia = () => {
   return client.get<never>(`/mlb/media/subscribed`);
 };
 
+const getMediaByTeamId = (teamId) => {
+  return client.get<never>(`/mlb/media?teamIds=${teamId}`);
+};
+
 const getNews = () => {
   return client.get<never>(`/mlb/news`);
 };
 
 const getSeasonScheduleByIds = (teamIds, playerIds) => {
   return client.get<never>(`/mlb/schedule?teamIds=${teamIds}&playerIds=${playerIds}`);
+};
+
+const getScheduleByTeamId = (teamId) => {
+  return client.get<never>(`/mlb/schedule?teamIds=${teamId}`);
 };
 
 const getSeasonSchedule = () => {
@@ -68,7 +76,9 @@ const DataService = {
   getNews,
   getSeasonScheduleByIds,
   getGameContent,
-  getDigest
+  getDigest,
+  getMediaByTeamId,
+  getScheduleByTeamId
 };
 
 export default DataService;

@@ -39,7 +39,6 @@ export const Home = () => {
       value: 'coming_schedule'
     }
   ];
-
   const onRemove = (value: string) => {
     const filtered = selectedItems.filter((element) => element !== value);
     setSelectedItems(filtered);
@@ -84,10 +83,11 @@ export const Home = () => {
       <Separator />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
         <Flex align="center" className="gap-4" wrap="wrap">
-          {searchBy?.map(({ name, icon, playerIcon, abbreviation }) => (
+          {searchBy?.map(({ name, icon, playerIcon, abbreviation, id }) => (
             <AvatarBadge
               key={name}
               content={name}
+              id={id}
               isClearable
               data={[
                 { src: icon, fallback: abbreviation },

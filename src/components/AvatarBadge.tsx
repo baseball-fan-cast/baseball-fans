@@ -14,6 +14,7 @@ interface IAvatarBadgeProps {
   isSelected?: boolean;
   isClearable?: boolean;
   onSelect?: () => void;
+  id?: number;
 }
 
 export const AvatarBadge = ({
@@ -21,16 +22,31 @@ export const AvatarBadge = ({
   data,
   isSelected,
   isClearable,
+  id,
   onSelect
 }: IAvatarBadgeProps) => {
   if (!data) return null;
-  const { searchBy, setSearchBy, followers, setFollowers } = useContext(ContentContext);
+  const {
+    searchBy,
+    setSearchBy,
+    followers,
+    setFollowers,
+    teamSchedule,
+    setTeamSchedule,
+    highlightClips,
+    setHighlightClips
+  } = useContext(ContentContext);
 
   const onRemove = () => {
     const filtered = searchBy.filter(({ name }) => name !== content);
     setSearchBy(filtered);
     const filteredFollowers = followers.filter(({ name }) => name !== content);
     setFollowers(filteredFollowers);
+    delete teamSchedule[`${id}`];
+    delete highlightClips[`${id}`];
+    console.log('highlightClips', highlightClips);
+    setTeamSchedule(teamSchedule);
+    setHighlightClips(highlightClips);
   };
 
   return (

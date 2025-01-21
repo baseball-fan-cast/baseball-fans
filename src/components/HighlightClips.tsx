@@ -12,13 +12,18 @@ export const HighlightClips = () => {
   const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
   const [clips, setClips] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
 
-  const { selectedFollower, headlines, setHeadlines, headlinesLoading, setHeadlinesLoading } =
-    useContext(ContentContext);
+  const {
+    selectedFollower,
+    headlines,
+    setHeadlines,
+    headlinesLoading,
+    setHeadlinesLoading,
+    highlightClips = {},
+    searchBy
+  } = useContext(ContentContext);
 
   const getHighlightClips = () => {
-    // setHeadlinesLoading(true);
     DataService.getMedia()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
@@ -26,15 +31,14 @@ export const HighlightClips = () => {
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
-      })
-      .finally(() => {
-        // setHeadlinesLoading(false);
       });
   };
-
   useEffect(() => {
     if (!data?.length) return;
-    const promises = data?.map(({ gamePk }) => DataService.getGameContent(gamePk));
+    const highlightClipsData = Object.values(highlightClips)?.flat();
+
+    const promiseData = [...data, ...highlightClipsData];
+    const promises = promiseData?.map(({ gamePk }) => DataService.getGameContent(gamePk));
 
     Promise.allSettled([...promises]).then((responses) => {
       setHeadlinesLoading(true);
@@ -46,7 +50,7 @@ export const HighlightClips = () => {
           const { playbacks, title, date, keywordsAll } = items[0] || {};
           const { url } = playbacks[0];
           const gamePk = keywordsAll.find(({ type }) => type == 'game_pk')?.value;
-          const content = data?.find((item) => item?.gamePk == gamePk) || {};
+          const content = promiseData?.find((item) => item?.gamePk == gamePk) || {};
           headlines[`${gamePk}`] = { items: items[0], data: content };
 
           setHeadlines(headlines);
@@ -72,7 +76,7 @@ export const HighlightClips = () => {
           setHeadlinesLoading(false);
         });
     });
-  }, [data]);
+  }, [data, highlightClips, searchBy]);
 
   useEffect(() => {
     getHighlightClips();
@@ -108,12 +112,15 @@ export const HighlightClips = () => {
           className="w-full gap-5 w-10/12 flex flex-wrap"
         >
           {clips?.length > 0 ? (
-            clips?.map((item) => {
-              const matched = data.find(({ gamePk }) => item?.gameLink.includes(gamePk));
+            clips?.map((item, idx) => {
+              const highlightClipsData = Object.values(highlightClips)?.flat();
+              const matched = [...data, ...highlightClipsData].find(({ gamePk }) =>
+                item?.gameLink?.includes(gamePk)
+              );
 
               return (
                 <CustomPlayer
-                  key={item.url}
+                  key={idx}
                   url={item.url}
                   avatarData={{ src: '', fallback: 'A', title: `${matched?.name}` }}
                   date={matched?.date}
