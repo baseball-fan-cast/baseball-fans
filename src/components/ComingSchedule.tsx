@@ -79,7 +79,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
     }
   }, [selectedFollower]);
 
-  return (
+  return Object.entries(scheduleData)?.length ? (
     <Box className="basis-1/2">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('coming_schedule')}
@@ -108,5 +108,5 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
         );
       })}
     </Box>
-  );
+  ) : null;
 };
