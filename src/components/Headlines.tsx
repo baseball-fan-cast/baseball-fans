@@ -8,7 +8,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
   const [data, setData] = useState({});
   const [content, setContent] = useState({});
 
-  const { headlines, headlinesLoading, setHeadlinesLoading, selectedFollower, searchBy } =
+  const { headlines, headlinesLoading, setHeadlines, selectedFollower, searchBy } =
     useContext(ContentContext);
 
   const getData = () => {
@@ -32,7 +32,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
     if (subscriptions?.length > 0 || searchBy?.length > 0) {
       getData();
     }
-  }, [subscriptions, headlinesLoading, setHeadlinesLoading, headlines, searchBy]);
+  }, [subscriptions, headlinesLoading, headlines, searchBy, setHeadlines]);
 
   useEffect(() => {
     if (selectedFollower?.id) {

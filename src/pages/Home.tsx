@@ -56,7 +56,6 @@ export const Home = () => {
     // setIsLoading(true);
     DataService.getSubscription()
       .then((response: ISubscriptionResponse) => {
-        console.log('WHY', response?.data);
         setSubscriptionTeams(response?.data?.teams);
         setSubscriptionPlayers(response?.data?.players);
       })

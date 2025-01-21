@@ -33,15 +33,16 @@ export const HighlightClips = () => {
         console.error('Error response:', err);
       });
   };
+
   useEffect(() => {
     if (!data?.length) return;
     const highlightClipsData = Object.values(highlightClips)?.flat();
 
     const promiseData = [...data, ...highlightClipsData];
+    setHeadlinesLoading(true);
     const promises = promiseData?.map(({ gamePk }) => DataService.getGameContent(gamePk));
 
     Promise.allSettled([...promises]).then((responses) => {
-      setHeadlinesLoading(true);
       const processedResults = responses.map((response) => {
         if (response.status === 'fulfilled') {
           const {
@@ -73,8 +74,8 @@ export const HighlightClips = () => {
         .then((data) => {
           setContent(data);
           setClips(data);
-          setHeadlinesLoading(false);
-        });
+        })
+        .finally(() => setHeadlinesLoading(false));
     });
   }, [data, highlightClips, searchBy]);
 
@@ -114,9 +115,9 @@ export const HighlightClips = () => {
           {clips?.length > 0 ? (
             clips?.map((item, idx) => {
               const highlightClipsData = Object.values(highlightClips)?.flat();
-              const matched = [...data, ...highlightClipsData].find(({ gamePk }) =>
-                item?.gameLink?.includes(gamePk)
-              );
+              const matched = [...data, ...highlightClipsData].find(({ gamePk }) => {
+                return item?.gameLink?.includes(gamePk);
+              });
 
               return (
                 <CustomPlayer

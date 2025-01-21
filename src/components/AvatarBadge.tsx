@@ -44,7 +44,6 @@ export const AvatarBadge = ({
     setFollowers(filteredFollowers);
     delete teamSchedule[`${id}`];
     delete highlightClips[`${id}`];
-    console.log('highlightClips', highlightClips);
     setTeamSchedule(teamSchedule);
     setHighlightClips(highlightClips);
   };
