@@ -72,7 +72,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                 key={name}
                 content={name}
                 isSelected={selectedFollower?.name == name}
-                onSelect={() => setSelectedFollower({ name, icon, playerIcon, abbreviation })}
+                onSelect={() => setSelectedFollower({ name, icon, playerIcon, abbreviation, id })}
                 data={[
                   { src: icon, fallback: abbreviation },
                   ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])

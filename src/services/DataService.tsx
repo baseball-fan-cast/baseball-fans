@@ -1,5 +1,4 @@
 import { http, client } from '../http-common';
-// import axios from 'axios';
 
 const getAllTeams = () => {
   return client.get<never>('/mlb/teams');
@@ -43,22 +42,13 @@ const getSeasonSchedule = () => {
   return client.get<never>(`/mlb/schedule/subscribed`);
 };
 
+const getDigest = () => {
+  return client.get<never>(`/digest`);
+};
+
 const getGameContent = (id) => {
   return http.get<never>(`/game/${id}/content`);
 };
-
-// export const getIcon = async (id: string) => {
-//   return await axios
-//     .get(` https://midfield.mlbstatic.com/v1/team/${id}/spots/96`)
-//     .then((response) => {
-//       const blob = new Blob([response.data], { type: response.headers['content-type'] });
-//       const image = URL.createObjectURL(blob);
-//       return image;
-//     })
-//     .catch((err: Error) => {
-//       console.error('Error response:', err);
-//     });
-// };
 
 const login = (token) => {
   const body = { idToken: token };
@@ -77,7 +67,8 @@ const DataService = {
   getMedia,
   getNews,
   getSeasonScheduleByIds,
-  getGameContent
+  getGameContent,
+  getDigest
 };
 
 export default DataService;

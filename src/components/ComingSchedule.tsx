@@ -20,6 +20,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   const { selectedFollower } = useContext(ContentContext);
 
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
+  const [content, setContent] = useState<IScheduleData>({});
 
   const monthNames = [
     'January',
@@ -49,8 +50,8 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
             });
           return result;
         }, {}) as IScheduleData;
-        console.log('groupedData', response?.data);
         setScheduleData(groupedData);
+        setContent(groupedData);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -65,7 +66,9 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
 
   useEffect(() => {
     if (selectedFollower?.id) {
-      console.log('selectedFollower', selectedFollower);
+      setScheduleData({ [`${selectedFollower?.id}`]: content[selectedFollower?.id] });
+    } else {
+      setScheduleData(content);
     }
   }, [selectedFollower]);
 
