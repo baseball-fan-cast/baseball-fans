@@ -71,7 +71,7 @@ export const Home = () => {
       </Container>
       <Container className="border-y"></Container>
       <Separator />
-      <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center`}>
+      <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
         <Flex align="center" className="gap-4" wrap="wrap">
           {searchBy?.map(({ name, icon, playerIcon, abbreviation }) => (
             <AvatarBadge
