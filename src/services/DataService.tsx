@@ -55,7 +55,7 @@ const getSeasonSchedule = () => {
 };
 
 const getDigest = () => {
-  return client.get<never>(`/digest`);
+  return client.get<never>(`/digest/subscribed`);
 };
 
 const getGameContent = (id) => {
