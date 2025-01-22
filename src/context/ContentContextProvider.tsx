@@ -23,6 +23,8 @@ type IGameContext = {
   setHighlightClips: (data: any) => void;
   teamSchedule: any;
   setTeamSchedule: (data: any) => void;
+  filterBy: any;
+  setFilterBy: (data: any) => void;
 };
 
 const initialValue = {
@@ -41,7 +43,9 @@ const initialValue = {
   highlightClips: [],
   setHighlightClips: () => {},
   teamSchedule: [],
-  setTeamSchedule: () => {}
+  setTeamSchedule: () => {},
+  filterBy: [],
+  setFilterBy: () => {}
 };
 
 const ContentContext = createContext<IGameContext>(initialValue);
@@ -55,6 +59,7 @@ const ContentContextProvider = ({ children }: Props) => {
   const [headlinesLoading, setHeadlinesLoading] = useState(true);
   const [highlightClips, setHighlightClips] = useState({});
   const [teamSchedule, setTeamSchedule] = useState([]);
+  const [filterBy, setFilterBy] = useState<string[]>([]);
 
   const value = useMemo(() => {
     return {
@@ -73,7 +78,9 @@ const ContentContextProvider = ({ children }: Props) => {
       highlightClips,
       setHighlightClips,
       teamSchedule,
-      setTeamSchedule
+      setTeamSchedule,
+      filterBy,
+      setFilterBy
     };
   }, [
     searchData,
@@ -91,7 +98,9 @@ const ContentContextProvider = ({ children }: Props) => {
     highlightClips,
     setHighlightClips,
     teamSchedule,
-    setTeamSchedule
+    setTeamSchedule,
+    filterBy,
+    setFilterBy
   ]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;

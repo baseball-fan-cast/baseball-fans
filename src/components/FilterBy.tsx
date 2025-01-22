@@ -26,7 +26,7 @@ export const FilterBy = ({ filterData, selectedItems, onRemove, onSelect }: IFil
         <PopoverTrigger asChild>
           <Button
             role="combobox"
-            className="w-[200px] justify-between rounded border-solid p-2 border-inherit m-2"
+            className="w-[200px] justify-between rounded border-solid p-4 border-inherit m-2"
           >
             {t('filterBy')}
             <ChevronDown className="ml-2 h-4 w-4 shrink-0" />
