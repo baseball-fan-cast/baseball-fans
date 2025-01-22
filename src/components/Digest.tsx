@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text } from '@radix-ui/themes';
+import { Box, Text, Spinner } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
-import Markdown from 'react-markdown';
 
 export const Digest = () => {
   const { t } = useTranslation();
   const [data, setData] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [htmlContent, setHtmlContent] = useState('');
 
   const getDigest = () => {
+    setLoading(true);
     DataService.getDigest()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
+        setHtmlContent(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   useEffect(() => {
@@ -27,7 +33,12 @@ export const Digest = () => {
       <Text as="div" className="font-bold my-2 text-xl">
         {t('digest')}
       </Text>
-      {data ? <Markdown>{data}</Markdown> : null}
+      {loading ? (
+        <div className="min-h-[250px]">
+          <Spinner /> Loading ...
+        </div>
+      ) : null}
+      {data && !loading ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
     </Box>
   );
 };
