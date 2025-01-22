@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Text, Spinner } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
+import Markdown from 'react-markdown';
 
 export const Digest = () => {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export const Digest = () => {
   useEffect(() => {
     getDigest();
   }, []);
-
+  console.log('htmlContent', htmlContent);
   return (
     <Box className="">
       <Text as="div" className="font-bold my-2 text-xl">
@@ -38,7 +39,7 @@ export const Digest = () => {
           <Spinner /> Loading ...
         </div>
       ) : null}
-      {data && !loading ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
+      {data && !loading ? <Markdown>{data}</Markdown> : null}
     </Box>
   );
 };

@@ -16,6 +16,7 @@ export const CustomSelect = () => {
 
   const onValueChange = (value: string) => {
     i18n.changeLanguage(value);
+    localStorage.setItem('LANG', value);
   };
 
   return (
