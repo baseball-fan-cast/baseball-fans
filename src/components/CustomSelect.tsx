@@ -19,11 +19,13 @@ export const CustomSelect = () => {
     localStorage.setItem('LANG', value);
   };
 
+  const defaultLang = localStorage.getItem('LANG') || 'en';
+
   return (
     <Flex className="border rounded">
-      <Select onValueChange={onValueChange} defaultValue={i18n.language}>
+      <Select onValueChange={onValueChange} defaultValue={defaultLang}>
         <SelectTrigger className="min-w-[150px] p-3 border-0 h-14">
-          <SelectValue placeholder="Select language" defaultValue={i18n.language} />
+          <SelectValue placeholder="Select language" defaultValue={defaultLang} />
         </SelectTrigger>
         <SelectContent>
           {LANGUAGES.map(({ code, label }) => (
