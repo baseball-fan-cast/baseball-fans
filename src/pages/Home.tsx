@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
-import { Flex, Box } from '@radix-ui/themes';
+import { Box } from '@radix-ui/themes';
 import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
@@ -9,15 +9,15 @@ import { ContentContext } from '../context/ContentContextProvider';
 import DataService from '@/services/DataService';
 import { HighlightClips } from '@/components/HighlightClips';
 import { News } from '@/components/News';
-import { ISubscriptionResponse } from '@/types';
+import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
 import { Digest } from '@/components/Digest';
 import { Header } from '@/components/Header';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
-  const [subscriptionTeams, setSubscriptionTeams] = useState();
-  const [subscriptionPlayers, setSubscriptionPlayers] = useState();
+  const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
+  const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
 
   const { filterBy } = useContext(ContentContext);
 
@@ -43,23 +43,26 @@ export const Home = () => {
       <Header />
       <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
-        <Flex justify="between" align="baseline" className="py-9">
-          <Digest />
-        </Flex>
-
-        {filterBy.length == 0 || filterBy.includes('highlight_clips') ? <HighlightClips /> : null}
-        <Flex className="pb-9" direction={isMobile ? 'column' : 'row'}>
-          {filterBy.length == 0 || filterBy.includes('headlines') ? (
-            <Headlines subscriptions={subscriptionTeams} />
-          ) : null}
-          {filterBy.length == 0 ||
-          (filterBy.includes('coming_schedule') && filterBy.includes('headlines')) ? (
-            <Separator orientation="vertical" className="mx-9" />
-          ) : null}
-          {filterBy.length == 0 || filterBy.includes('coming_schedule') ? (
-            <ComingSchedule subscriptions={subscriptionTeams} />
-          ) : null}
-        </Flex>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="mr-9">
+            <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
+            {filterBy.length == 0 || filterBy.includes('coming_schedule') ? (
+              <ComingSchedule subscriptions={subscriptionTeams} />
+            ) : null}
+          </div>
+          <div className="col-span-2">
+            {filterBy.length == 0 || filterBy.includes('highlight_clips') ? (
+              <HighlightClips />
+            ) : null}
+            {filterBy.length == 0 ||
+            (filterBy.includes('coming_schedule') && filterBy.includes('headlines')) ? (
+              <Separator orientation="vertical" className="mx-9" />
+            ) : null}
+            {filterBy.length == 0 || filterBy.includes('headlines') ? (
+              <Headlines subscriptions={subscriptionTeams} />
+            ) : null}
+          </div>
+        </div>
         <News />
       </Box>
     </>

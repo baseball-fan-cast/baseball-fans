@@ -38,8 +38,8 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
   ];
 
   const getSeasonSchedule = () => {
-    const searchByIds = searchBy?.map((item) => item.id);
-    const subscriptionsIds = subscriptions?.map((sub) => sub.id);
+    const searchByIds = searchBy?.map((item) => item.id) || [];
+    const subscriptionsIds = subscriptions?.map((sub) => sub?.id) || [];
     const groupBy = [...searchByIds, ...subscriptionsIds];
     const teamsData = Object.values(teamSchedule);
 
@@ -93,7 +93,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
                 : data?.[0]?.teams?.home?.team?.name}
             </Text>
             <ul className="list-disc list-inside">
-              {data?.slice(0, 10)?.map((item, index) => (
+              {data?.map((item, index) => (
                 <li key={index}>
                   <Link href="#" size="1" color="indigo" className="list-disc" key={index}>
                     {`${monthNames[new Date(item?.gameDate)?.getMonth()]} ${new Date(item?.gameDate)?.getDate()}  - vs `}

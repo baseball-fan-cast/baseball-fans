@@ -8,8 +8,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
   const [data, setData] = useState({});
   const [content, setContent] = useState({});
 
-  const { headlines, headlinesLoading, setHeadlines, selectedFollower, searchBy } =
-    useContext(ContentContext);
+  const { headlines, selectedFollower, searchBy } = useContext(ContentContext);
 
   const getData = () => {
     const subscriptionsData = [...subscriptions, ...searchBy]?.reduce((result, curr) => {
@@ -32,7 +31,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
     if (subscriptions?.length > 0 || searchBy?.length > 0) {
       getData();
     }
-  }, [subscriptions, headlinesLoading, headlines, searchBy, setHeadlines]);
+  }, []); //subscriptions, headlinesLoading, headlines, searchBy, setHeadlines
 
   useEffect(() => {
     if (selectedFollower?.id) {
@@ -51,7 +50,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
         <Flex direction="column" className="my-3" key={key}>
           {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
           <ul className="list-disc list-inside">
-            {content?.slice(0, 10)?.map((item, index) => (
+            {content?.map((item, index) => (
               <li key={index}>
                 <Link
                   href={`https://www.mlb.com/video/${item.id}`}

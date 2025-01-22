@@ -21,7 +21,7 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
 
   return (
     <Box
-      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 w-[300px]`}
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 min-w-[300px] max-w-[400px] flex-1`}
       style={{ borderRadius: '10px', overflow: 'hidden' }}
     >
       <ReactPlayer

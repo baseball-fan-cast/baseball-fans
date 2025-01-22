@@ -58,6 +58,10 @@ const getDigest = () => {
   return client.get<never>(`/digest/subscribed`);
 };
 
+const getDigestByIds = (teamIds, playerIds) => {
+  return client.get<never>(`/digest?teamIds=${teamIds}&playerIds=${playerIds}`);
+};
+
 const getGameContent = (id) => {
   return http.get<never>(`/game/${id}/content`);
 };
@@ -81,6 +85,7 @@ const DataService = {
   getSeasonScheduleByIds,
   getGameContent,
   getDigest,
+  getDigestByIds,
   getMediaByTeamId,
   getScheduleByTeamId,
   deleteSubscription

@@ -110,9 +110,9 @@ export const HighlightClips = () => {
         <Flex
           direction={isMobile ? 'column' : 'row'}
           justify="between"
-          className="w-full gap-5 w-10/12 flex flex-wrap"
+          className="w-full gap-9 flex flex-wrap"
         >
-          {clips?.slice(0, 5)?.map((item, idx) => {
+          {clips?.map((item, idx) => {
             const highlightClipsData = Object.values(highlightClips)?.flat();
             const matched = [...data, ...highlightClipsData].find(({ gamePk }) => {
               return item?.gameLink?.includes(gamePk);
