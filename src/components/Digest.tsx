@@ -5,10 +5,10 @@ import DataService from '@/services/DataService';
 import Markdown from 'react-markdown';
 
 export const Digest = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
-  const [htmlContent, setHtmlContent] = useState('');
+  // const [htmlContent, setHtmlContent] = useState('');
 
   const getDigest = () => {
     setLoading(true);
@@ -16,7 +16,7 @@ export const Digest = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        setHtmlContent(response.data);
+        // setHtmlContent(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -27,8 +27,8 @@ export const Digest = () => {
   };
   useEffect(() => {
     getDigest();
-  }, []);
-  console.log('htmlContent', htmlContent);
+  }, [i18n.language]);
+
   return (
     <Box className="">
       <Text as="div" className="font-bold my-2 text-xl">

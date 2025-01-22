@@ -14,6 +14,7 @@ import { News } from '@/components/News';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionResponse } from '@/types';
 import { Digest } from '@/components/Digest';
+import { Header } from '@/components/Header';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -71,6 +72,7 @@ export const Home = () => {
 
   return (
     <Box>
+      <Header />
       <Container className="m-5">
         <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       </Container>

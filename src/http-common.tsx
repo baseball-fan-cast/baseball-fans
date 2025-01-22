@@ -10,18 +10,17 @@ const http = axios.create({
 const client = axios.create({
   baseURL: `https://baseball-fans-445201-288548494819.us-central1.run.app`,
   headers: {
-    'Content-type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    'Accept-Language': `${localStorage.getItem('LANG') || 'en'}`
-    // "Access-Control-Allow-Origin": '*'
+    'Content-type': 'application/json'
   }
 });
 
-// axiosClient.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('ACCESS_TOKEN');
-//   config.headers.Authorization = `Bearer ${token}`
-//   return config;
-// })
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem('ACCESS_TOKEN');
+  const lang = localStorage.getItem('LANG') || 'en';
+  config.headers.Authorization = `Bearer ${token}`;
+  config.headers['Accept-Language'] = lang;
+  return config;
+});
 
 // client.interceptors.response.use(
 //   (response) => {
