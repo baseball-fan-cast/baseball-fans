@@ -58,7 +58,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
     const { teams = [], players = [] } = subscriptions || {};
     const player =
       players?.map((player) => {
-        return { ...players, name: player.fullName };
+        return { ...player, name: player.fullName };
       }) || [];
     setFollowers([...teams, ...player]);
   }, [subscriptions]);
