@@ -51,7 +51,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
         <Flex direction="column" className="my-3" key={key}>
           {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
           <ul className="list-disc list-inside">
-            {content?.map((item, index) => (
+            {content?.slice(0, 10)?.map((item, index) => (
               <li key={index}>
                 <Link
                   href={`https://www.mlb.com/video/${item.id}`}

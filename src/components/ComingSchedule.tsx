@@ -93,7 +93,7 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
                 : data?.[0]?.teams?.home?.team?.name}
             </Text>
             <ul className="list-disc list-inside">
-              {data?.map((item, index) => (
+              {data?.slice(0, 10)?.map((item, index) => (
                 <li key={index}>
                   <Link href="#" size="1" color="indigo" className="list-disc" key={index}>
                     {`${monthNames[new Date(item?.gameDate)?.getMonth()]} ${new Date(item?.gameDate)?.getDate()}  - vs `}

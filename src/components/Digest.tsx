@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Text } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
+import Markdown from 'react-markdown';
 
 export const Digest = () => {
   const { t } = useTranslation();
@@ -22,11 +23,11 @@ export const Digest = () => {
   }, []);
 
   return (
-    <Box className="basis-1/2">
+    <Box className="">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('digest')}
       </Text>
-      {data ? <Text> {JSON.stringify(data)}</Text> : null}
+      {data ? <Markdown>{data}</Markdown> : null}
     </Box>
   );
 };
