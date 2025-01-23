@@ -10,8 +10,8 @@ export const Digest = ({
   teamIds,
   playersIds
 }: {
-  teamIds: ISubscriptionTeam;
-  playersIds: ISubscriptionPlayer;
+  teamIds: ISubscriptionTeam[];
+  playersIds: ISubscriptionPlayer[];
 }) => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState('');

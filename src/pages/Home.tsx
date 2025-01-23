@@ -43,14 +43,14 @@ export const Home = () => {
       <Header />
       <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
-        <div className="grid grid-cols-3 gap-4">
+        <div className={`${isMobile ? '' : 'grid grid-cols-3 gap-4'}`}>
           <div className="mr-9">
             <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
             {filterBy.length == 0 || filterBy.includes('coming_schedule') ? (
               <ComingSchedule subscriptions={subscriptionTeams} />
             ) : null}
           </div>
-          <div className="col-span-2">
+          <div className={`${isMobile ? '' : 'col-span-2'} `}>
             {filterBy.length == 0 || filterBy.includes('highlight_clips') ? (
               <HighlightClips />
             ) : null}

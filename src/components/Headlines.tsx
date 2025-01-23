@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box, Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
+import { ISubscriptionTeam } from '@/types';
 
-export const Headlines = ({ subscriptions = [] }: { subscriptions: [] }) => {
+export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscriptionTeam[] }) => {
   const { t } = useTranslation();
   const [data, setData] = useState({});
   const [content, setContent] = useState({});

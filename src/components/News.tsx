@@ -3,9 +3,11 @@ import DataService from '@/services/DataService';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { Text, Link } from '@radix-ui/themes';
 import { INewsItems, INewsResponse } from '@/types';
+import { useMediaQuery } from 'react-responsive';
 
 export const News = () => {
   const [data, setData] = useState<INewsItems[]>([]);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const getNews = () => {
     DataService.getNews()
@@ -27,11 +29,11 @@ export const News = () => {
         News
       </Text>
 
-      <div className="w-full gap-5 w-10/12 grid grid-cols-2">
+      <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
         {data?.map((item, idx) => {
           return (
             <div className="border flex gap-5" key={idx}>
-              <Avatar className="w-[250px] flex">
+              <Avatar className={`flex  ${isMobile ? 'w-full' : 'w-[250px] '}`}>
                 <AvatarImage src={item?.image} alt={item.title} />
               </Avatar>
               <div>

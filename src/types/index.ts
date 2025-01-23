@@ -1,4 +1,3 @@
- 
 export type ITeams = {
   id: number | string;
   name: string;
@@ -63,19 +62,19 @@ export type INewsResponse = {
 };
 
 export type ISubscriptionTeam = {
-  allStarStatus: string;
-  id: number;
-  name: string;
-  link: string;
-  season: number;
+  allStarStatus?: string;
+  id?: number;
+  name?: string;
+  link?: string;
+  season?: number;
 };
 
 export type ISubscriptionPlayer = {
-  allStarStatus: string;
-  id: number;
-  name: string;
-  link: string;
-  season: number;
+  allStarStatus?: string;
+  id?: number;
+  name?: string;
+  link?: string;
+  season?: number;
 };
 
 export type ISubscriptionData = {

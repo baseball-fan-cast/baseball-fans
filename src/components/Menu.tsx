@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useState, useEffect } from 'react';
-import { Flex, Text, Box, Button, Container } from '@radix-ui/themes';
+import { Flex, Text, Box, Button, Container, Badge, Separator } from '@radix-ui/themes';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { FilterBy } from './FilterBy';
 import { useMediaQuery } from 'react-responsive';
+import { ChevronRight } from 'lucide-react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Menu = ({ subscriptions }: { subscriptions: any }) => {
@@ -15,6 +16,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const { selectedFollower, setSelectedFollower, filterBy, setFilterBy, searchBy } =
     useContext(ContentContext);
   const [followers, setFollowers] = useState([]);
+  const [count, setCount] = useState(4);
 
   const filterByData = [
     {
@@ -62,6 +64,8 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
       }) || [];
     setFollowers([...teams, ...player]);
   }, [subscriptions]);
+
+  const isSelected = false;
 
   return (
     <>
@@ -114,16 +118,20 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
         className={`gap-7 my-5  ${isMobile ? 'mx-16' : 'mx-36'}`}
       >
         <Flex align="center" className="gap-4" wrap="wrap">
-          <Text className="px-4 w-[100px] ">{t('following')}</Text>
-          <button
-            onClick={() => setSelectedFollower({})}
-            className={`p-3 border rounded-md border-slate-500 ${selectedFollower?.name ? '' : 'bg-black'}`}
+          <Badge
+            className={`p-4 px-7 rounded-lg ${isSelected ? 'text-white bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+            onClick={() => {}}
           >
-            <Text className={selectedFollower?.name ? 'text-black' : 'text-white'}>
-              {t('viewAll')}
-            </Text>
-          </button>
-          {followers?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
+            <Text>Latest</Text>
+          </Badge>
+          <Separator orientation="vertical" />
+          <Badge
+            className={`p-4 rounded-lg ${!selectedFollower?.name ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+            onClick={() => setSelectedFollower({})}
+          >
+            <Text>{t('following')}</Text>
+          </Badge>
+          {followers?.slice(0, count)?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
             const { icon, playerIcon } = getIcon(currentTeam, id, !teamName) || {};
 
             return (
@@ -139,6 +147,9 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
               />
             );
           })}
+          {count < followers.length - 1 ? (
+            <ChevronRight onClick={() => setCount(followers.length)} />
+          ) : null}
         </Flex>
       </Flex>
       <Container className={`border-y ${isMobile ? 'mx-16' : 'mx-36'}`}></Container>
