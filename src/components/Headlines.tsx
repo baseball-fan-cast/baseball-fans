@@ -4,22 +4,28 @@ import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionTeam } from '@/types';
 
+type IData = {
+  description: string;
+  id: number;
+  headline: string;
+};
+type ISubscriptionsData = {
+  [key: string | number]: IData[];
+};
+
 export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscriptionTeam[] }) => {
   const { t } = useTranslation();
-  const [data, setData] = useState({});
-  const [content, setContent] = useState({});
+  const [data, setData] = useState<ISubscriptionsData>({});
+  const [content, setContent] = useState<ISubscriptionsData>({});
 
-  const { headlines, selectedFollower, searchBy } = useContext(ContentContext);
+  const { headlines, selectedFollower, searchBy, headlinesLoading } = useContext(ContentContext);
 
   const getData = () => {
     const subscriptionsData = [...subscriptions, ...searchBy]?.reduce((result, curr) => {
-      result[curr?.name] = Object.values(headlines)
-        ?.filter(
-          (item) =>
-            item.data?.teams?.[0]?.id === curr?.id || item?.data?.teams?.[1]?.id === curr?.id
-        )
-        ?.map(({ items }) => {
-          const { description, id, headline } = items;
+      result[curr?.name] = headlines
+        ?.filter(({ teams }) => teams?.[0]?.id === curr?.id || teams?.[1]?.id === curr?.id)
+        ?.map(({ media }) => {
+          const { description, highlightId: id, headline } = media;
           return { description, id, headline };
         });
       return result;
@@ -29,10 +35,10 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
   };
 
   useEffect(() => {
-    if (subscriptions?.length > 0 || searchBy?.length > 0) {
+    if ((subscriptions?.length > 0 || searchBy?.length > 0) && !selectedFollower?.id) {
       getData();
     }
-  }, []); //subscriptions, headlinesLoading, headlines, searchBy, setHeadlines
+  }, [headlines, headlinesLoading, searchBy]);
 
   useEffect(() => {
     if (selectedFollower?.id) {
@@ -47,27 +53,31 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
       <Text as="div" className="font-bold my-2 text-xl">
         {t('headlines')}
       </Text>
-      {Object.entries(data)?.map(([key, content]) => (
-        <Flex direction="column" className="my-3" key={key}>
-          {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
-          <ul className="list-disc list-inside">
-            {content?.map((item, index) => (
-              <li key={index}>
-                <Link
-                  href={`https://www.mlb.com/video/${item.id}`}
-                  size="1"
-                  color="indigo"
-                  className="list-disc"
-                  key={index}
-                  target="_blank"
-                >
-                  {item.description}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Flex>
-      ))}
+      {headlinesLoading ? (
+        <div className="min-h-[250px]">Loading ...</div>
+      ) : (
+        Object.entries(data)?.map(([key, content]) => (
+          <Flex direction="column" className="my-3" key={key}>
+            {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
+            <ul className="list-disc list-inside">
+              {content?.slice(0, 5)?.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    href={`https://www.mlb.com/video/${item.id}`}
+                    size="1"
+                    color="indigo"
+                    className="list-disc"
+                    key={index}
+                    target="_blank"
+                  >
+                    {item.description}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Flex>
+        ))
+      )}
     </Box>
   ) : null;
 };

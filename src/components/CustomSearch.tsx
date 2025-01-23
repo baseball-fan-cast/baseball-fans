@@ -22,8 +22,6 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     setSearchBy,
     followers,
     setFollowers,
-    highlightClips = [],
-    setHighlightClips,
     teamSchedule = [],
     setTeamSchedule
   } = useContext(ContentContext);
@@ -82,13 +80,6 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     await DataService.getScheduleByTeamId(id)
       .then((response: any) => {
         setTeamSchedule({ ...teamSchedule, ...{ [`${id}`]: response?.data } });
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      });
-    await DataService.getMediaByTeamId(id)
-      .then((response: any) => {
-        setHighlightClips({ ...highlightClips, ...{ [`${id}`]: response?.data?.games } });
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

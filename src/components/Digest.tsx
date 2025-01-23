@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Box, Text, Spinner } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
-import Markdown from 'react-markdown';
+// import Markdown from 'react-markdown';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { ISubscriptionPlayer, ISubscriptionTeam } from '@/types';
 
@@ -16,7 +16,7 @@ export const Digest = ({
   const { t, i18n } = useTranslation();
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
-  // const [htmlContent, setHtmlContent] = useState('');
+  const [htmlContent, setHtmlContent] = useState('');
   const { selectedFollower, searchBy } = useContext(ContentContext);
 
   const getDigestByIds = (teams, players) => {
@@ -25,7 +25,7 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        // setHtmlContent(response.data);
+        setHtmlContent(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -41,7 +41,8 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        // setHtmlContent(response.data);
+        setHtmlContent(response.data);
+        // console.log(response?.data)
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -93,7 +94,7 @@ export const Digest = ({
           <Spinner /> Loading ...
         </div>
       ) : null}
-      {data && !loading ? <Markdown>{data}</Markdown> : null}
+      {data && !loading ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
     </Box>
   );
 };

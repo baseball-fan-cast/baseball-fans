@@ -84,3 +84,19 @@ export type ISubscriptionData = {
 export type ISubscriptionResponse = {
   data: ISubscriptionData;
 };
+export type IHighlightClipsMedia = {
+  date: string;
+  url: string;
+};
+
+export type IHighlightClipsGamesData = {
+  name: string;
+  media: IHighlightClipsMedia;
+  teams: ISubscriptionTeam[];
+};
+export type IHighlightClipsData = {
+  games: IHighlightClipsGamesData[];
+};
+export type IHighlightClipsResponse = {
+  data: IHighlightClipsData;
+};
