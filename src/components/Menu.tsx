@@ -6,17 +6,17 @@ import { CustomSearch } from '../components/CustomSearch';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { FilterBy } from './FilterBy';
 import { useMediaQuery } from 'react-responsive';
-import { ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-
+  const defaultCount = 4;
   const { selectedFollower, setSelectedFollower, filterBy, setFilterBy, searchBy } =
     useContext(ContentContext);
   const [followers, setFollowers] = useState([]);
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(defaultCount);
 
   const filterByData = [
     {
@@ -149,6 +149,9 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
           })}
           {count < followers.length - 1 ? (
             <ChevronRight onClick={() => setCount(followers.length)} />
+          ) : null}
+          {count > defaultCount && count > followers.length - 1 ? (
+            <ChevronLeft onClick={() => setCount(defaultCount)} />
           ) : null}
         </Flex>
       </Flex>
