@@ -51,20 +51,25 @@ export const News = () => {
     getNews();
   }, []);
 
-  const getTranslatedContent = async (news = []) => {
+  const getTranslatedContent = async (news: INewsItems[] = []) => {
     setLoading(true);
     const lists = news?.length ? news?.slice(0, defaultCount) : data?.slice(0, defaultCount);
     const content = lists ? JSON.stringify(lists) : [];
-
-    const prompt = `Translate to ${language} language title field from next array ${content}  and return the same structure`;
-    const result = await runAi(prompt, language);
-    const newsData = result?.slice(7, -4) || data?.slice(0, defaultCount) || [];
-    setData(JSON.parse(newsData));
+    const prompt = `Translate title field from the array and add as new field "title${language?.toUpperCase()}"`;
+    const result = await runAi(prompt, content, language);
     setLoading(false);
+    setData(JSON.parse(result));
   };
 
   useEffect(() => {
-    getTranslatedContent();
+    if (data.length) {
+      const isTranslated = Object.keys(data[0])?.some(
+        (title) => title.includes(language?.toUpperCase()) || language == 'en'
+      );
+      if (!isTranslated) {
+        getTranslatedContent();
+      }
+    }
   }, [language]);
 
   return (
@@ -76,6 +81,8 @@ export const News = () => {
       <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
         {!loading &&
           data?.slice(0, defaultCount)?.map((item, idx) => {
+            const translatedTitle = `title${language?.toUpperCase()}`;
+            console.log('translatedTitle', translatedTitle, item[translatedTitle]);
             return (
               <div className="border flex gap-5" key={idx}>
                 <Avatar className={`flex  ${isMobile ? 'w-full' : 'w-[250px] '}`}>
@@ -83,7 +90,7 @@ export const News = () => {
                 </Avatar>
                 <div>
                   <Link href={item.link} size="1" color="indigo" className="list-disc">
-                    {item.title}
+                    {item[translatedTitle] || item.title}
                   </Link>
                   <Text as="div">{`${t('by')} ${item.creator}`}</Text>
                   <Text as="div">{new Date(item?.displayDate).toUTCString()}</Text>

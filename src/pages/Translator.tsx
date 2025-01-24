@@ -6,7 +6,7 @@ const Translator = () => {
   const [translatedText, setTranslatedText] = useState('');
 
   const handleTranslate = async (value) => {
-    const response = await runAi(value, 'en');
+    const response = await runAi(value, 'es');
     setTranslatedText(response);
   };
 

@@ -12,6 +12,7 @@ import { News } from '@/components/News';
 import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
 import { Digest } from '@/components/Digest';
 import { Header } from '@/components/Header';
+// import Translator from './Translator';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -43,6 +44,7 @@ export const Home = () => {
       <Header />
       <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
+        {/* <Translator /> */}
         <div className={`${isMobile ? '' : 'grid grid-cols-3 gap-4'}`}>
           <div className="mr-9">
             <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
