@@ -50,13 +50,14 @@ export const News = () => {
 
   const getTranslatedContent = async () => {
     setLoading(true);
-    const content = JSON.stringify(data?.slice(0, defaultCount));
+    const lists = data?.slice(0, defaultCount);
+    const content = JSON.stringify(lists);
 
     const prompt = `Translate to ${language} language title field from next array ${content}  and return the same structure`;
     const result = await runAi(prompt, language);
     setLoading(false);
 
-    setData(JSON.parse(result?.slice(7, -4)));
+    setData(JSON.parse(result?.slice(7, -4)) || lists);
   };
 
   useEffect(() => {
