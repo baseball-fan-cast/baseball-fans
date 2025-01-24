@@ -30,6 +30,7 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
         });
       return result;
     }, {});
+
     setContent(subscriptionsData);
     setData(subscriptionsData);
   };

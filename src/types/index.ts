@@ -44,10 +44,10 @@ export type IScheduleResponse = {
 export type INewsItems = {
   creator: string;
   displayDate: string;
-  displayDateEpoch: string;
+  displayDateEpoch?: string;
   image: string;
   link: string;
-  pubDate: string;
+  pubDate?: string;
   title: string;
 };
 

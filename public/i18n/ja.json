@@ -22,5 +22,8 @@
   "highlight_clips": "ハイライトクリップ",
   "headlines": "見出し",
   "highlight_clips_replays": "ハイライトクリップとリプレイ",
-  "digest": "ダイジェスト"
+  "digest": "ダイジェスト",
+  "news": "ニュース",
+  "by": "による",
+  "loading": "読み込み中..."
 }

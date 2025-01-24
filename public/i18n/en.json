@@ -22,5 +22,8 @@
   "highlight_clips": "Highlight Clips",
   "headlines": "Headlines",
   "highlight_clips_replays": "Highlight Clips and Replays",
-  "digest": "Digest"
+  "digest": "Digest",
+  "news": "News",
+  "by": "By",
+  "loading": "Loading ..."
 }
