@@ -1,8 +1,7 @@
- 
 'use server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI('AIzaSyBRIRTpx97FAvhruI59P2ypIYsStx3OW4A');
+const genAI = new GoogleGenerativeAI();
 //                        Translate the following sentence into ${targetLanguage}, but do not translate any proper names or specific terms.
 
 export async function runAi(textToTranslate, targetLanguage) {
