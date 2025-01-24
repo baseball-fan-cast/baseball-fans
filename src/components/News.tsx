@@ -35,6 +35,9 @@ export const News = () => {
           }
         );
         setData(result);
+        if (language != 'en') {
+          getTranslatedContent(result);
+        }
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -48,16 +51,16 @@ export const News = () => {
     getNews();
   }, []);
 
-  const getTranslatedContent = async () => {
+  const getTranslatedContent = async (news = []) => {
     setLoading(true);
-    const lists = data?.slice(0, defaultCount);
-    const content = JSON.stringify(lists);
+    const lists = news?.length ? news?.slice(0, defaultCount) : data?.slice(0, defaultCount);
+    const content = lists ? JSON.stringify(lists) : [];
 
     const prompt = `Translate to ${language} language title field from next array ${content}  and return the same structure`;
     const result = await runAi(prompt, language);
+    const newsData = result?.slice(7, -4) || data?.slice(0, defaultCount) || [];
+    setData(JSON.parse(newsData));
     setLoading(false);
-
-    setData(JSON.parse(result?.slice(7, -4)) || lists);
   };
 
   useEffect(() => {
