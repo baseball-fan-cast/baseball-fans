@@ -36,8 +36,6 @@ export const Digest = ({
   const { selectedFollower, searchBy, teamSchedule } = useContext(ContentContext);
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
 
-  console.log('playersIds', playersIds);
-
   const getDigestByIds = (teams, players) => {
     setLoading(true);
     DataService.getDigestByIds(teams, players)
@@ -95,7 +93,6 @@ export const Digest = ({
       });
   };
 
-  console.log('scheduleData', scheduleData);
   useEffect(() => {
     if (searchBy.length > 0) {
       const searchData = searchBy.reduce(

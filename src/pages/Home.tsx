@@ -39,7 +39,7 @@ export const Home = () => {
 
   useEffect(() => {
     getSubscription();
-  }, []);
+  }, [allPlayers]);
 
   console.count();
 
