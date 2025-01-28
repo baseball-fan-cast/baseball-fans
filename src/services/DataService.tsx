@@ -62,6 +62,14 @@ const getDigestByIds = (teamIds, playerIds) => {
   return client.get<never>(`/digest?teamIds=${teamIds}&playerIds=${playerIds}`);
 };
 
+const getMiniDigest = () => {
+  return client.get<never>(`/digest/mini/subscribed`);
+};
+
+const getMiniDigestByIds = (teamIds, playerIds) => {
+  return client.get<never>(`/digest/mini?teamIds=${teamIds}&playerIds=${playerIds}`);
+};
+
 const getGameContent = (id) => {
   return http.get<never>(`/game/${id}/content`);
 };
@@ -88,7 +96,9 @@ const DataService = {
   getDigestByIds,
   getMediaByTeamId,
   getScheduleByTeamId,
-  deleteSubscription
+  deleteSubscription,
+  getMiniDigest,
+  getMiniDigestByIds
 };
 
 export default DataService;

@@ -1,7 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Separator } from '@radix-ui/themes';
 import { Menu } from '../components/Menu';
-import { Box } from '@radix-ui/themes';
 import { Headlines } from '../components/Headlines';
 import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
@@ -39,34 +37,30 @@ export const Home = () => {
 
   console.count();
 
+  const displaySchedule = filterBy.length == 0 || filterBy.includes('coming_schedule');
+  const displayHighlightClips = filterBy.length == 0 || filterBy.includes('highlight_clips');
+  const displayHeadlines = filterBy.length == 0 || filterBy.includes('headlines');
+
   return (
     <>
       <Header />
       <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
-      <Box className={` ${isMobile ? 'px-3' : 'px-32'} mx-9 justify-center mt-5`}>
-        {/* <Translator /> */}
-        <div className={`${isMobile ? '' : 'grid grid-cols-3 gap-4'}`}>
-          <div className="mr-9">
-            <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
-            {filterBy.length == 0 || filterBy.includes('coming_schedule') ? (
-              <ComingSchedule subscriptions={subscriptionTeams} />
-            ) : null}
-          </div>
-          <div className={`${isMobile ? '' : 'col-span-2'} `}>
-            {filterBy.length == 0 || filterBy.includes('highlight_clips') ? (
-              <HighlightClips />
-            ) : null}
-            {filterBy.length == 0 ||
-            (filterBy.includes('coming_schedule') && filterBy.includes('headlines')) ? (
-              <Separator orientation="vertical" className="mx-9" />
-            ) : null}
-            {filterBy.length == 0 || filterBy.includes('headlines') ? (
-              <Headlines subscriptions={subscriptionTeams} />
-            ) : null}
-          </div>
-        </div>
+      <div className={`bg-stone-100 ${isMobile ? 'px-3' : 'px-32'} py-2 pb-9`}>
+        <div className="border-t-2 pt-7 " />
+        <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
+        {displayHighlightClips ? <div className="border-t-2 my-7" /> : null}
+        {displayHighlightClips ? (
+          <HighlightClips
+            subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
+          />
+        ) : null}
+        {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
+        {displayHeadlines ? <Headlines subscriptions={subscriptionTeams} /> : null}
+        {displaySchedule && <div className="border-t-2 my-7" />}
+        {displaySchedule && <ComingSchedule subscriptions={subscriptionTeams} />}
+        <div className="border-t-2 my-7" />
         <News />
-      </Box>
+      </div>
     </>
   );
 };

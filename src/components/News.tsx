@@ -73,16 +73,16 @@ export const News = () => {
   }, [language]);
 
   return (
-    <div className="w-full gap-5 w-10/12">
+    <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('news')}
       </Text>
-      {loading ? <div className="min-h-[250px]">{t('loading')}</div> : null}
+      {loading ? <div className="min-h-[250px]">Loading ...</div> : null}
+
       <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
         {!loading &&
           data?.slice(0, defaultCount)?.map((item, idx) => {
             const translatedTitle = `title${language?.toUpperCase()}`;
-            console.log('translatedTitle', translatedTitle, item[translatedTitle]);
             return (
               <div className="border flex gap-5" key={idx}>
                 <Avatar className={`flex  ${isMobile ? 'w-full' : 'w-[250px] '}`}>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Text, Flex, Link } from '@radix-ui/themes';
+import { Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionTeam } from '@/types';
@@ -49,8 +49,8 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
     }
   }, [selectedFollower]);
 
-  return Object.values(data)?.flat()?.length ? (
-    <Box className="basis-1/2">
+  return (
+    <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('headlines')}
       </Text>
@@ -79,6 +79,6 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
           </Flex>
         ))
       )}
-    </Box>
-  ) : null;
+    </div>
+  );
 };

@@ -50,14 +50,14 @@ export const AvatarBadge = ({
 
   return (
     <Badge
-      className={`py-2 px-3 rounded-lg ${isSelected ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+      className={`py-2 px-3 border border-black rounded-lg ${isSelected ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
       onClick={onSelect}
     >
       <Flex align="center" justify="between" className="gap-2">
         {/* opacity-0 hover:opacity-100  */}
         {!isClearable ? null : <X className="text-slate-800" onClick={onRemove} />}
         <Flex className="relative">
-          <Avatar className="bg-slate-300">
+          <Avatar className="bg-slate-300 border-black">
             <AvatarImage src={data[0]?.src} />
             <AvatarFallback className="bg-cyan-500">{data[0]?.fallback}</AvatarFallback>
           </Avatar>

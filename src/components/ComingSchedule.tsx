@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box, Text, Flex, Link } from '@radix-ui/themes';
+import { Text, Flex, Link } from '@radix-ui/themes';
 import DataService from '@/services/DataService';
 import { useTranslation } from 'react-i18next';
 import { IScheduleResponse, ITeamData } from '@/types';
@@ -79,8 +79,8 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
     }
   }, [selectedFollower]);
 
-  return Object.entries(scheduleData)?.length ? (
-    <Box className="basis-1/2">
+  return (
+    <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('coming_schedule')}
       </Text>
@@ -107,6 +107,6 @@ export const ComingSchedule = ({ subscriptions }: { subscriptions: any }) => {
           </Flex>
         );
       })}
-    </Box>
-  ) : null;
+    </div>
+  );
 };

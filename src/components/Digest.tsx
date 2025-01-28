@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box, Text, Spinner } from '@radix-ui/themes';
+import { Spinner } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
-// import Markdown from 'react-markdown';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { ISubscriptionPlayer, ISubscriptionTeam } from '@/types';
+import { isEmpty } from '@/helpers/helper';
 
 export const Digest = ({
   teamIds,
@@ -13,10 +13,10 @@ export const Digest = ({
   teamIds: ISubscriptionTeam[];
   playersIds: ISubscriptionPlayer[];
 }) => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
-  const [htmlContent, setHtmlContent] = useState('');
+
   const { selectedFollower, searchBy } = useContext(ContentContext);
 
   const getDigestByIds = (teams, players) => {
@@ -25,7 +25,6 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        setHtmlContent(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -41,8 +40,6 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        setHtmlContent(response.data);
-        // console.log(response?.data)
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -84,17 +81,112 @@ export const Digest = ({
     }
   }, [selectedFollower]);
 
+  const getKeyGameResultsSection = (data) => {
+    if (isEmpty(data)) return null;
+    return (
+      <div className="pr-4">
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Key Game Results</div>
+        <div className="">
+          {data?.map((gameRes) => (
+            <div key={gameRes.games} className="py-3">
+              <div className="font-bold">
+                {gameRes.date} {gameRes.games}
+              </div>
+              <div className="text-gray-500">{gameRes.description}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const getMonthlyAnalysis = (data) => {
+    if (isEmpty(data)) return null;
+    return (
+      <div className="pr-4 pb-3">
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Monthly Analysis</div>
+        <div className="text-md font-bold mt-2 py-3">Team Performance Highlights</div>
+        <div className="text-gray-500">{data['Team Performance Highlights']}</div>
+        <div className="text-md font-bold mt-2 py-3">Key Player Contributions</div>
+        <div className="text-gray-500">{data['Key Player Contributions']}</div>
+      </div>
+    );
+  };
+
+  const getDivisionRaceImplications = (data) => {
+    if (isEmpty(data)) return null;
+    return (
+      <div className="border-t-2 py-3 ">
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">
+          Division Race Implications
+        </div>
+        <div className="text-gray-500">{data.description}</div>
+      </div>
+    );
+  };
+
+  const getCurrentDivisionStandings = (data) => {
+    if (isEmpty(data)) return null;
+    return (
+      <div className="pb-3">
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">
+          Current Division Standings
+        </div>
+        <ol className="list-decimal pl-3">
+          {data?.map(({ name, record }) => (
+            <li key={name} className="text-gray-500">
+              {name} ({record})
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  };
+
+  const getSchedule = () => {
+    return (
+      <div className="border-t-2 p-3 ">
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Schedule</div>
+      </div>
+    );
+  };
+
+  const renderSingleContent = () => {
+    return (
+      <div className="p-2">
+        {data?.map((team) => {
+          return (
+            <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
+              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+              <div className="flex mt-5">
+                <div className="border-r-2 mr-2  w-[50%]">
+                  {getKeyGameResultsSection(team?.keyGameResults)}
+                </div>
+                <div className="flex w-[50%]">
+                  <div className="border-r-2 w-[50%] px-5">
+                    {getMonthlyAnalysis(team?.monthlyAnalysis)}
+                    {getDivisionRaceImplications(team?.divisionRaceImplications)}
+                  </div>
+                  <div className="w-[50%] px-5">
+                    {getCurrentDivisionStandings(team?.currentDivisionStandings)}
+                    {getSchedule()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
   return (
-    <Box className="">
-      <Text as="div" className="font-bold my-2 text-xl">
-        {t('digest')}
-      </Text>
+    <div className="">
       {loading ? (
         <div className="min-h-[250px]">
           <Spinner /> Loading ...
         </div>
       ) : null}
-      {data && !loading ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
-    </Box>
+      {data && !loading ? renderSingleContent() : null}
+    </div>
   );
 };

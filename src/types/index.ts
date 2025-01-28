@@ -100,3 +100,13 @@ export type IHighlightClipsData = {
 export type IHighlightClipsResponse = {
   data: IHighlightClipsData;
 };
+
+export type IDigestData = {
+  type: string;
+  id: number;
+  title: string;
+  digest: string;
+};
+export type IDigestResponse = {
+  data: IDigestData;
+};
