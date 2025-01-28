@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Menu } from '../components/Menu';
 import { Headlines } from '../components/Headlines';
-import { ComingSchedule } from '../components/ComingSchedule';
 import { useMediaQuery } from 'react-responsive';
 import { ContentContext } from '../context/ContentContextProvider';
 import DataService from '@/services/DataService';
@@ -18,13 +17,20 @@ export const Home = () => {
   const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
   const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
 
-  const { filterBy } = useContext(ContentContext);
+  const { filterBy, allPlayers } = useContext(ContentContext);
 
   const getSubscription = () => {
     DataService.getSubscription()
       .then((response: ISubscriptionResponse) => {
         setSubscriptionTeams(response?.data?.teams);
-        setSubscriptionPlayers(response?.data?.players);
+
+        const players = response?.data?.players?.map((item) => {
+          return {
+            ...item,
+            teamId: allPlayers.find((allPl) => allPl?.id == item.id)?.teamId
+          };
+        });
+        setSubscriptionPlayers(players);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -57,7 +63,6 @@ export const Home = () => {
         {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
         {displayHeadlines ? <Headlines subscriptions={subscriptionTeams} /> : null}
         {displaySchedule && <div className="border-t-2 my-7" />}
-        {displaySchedule && <ComingSchedule subscriptions={subscriptionTeams} />}
         <div className="border-t-2 my-7" />
         <News />
       </div>

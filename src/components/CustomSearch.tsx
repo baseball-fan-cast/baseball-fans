@@ -23,7 +23,8 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     followers,
     setFollowers,
     teamSchedule = [],
-    setTeamSchedule
+    setTeamSchedule,
+    setAllPlayers
   } = useContext(ContentContext);
 
   const getAllTeams = async () => {
@@ -40,9 +41,10 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     await DataService.getAllPlayers()
       .then((response: IPlayersResponse) => {
         const data = response.data?.map((player) => {
-          return { ...player, name: player.fullName };
+          return { ...player, name: player.fullName, teamId: player?.currentTeam?.id };
         });
         setPlayers(data);
+        setAllPlayers(data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

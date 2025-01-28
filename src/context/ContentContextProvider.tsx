@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { IPlayers } from '@/types';
 import React, { createContext, ReactNode, useMemo, useState } from 'react';
 
 type Props = {
@@ -25,6 +26,8 @@ type IGameContext = {
   setTeamSchedule: (data: any) => void;
   filterBy: any;
   setFilterBy: (data: any) => void;
+  allPlayers: [];
+  setAllPlayers: (data: any) => void;
 };
 
 const initialValue = {
@@ -45,7 +48,9 @@ const initialValue = {
   teamSchedule: [],
   setTeamSchedule: () => {},
   filterBy: [],
-  setFilterBy: () => {}
+  setFilterBy: () => {},
+  allPlayers: [],
+  setAllPlayers: () => {}
 };
 
 const ContentContext = createContext<IGameContext>(initialValue);
@@ -60,6 +65,7 @@ const ContentContextProvider = ({ children }: Props) => {
   const [highlightClips, setHighlightClips] = useState({});
   const [teamSchedule, setTeamSchedule] = useState([]);
   const [filterBy, setFilterBy] = useState<string[]>([]);
+  const [allPlayers, setAllPlayers] = useState<IPlayers[]>([]);
 
   const value = useMemo(() => {
     return {
@@ -80,7 +86,9 @@ const ContentContextProvider = ({ children }: Props) => {
       teamSchedule,
       setTeamSchedule,
       filterBy,
-      setFilterBy
+      setFilterBy,
+      allPlayers,
+      setAllPlayers
     };
   }, [
     searchData,
@@ -100,7 +108,9 @@ const ContentContextProvider = ({ children }: Props) => {
     teamSchedule,
     setTeamSchedule,
     filterBy,
-    setFilterBy
+    setFilterBy,
+    allPlayers,
+    setAllPlayers
   ]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
