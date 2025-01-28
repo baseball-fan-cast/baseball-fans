@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
-import { ISubscriptionTeam } from '@/types';
+import { ISubscriptionData } from '@/types';
 
 type IData = {
   description: string;
@@ -13,20 +13,30 @@ type ISubscriptionsData = {
   [key: string | number]: IData[];
 };
 
-export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscriptionTeam[] }) => {
+export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData }) => {
   const { t } = useTranslation();
   const [data, setData] = useState<ISubscriptionsData>({});
   const [content, setContent] = useState<ISubscriptionsData>({});
+  const { players = [], teams = [] } = subscriptions;
 
   const { headlines, selectedFollower, searchBy, headlinesLoading } = useContext(ContentContext);
 
   const getData = () => {
-    const subscriptionsData = [...subscriptions, ...searchBy]?.reduce((result, curr) => {
-      result[curr?.name] = headlines
-        ?.filter(({ teams }) => teams?.[0]?.id === curr?.id || teams?.[1]?.id === curr?.id)
+    const subscriptionsData = [...players, ...teams, ...searchBy]?.reduce((result, curr) => {
+      const id = curr.isPlayer ? curr.teamId : curr.id;
+
+      const currentTeam = headlines?.find(
+        (item) => id == item.teams[0]?.id || id == item.teams[1]?.id
+      )?.teams;
+      const currentTeamName = currentTeam[0]?.id == id ? currentTeam[0].name : currentTeam[1].name;
+
+      const name = curr.isPlayer ? curr.fullName : curr.name;
+
+      result[name] = headlines
+        ?.filter(({ teams }) => teams?.[0]?.id === id || teams?.[1]?.id === id)
         ?.map(({ media }) => {
           const { description, highlightId: id, headline } = media;
-          return { description, id, headline };
+          return { description, id, headline, currentTeamName };
         });
       return result;
     }, {});
@@ -36,7 +46,10 @@ export const Headlines = ({ subscriptions = [] }: { subscriptions: ISubscription
   };
 
   useEffect(() => {
-    if ((subscriptions?.length > 0 || searchBy?.length > 0) && !selectedFollower?.id) {
+    if (
+      (players?.length > 0 || teams.length > 0 || searchBy?.length > 0) &&
+      !selectedFollower?.id
+    ) {
       getData();
     }
   }, [headlines, headlinesLoading, searchBy]);

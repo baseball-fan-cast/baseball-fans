@@ -7,32 +7,32 @@ import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { IHighlightClipsGamesData, IHighlightClipsResponse } from '@/types';
 import { ISubscriptionData } from '@/types';
+import { CustomPlayer } from './CustomPlayer';
 
 export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscriptionData }) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [data, setData] = useState<IHighlightClipsGamesData[]>([]);
-  // const [clips, setClips] = useState<IHighlightClipsGamesData[]>([]);
+  const [clips, setClips] = useState({});
+  const [displayItems, setDisplayItems] = useState(2);
   const { players, teams } = subscriptions;
-  const followed = [...players, ...teams];
-  //selectedFollower,
-  const { setHeadlines, headlinesLoading, setHeadlinesLoading, searchBy } =
+
+  const { setHeadlines, headlinesLoading, setHeadlinesLoading, searchBy, selectedFollower } =
     useContext(ContentContext);
-  console.log('followed', followed);
 
   const getHighlightClips = async () => {
+    const groupBy = [...searchBy, ...players, ...teams];
+    if (!groupBy.length) return null;
     setHeadlinesLoading(true);
     await DataService.getMedia()
       .then((response: IHighlightClipsResponse) => {
         const { games } = response?.data || {};
-        // console.log('games', games)
-        // const groupedById = games?.reduce((result, curr) => {
-        //   result[curr.id] = result[curr.id] ? [...result[curr.id], ...[curr]] : [curr];
-        //   return result;
-        // }, {})
-
-        setData(games);
-        // setClips(games);
+        const groupedData = groupBy?.reduce((result, item) => {
+          const id = item?.isPlayer ? item?.teamId : item?.id;
+          result[id] = [...games]?.filter(({ teams }) => teams[0].id == id || teams[1].id == id);
+          return result;
+        }, {});
+        setData(groupedData);
         setHeadlines(games);
       })
       .catch((err: Error) => {
@@ -42,14 +42,22 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
   };
 
   const getHighlightClipById = async (id) => {
+    const groupBy = [...searchBy, ...players, ...teams];
     setHeadlinesLoading(true);
     await DataService.getMediaByTeamId(id)
       .then((response: IHighlightClipsResponse) => {
         const { games = [] } = response?.data || {};
         const videoData = [...games, ...data];
-        setData(videoData);
-        // setClips(videoData);
-        setHeadlines(games);
+        const groupedData = groupBy?.reduce((result, item) => {
+          const id = item?.isPlayer ? item?.teamId : item?.id;
+          result[id] = [...videoData]?.filter(
+            ({ teams }) => teams[0].id == id || teams[1].id == id
+          );
+          return result;
+        }, {});
+
+        setData(groupedData);
+        setHeadlines(videoData);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -64,34 +72,18 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
     } else {
       getHighlightClips();
     }
-  }, [searchBy]);
-
-  // useEffect(() => {
-  //   if (selectedFollower.id) {
-  //     const filteredData = [...data]?.filter(({ teams }) =>
-  //       teams.some(({ id }) => id == selectedFollower.id)
-  //     );
-  //     setClips(filteredData);
-  //   } else {
-  //     setClips(data);
-  //   }
-  // }, [selectedFollower]);
+  }, [searchBy, players, teams]);
 
   useEffect(() => {
-    console.log('data', data);
-
-    const groupedById = followed?.reduce((result, curr) => {
-      result[curr.id] = data
-        ?.filter(({ teams }) => teams[0].id == curr.id || teams[1].id == curr.id)
-        ?.map((data) => {
-          // console.log('data', data)
-          // const { description, highlightId: id, headline } = media;
-          return { ...data, id: curr.id, name: curr.name || curr.fullName };
-        });
-      return result;
-    }, {});
-    console.log('!groupedById', groupedById);
-  }, [followed, data]);
+    if (selectedFollower.id) {
+      const id = selectedFollower.isPlayer ? selectedFollower.teamId : selectedFollower.id;
+      setClips({ [id]: data[id] });
+      setDisplayItems(3);
+    } else {
+      setClips(data);
+      setDisplayItems(1);
+    }
+  }, [selectedFollower, data]);
 
   return (
     <div className="bg-white p-4 rounded-lg">
@@ -106,28 +98,21 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
           justify="between"
           className="w-full gap-9 flex flex-wrap"
         >
-          {/* {Object.entries(data)?.map(([key, content]) => {
-             
-              return content?.slice(0, 2)?.map(item, idx) => { 
-               console.log("INSIDE",key, item)
-              })
-             })} */}
-          {/* {Object.entries(data)?.map(([key, content]) => { 
-              return content?.slice(0, 2)?.map(item, idx) => { 
-              console.log(item);
-                const { media, teams } = item;
-                const { date, url } = media || {};
-                return (
-                  <CustomPlayer
-                    key={idx}
-                    url={url}
-                    avatarData={{ src: '', fallback: 'A', title: `${name}` }}
-                    date={date}
-                    title={name}
-                  />
-                )
-              })
-            }) */}
+          {Object.entries(clips)?.map(([, content]) => {
+            return content?.slice(0, displayItems)?.map((item, idx) => {
+              const { media, name } = item;
+              const { date, url } = media || {};
+              return (
+                <CustomPlayer
+                  key={idx}
+                  url={url}
+                  avatarData={{ src: '', fallback: 'A', title: `${name}` }}
+                  date={date}
+                  title={name}
+                />
+              );
+            });
+          })}
         </Flex>
       )}
     </div>

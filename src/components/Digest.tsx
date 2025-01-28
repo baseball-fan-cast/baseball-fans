@@ -31,6 +31,7 @@ export const Digest = ({
 }) => {
   const { i18n } = useTranslation();
   const [data, setData] = useState('');
+  const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
 
   const { selectedFollower, searchBy, teamSchedule } = useContext(ContentContext);
@@ -42,6 +43,7 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
+        setContent(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -57,6 +59,7 @@ export const Digest = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
+        setContent(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -118,11 +121,11 @@ export const Digest = ({
   }, [i18n.language, searchBy, teamIds, playersIds]);
 
   useEffect(() => {
-    const { playerIcon, id } = selectedFollower;
-    const teamId = !playerIcon ? id : '';
-    const playersId = playerIcon ? id : '';
-    if (teamId || playersId) {
-      getDigestByIds(teamId, playersId);
+    if (selectedFollower.id) {
+      const filtered = content?.filter(({ id }) => id == selectedFollower.id);
+      setData(filtered);
+    } else {
+      setData(content);
     }
   }, [selectedFollower]);
 
@@ -188,17 +191,17 @@ export const Digest = ({
     );
   };
 
-  const getSchedule = (id, isPlayer) => {
-    const teamId = isPlayer ? playersIds.find((player) => player.id == id)?.teamId : id;
+  const getSchedule = (id, isPlayer, hideBorder = false) => {
+    const teamId = isPlayer ? playersIds?.find((player) => player.id == id)?.teamId : id;
     const data = scheduleData[teamId];
-    const currentTeam = data.find(
+    const currentTeam = data?.find(
       (item) => teamId == item.teams.away?.team?.id || teamId == item.teams.home?.team?.id
     )?.teams;
     const { away, home } = currentTeam || {};
     const currentTeamName = home?.team?.id == teamId ? home?.team?.name : away?.team?.name;
 
     return (
-      <div className={`py-3 ${isPlayer ? '' : 'border-t-2'}`}>
+      <div className={`${hideBorder ? '' : 'py-3'} ${isPlayer || hideBorder ? '' : 'border-t-2'}`}>
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">Schedule</div>
         {isPlayer && <div className="font-bold">Current team - {currentTeamName}</div>}
         <ul className="list-disc list-inside ">
@@ -215,6 +218,7 @@ export const Digest = ({
   };
 
   const renderSingleContent = () => {
+    if (isEmpty(data) || !data?.length) return null;
     return (
       <div className="p-2">
         {data?.map((team) => {
@@ -246,6 +250,68 @@ export const Digest = ({
       </div>
     );
   };
+
+  const renderAllContent = () => {
+    if (isEmpty(data) || !data?.length) return null;
+    return (
+      <div className="flex w-full flex-wrap gap-5 p-2">
+        {data?.map((team, idx) => {
+          const idxs = [0, 3, 6, 9, 12];
+          if (!idxs.includes(idx)) return null;
+
+          return (
+            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
+              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+              <div className="flex mt-5">
+                <div className="mr-2">{getKeyGameResultsSection(team?.keyGameResults)}</div>
+              </div>
+            </div>
+          );
+        })}
+        {data?.map((team, idx) => {
+          const idxs = [1, 4, 7, 10, 13];
+          if (!idxs.includes(idx)) return null;
+
+          return (
+            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
+              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+              <div className="flex mt-5">
+                <div className="px-5">
+                  {getMonthlyAnalysis(team?.monthlyAnalysis)}
+                  {team.isPlayer
+                    ? null
+                    : getDivisionRaceImplications(team?.divisionRaceImplications)}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        {data?.map((team, idx) => {
+          const idxs = [2, 5, 8, 11, 14];
+          if (!idxs.includes(idx)) return null;
+
+          return (
+            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
+              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+              <div className="flex mt-5">
+                <div className=" flex px-5">
+                  {team.isPlayer
+                    ? null
+                    : getCurrentDivisionStandings(team?.currentDivisionStandings)}
+                  <div className={`${team.isPlayer ? '' : 'pl-3 border-l-2'}`}>
+                    {getSchedule(team.id, team.isPlayer, true)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+  const renderContent =
+    isEmpty(selectedFollower) && data.length > 1 ? renderAllContent() : renderSingleContent();
+
   return (
     <div className="">
       {loading ? (
@@ -253,7 +319,7 @@ export const Digest = ({
           <Spinner /> Loading ...
         </div>
       ) : null}
-      {data && !loading ? renderSingleContent() : null}
+      {!isEmpty(data) && !loading ? renderContent : null}
     </div>
   );
 };

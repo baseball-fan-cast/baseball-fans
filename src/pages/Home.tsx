@@ -61,7 +61,9 @@ export const Home = () => {
           />
         ) : null}
         {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
-        {displayHeadlines ? <Headlines subscriptions={subscriptionTeams} /> : null}
+        {displayHeadlines ? (
+          <Headlines subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
+        ) : null}
         {displaySchedule && <div className="border-t-2 my-7" />}
         <div className="border-t-2 my-7" />
         <News />

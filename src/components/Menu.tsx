@@ -133,7 +133,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
             </Badge>
             {followers
               ?.slice(0, count)
-              ?.map(({ name, abbreviation, teamName, currentTeam, id }) => {
+              ?.map(({ name, abbreviation, teamName, currentTeam, id, teamId, isPlayer }) => {
                 const { icon, playerIcon } = getIcon(currentTeam, id, !teamName) || {};
 
                 return (
@@ -142,7 +142,15 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                     content={name}
                     isSelected={selectedFollower?.name == name}
                     onSelect={() =>
-                      setSelectedFollower({ name, icon, playerIcon, abbreviation, id })
+                      setSelectedFollower({
+                        name,
+                        icon,
+                        playerIcon,
+                        abbreviation,
+                        id,
+                        teamId,
+                        isPlayer
+                      })
                     }
                     data={[
                       { src: icon, fallback: abbreviation },
