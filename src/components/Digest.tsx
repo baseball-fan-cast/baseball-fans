@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Spinner } from '@radix-ui/themes';
+import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import DataService from '@/services/DataService';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { IScheduleResponse, ISubscriptionPlayer, ISubscriptionTeam } from '@/types';
 import { isEmpty } from '@/helpers/helper';
 import { IScheduleData } from './ComingSchedule';
+import { LoadingIcon } from './LoadingIcon';
 
 const monthNames = [
   'January',
@@ -33,6 +34,7 @@ export const Digest = ({
   const [data, setData] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { selectedFollower, searchBy, teamSchedule } = useContext(ContentContext);
   const [scheduleData, setScheduleData] = useState<IScheduleData>({});
@@ -118,16 +120,16 @@ export const Digest = ({
       getDigest();
     }
     getSeasonSchedule();
-  }, [i18n.language, searchBy, teamIds, playersIds]);
+  }, [i18n.language, searchBy]);
 
   useEffect(() => {
-    if (selectedFollower.id) {
+    if (selectedFollower?.id) {
       const filtered = content?.filter(({ id }) => id == selectedFollower.id);
       setData(filtered);
     } else {
       setData(content);
     }
-  }, [selectedFollower]);
+  }, [selectedFollower, content]);
 
   const getKeyGameResultsSection = (data) => {
     if (isEmpty(data)) return null;
@@ -225,18 +227,18 @@ export const Digest = ({
           return (
             <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
               <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-              <div className="flex mt-5">
-                <div className="border-r-2 mr-2  w-[50%]">
+              <div className={`flex  mt-5  ${isMobile ? 'flex-wrap' : ''}`}>
+                <div className={`mr-2 ${isMobile ? '' : 'w-[50%] border-r-2'}`}>
                   {getKeyGameResultsSection(team?.keyGameResults)}
                 </div>
-                <div className="flex w-[50%]">
-                  <div className="border-r-2 w-[50%] px-5">
+                <div className={`flex ${isMobile ? 'flex-wrap' : 'w-[50%]'}`}>
+                  <div className={` ${isMobile ? '' : 'w-[50%] border-r-2 px-5'}`}>
                     {getMonthlyAnalysis(team?.monthlyAnalysis)}
                     {team.isPlayer
                       ? null
                       : getDivisionRaceImplications(team?.divisionRaceImplications)}
                   </div>
-                  <div className="w-[50%] px-5">
+                  <div className={`${isMobile ? '' : 'w-[50%] px-5'}`}>
                     {team.isPlayer
                       ? null
                       : getCurrentDivisionStandings(team?.currentDivisionStandings)}
@@ -314,11 +316,7 @@ export const Digest = ({
 
   return (
     <div className="">
-      {loading ? (
-        <div className="min-h-[250px]">
-          <Spinner /> Loading ...
-        </div>
-      ) : null}
+      {loading ? <LoadingIcon /> : null}
       {!isEmpty(data) && !loading ? renderContent : null}
     </div>
   );

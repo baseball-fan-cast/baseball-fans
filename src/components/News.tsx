@@ -6,6 +6,7 @@ import { INewsItems, INewsResponse } from '@/types';
 import { useMediaQuery } from 'react-responsive';
 import { runAi } from '../helpers/index';
 import { useTranslation } from 'react-i18next';
+import { LoadingIcon } from './LoadingIcon';
 
 export const News = () => {
   const { t } = useTranslation();
@@ -15,7 +16,6 @@ export const News = () => {
   const defaultCount = 4;
 
   const [loading, setLoading] = useState(true);
-  // const [count, setCount] = useState(defaultCount);
 
   const language = localStorage.getItem('LANG') || 'en';
 
@@ -77,7 +77,7 @@ export const News = () => {
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('news')}
       </Text>
-      {loading ? <div className="min-h-[250px]">Loading ...</div> : null}
+      {loading ? <LoadingIcon /> : null}
 
       <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
         {!loading &&

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Flex, Text } from '@radix-ui/themes';
 import { useMediaQuery } from 'react-responsive';
-// import { CustomPlayer } from './CustomPlayer';
 import DataService from '@/services/DataService';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { IHighlightClipsGamesData, IHighlightClipsResponse } from '@/types';
 import { ISubscriptionData } from '@/types';
 import { CustomPlayer } from './CustomPlayer';
+import { LoadingIcon } from './LoadingIcon';
 
 export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscriptionData }) => {
   const { t } = useTranslation();
@@ -91,7 +91,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
         {t('highlight_clips_replays')}
       </Text>
       {headlinesLoading ? (
-        <div className="min-h-[250px]">Loading ...</div>
+        <LoadingIcon />
       ) : (
         <Flex
           direction={isMobile ? 'column' : 'row'}

@@ -3,6 +3,7 @@ import { Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionData } from '@/types';
+import { LoadingIcon } from './LoadingIcon';
 
 type IData = {
   description: string;
@@ -68,7 +69,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
         {t('headlines')}
       </Text>
       {headlinesLoading ? (
-        <div className="min-h-[250px]">Loading ...</div>
+        <LoadingIcon />
       ) : (
         Object.entries(data)?.map(([key, content]) => (
           <Flex direction="column" className="my-3" key={key}>
