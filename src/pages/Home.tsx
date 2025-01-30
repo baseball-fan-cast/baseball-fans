@@ -9,6 +9,8 @@ import { News } from '@/components/News';
 import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
 import { Digest } from '@/components/Digest';
 import { Header } from '@/components/Header';
+import { getIcon } from '@/helpers/helper';
+
 // import Translator from './Translator';
 
 export const Home = () => {
@@ -18,18 +20,29 @@ export const Home = () => {
   const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
 
   const { filterBy, allPlayers, selectedLatestNews, searchBy } = useContext(ContentContext);
-
   const getSubscription = () => {
     DataService.getSubscription()
       .then((response: ISubscriptionResponse) => {
-        setSubscriptionTeams(response?.data?.teams);
-
-        const players = response?.data?.players?.map((item) => {
+        console.log('HOME', response?.data?.teams);
+        const teams = response?.data?.teams?.map((item) => {
+          const { icon } = getIcon({}, item?.id, false) || {};
           return {
             ...item,
-            teamId: allPlayers.find((allPl) => allPl?.id == item.id)?.teamId
+            icon
           };
         });
+        const players = response?.data?.players?.map((item) => {
+          const teamId = allPlayers.find((allPl) => allPl?.id == item.id)?.teamId;
+          const { icon, playerIcon } = getIcon({ id: teamId }, item?.id, !item.teamName) || {};
+
+          return {
+            ...item,
+            teamId,
+            icon,
+            playerIcon
+          };
+        });
+        setSubscriptionTeams(teams);
         setSubscriptionPlayers(players);
       })
       .catch((err: Error) => {

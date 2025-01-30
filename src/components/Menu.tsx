@@ -7,6 +7,7 @@ import { ContentContext } from '@/context/ContentContextProvider';
 import { FilterBy } from './FilterBy';
 import { useMediaQuery } from 'react-responsive';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { getIcon } from '@/helpers/helper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Menu = ({ subscriptions }: { subscriptions: any }) => {
@@ -50,17 +51,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
     } else {
       setFilterBy([...filterBy, value]);
     }
-  };
-
-  const getIcon = (currentTeam, id, isPlayer) => {
-    const teamIcon = isPlayer
-      ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
-      : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
-    const playerIcon = isPlayer
-      ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
-      : null;
-
-    return { icon: teamIcon, playerIcon: playerIcon };
   };
 
   useEffect(() => {

@@ -5,9 +5,10 @@ import { useMediaQuery } from 'react-responsive';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface IAvatarData {
-  src: string;
-  fallback: string;
-  title: string;
+  icon: string;
+  abbreviation: string;
+  name: string;
+  playerIcon: string;
 }
 interface ICustomPlayerProps {
   url: string;
@@ -18,10 +19,10 @@ interface ICustomPlayerProps {
 
 export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProps) => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Adjust breakpoint as needed
-
+  const { icon, playerIcon, abbreviation, name } = avatarData;
   return (
     <Box
-      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-4 min-w-[300px] max-w-[400px] flex-1`}
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-2 min-w-[300px] max-w-[400px] flex-1`}
       style={{ borderRadius: '10px', overflow: 'hidden' }}
     >
       <ReactPlayer
@@ -38,11 +39,23 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
         </Text>
         <Text as="div">{date}</Text>
         <Flex align="center" className="my-5">
-          <Avatar>
-            <AvatarImage src={avatarData.src} />
-            <AvatarFallback className="bg-cyan-500">{avatarData.fallback}</AvatarFallback>
-          </Avatar>
-          <Text className="mx-2">{avatarData.title}</Text>
+          <Flex className="relative">
+            {icon && (
+              <Avatar className="bg-slate-300 border-black">
+                <AvatarImage src={icon} />
+                <AvatarFallback className="bg-cyan-500">{abbreviation}</AvatarFallback>
+              </Avatar>
+            )}
+            {playerIcon && (
+              <Avatar className="absolute start-1/2 bg-slate-300">
+                <AvatarImage src={playerIcon} />
+                <AvatarFallback>{abbreviation}</AvatarFallback>
+              </Avatar>
+            )}
+          </Flex>
+          <Text as="div" className={`${playerIcon ? 'ml-6' : 'ml-2'}`}>
+            {name}
+          </Text>
         </Flex>
       </Box>
     </Box>

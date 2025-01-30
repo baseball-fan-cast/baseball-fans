@@ -13,3 +13,14 @@ export const isEmpty = (value) => {
 
   return false;
 };
+
+export const getIcon = (currentTeam, id, isPlayer) => {
+  const teamIcon = isPlayer
+    ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
+    : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
+  const playerIcon = isPlayer
+    ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
+    : null;
+
+  return { icon: teamIcon, playerIcon: playerIcon };
+};

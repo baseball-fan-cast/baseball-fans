@@ -23,7 +23,6 @@ export const News = () => {
     setLoading(true);
     DataService.getNews()
       .then((response: INewsResponse) => {
-        console.log(' response?.data?.items', response?.data?.items);
         const result = response?.data?.items
           ?.map(({ creator, displayDate, title, link, image }) => {
             return {

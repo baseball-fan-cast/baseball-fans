@@ -80,11 +80,12 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
       setDisplayItems(3);
     } else {
       setClips(data);
-      setDisplayItems(Object.keys(data).length < 2 ? 3 : 1);
+      setDisplayItems(Object.keys(data).length < 3 ? 2 : 1);
     }
   }, [selectedFollower, data]);
 
   if (!groupBy.length) return null;
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">
@@ -97,15 +98,17 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
           direction={isMobile ? 'column' : 'row'}
           className="w-full gap-9 flex flex-wrap justify-between"
         >
-          {Object.entries(clips)?.map(([, content]) => {
+          {Object.entries(clips)?.map(([key, content]) => {
             return content?.slice(0, displayItems)?.map((item, idx) => {
               const { media, name } = item;
               const { date, url } = media || {};
+              const { icon, playerIcon, abbreviation, teamName, fullName } =
+                groupBy?.find(({ id, teamId }) => key == id || key == teamId) || {};
               return (
                 <CustomPlayer
                   key={idx}
                   url={url}
-                  avatarData={{ src: '', fallback: 'A', title: `${name}` }}
+                  avatarData={{ icon, playerIcon, abbreviation, name: `${fullName || teamName}` }}
                   date={date}
                   title={name}
                 />
