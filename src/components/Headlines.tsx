@@ -26,23 +26,29 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const language = localStorage.getItem('LANG') || 'en';
   const defaultCount = 4;
 
-  const { headlines, selectedFollower, searchBy, headlinesLoading } = useContext(ContentContext);
+  const {
+    headlines = [],
+    selectedFollower,
+    searchBy,
+    headlinesLoading
+  } = useContext(ContentContext);
 
   const getData = () => {
     const subscriptionsData = [...players, ...teams, ...searchBy]?.reduce((result, curr) => {
       const id = curr.isPlayer ? curr.teamId : curr.id;
-
+      if (!headlines.length) return null;
       const currentTeam = headlines?.find(
         (item) => id == item.teams[0]?.id || id == item.teams[1]?.id
       )?.teams;
-      const currentTeamName = currentTeam[0]?.id == id ? currentTeam[0].name : currentTeam[1].name;
+      const { id: currentTeamId, name: curName } = currentTeam?.[0] || {};
+      const currentTeamName = currentTeamId == id ? curName : currentTeam?.[1].name;
 
       const name = curr.isPlayer ? curr.fullName : curr.name;
 
       result[name] = headlines
         ?.filter(({ teams }) => teams?.[0]?.id === id || teams?.[1]?.id === id)
         ?.map(({ media }) => {
-          const { description, highlightId: id, headline } = media;
+          const { description, highlightId: id, headline } = media || {};
           return { description, id, headline, currentTeamName };
         })
         ?.slice(0, defaultCount);
@@ -56,7 +62,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const getTranslatedContent = async (data: ISubscriptionsData) => {
     setLoading(true);
     const content = !isEmpty(data) ? JSON.stringify(data) : [];
-    const prompt = `Translate only description field from the data, ignore all other fields and add as new field "descriptionES" for es language and "descriptionJA" for ja language`;
+    const prompt = `Translate only description field from the data and add as new field "descriptionES" for es language and "descriptionJA" for ja language`;
     const result = await runAi(prompt, content);
     setContent(JSON.parse(result));
     setData(JSON.parse(result));

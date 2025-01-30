@@ -19,9 +19,9 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
 
   const { setHeadlines, headlinesLoading, setHeadlinesLoading, searchBy, selectedFollower } =
     useContext(ContentContext);
+  const groupBy = [...searchBy, ...players, ...teams];
 
   const getHighlightClips = async () => {
-    const groupBy = [...searchBy, ...players, ...teams];
     if (!groupBy.length) return null;
     setHeadlinesLoading(true);
     await DataService.getMedia()
@@ -42,7 +42,6 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
   };
 
   const getHighlightClipById = async (id) => {
-    const groupBy = [...searchBy, ...players, ...teams];
     setHeadlinesLoading(true);
     await DataService.getMediaByTeamId(id)
       .then((response: IHighlightClipsResponse) => {
@@ -85,6 +84,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
     }
   }, [selectedFollower, data]);
 
+  if (!groupBy.length) return null;
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">
