@@ -4,6 +4,8 @@ import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { ISubscriptionData } from '@/types';
 import { LoadingIcon } from './LoadingIcon';
+import { runAi } from '../helpers/index';
+import { isEmpty } from '@/helpers/helper';
 
 type IData = {
   description: string;
@@ -19,6 +21,10 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const [data, setData] = useState<ISubscriptionsData>({});
   const [content, setContent] = useState<ISubscriptionsData>({});
   const { players = [], teams = [] } = subscriptions;
+  const [loading, setLoading] = useState(false);
+
+  const language = localStorage.getItem('LANG') || 'en';
+  const defaultCount = 4;
 
   const { headlines, selectedFollower, searchBy, headlinesLoading } = useContext(ContentContext);
 
@@ -38,12 +44,24 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
         ?.map(({ media }) => {
           const { description, highlightId: id, headline } = media;
           return { description, id, headline, currentTeamName };
-        });
+        })
+        ?.slice(0, defaultCount);
       return result;
     }, {});
+    if (!isEmpty(subscriptionsData) && !loading) {
+      console.log('subscriptionsData', subscriptionsData);
+      getTranslatedContent(subscriptionsData);
+    }
+  };
 
-    setContent(subscriptionsData);
-    setData(subscriptionsData);
+  const getTranslatedContent = async (data: ISubscriptionsData) => {
+    setLoading(true);
+    const content = !isEmpty(data) ? JSON.stringify(data) : [];
+    const prompt = `Translate only description field from the array and add as new field "descriptionES" for es language and "descriptionJA" for ja language`;
+    const result = await runAi(prompt, content);
+    setContent(JSON.parse(result));
+    setData(JSON.parse(result));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -63,19 +81,21 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
     }
   }, [selectedFollower]);
 
+  const translatedDescription = `description${language?.toUpperCase()}`;
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold my-2 text-xl">
         {t('headlines')}
       </Text>
-      {headlinesLoading ? (
+      {headlinesLoading || loading ? (
         <LoadingIcon />
       ) : (
         Object.entries(data)?.map(([key, content]) => (
           <Flex direction="column" className="my-3" key={key}>
             {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
             <ul className="list-disc list-inside">
-              {content?.slice(0, 5)?.map((item, index) => (
+              {content?.map((item, index) => (
                 <li key={index}>
                   <Link
                     href={`https://www.mlb.com/video/${item.id}`}
@@ -85,7 +105,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
                     key={index}
                     target="_blank"
                   >
-                    {item.description}
+                    {item[translatedDescription] || item.description}
                   </Link>
                 </li>
               ))}

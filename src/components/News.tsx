@@ -23,8 +23,8 @@ export const News = () => {
     setLoading(true);
     DataService.getNews()
       .then((response: INewsResponse) => {
-        const result = response?.data?.items?.map(
-          ({ creator, displayDate, title, link, image }) => {
+        const result = response?.data?.items
+          ?.map(({ creator, displayDate, title, link, image }) => {
             return {
               creator,
               displayDate,
@@ -32,18 +32,12 @@ export const News = () => {
               link,
               image
             };
-          }
-        );
-        setData(result);
-        if (language != 'en') {
-          getTranslatedContent(result);
-        }
+          })
+          ?.slice(0, defaultCount);
+        getTranslatedContent(result);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -53,35 +47,23 @@ export const News = () => {
 
   const getTranslatedContent = async (news: INewsItems[] = []) => {
     setLoading(true);
-    const lists = news?.length ? news?.slice(0, defaultCount) : data?.slice(0, defaultCount);
-    const content = lists ? JSON.stringify(lists) : [];
-    const prompt = `Translate title field from the array and add as new field "title${language?.toUpperCase()}"`;
+    const content = JSON.stringify(news);
+    const prompt = `Translate only description field from the array and add as new field "titleES" for es language and "titleJA" for ja language`;
     const result = await runAi(prompt, content, language);
-    setLoading(false);
     setData(JSON.parse(result));
+    setLoading(false);
   };
-
-  useEffect(() => {
-    if (data.length) {
-      const isTranslated = Object.keys(data[0])?.some(
-        (title) => title.includes(language?.toUpperCase()) || language == 'en'
-      );
-      if (!isTranslated) {
-        getTranslatedContent();
-      }
-    }
-  }, [language]);
 
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('news')}
       </Text>
-      {loading ? <LoadingIcon /> : null}
-
-      <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
-        {!loading &&
-          data?.slice(0, defaultCount)?.map((item, idx) => {
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <div className={`w-full gap-5 grid ${isMobile ? '' : 'grid-cols-2 w-10/12 '}`}>
+          {data?.map((item, idx) => {
             const translatedTitle = `title${language?.toUpperCase()}`;
             return (
               <div className="border flex gap-5" key={idx}>
@@ -98,7 +80,8 @@ export const News = () => {
               </div>
             );
           })}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
