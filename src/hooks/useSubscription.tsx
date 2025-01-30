@@ -15,7 +15,6 @@ export const useSubscription = () => {
     setLoading(true);
     DataService.getSubscription()
       .then((response: ISubscriptionResponse) => {
-        console.log('HOME', response?.data?.teams);
         const teams = response?.data?.teams?.map((item) => {
           const { icon } = getIcon({}, item?.id, false) || {};
           return {

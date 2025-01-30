@@ -6,13 +6,13 @@ import { useSubscription } from './useSubscription';
 
 export const useDigest = () => {
   const [data, setData] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { searchBy } = useContext(ContentContext);
   const { i18n } = useTranslation();
   const { subscriptionTeams: teamIds, subscriptionPlayers: playersIds } = useSubscription();
 
   const getDigestByIds = (teams, players) => {
-    if (loading) return;
+    // if (loading) return;
     setLoading(true);
     DataService.getDigestByIds(teams, players)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +29,7 @@ export const useDigest = () => {
   };
 
   const getDigest = () => {
-    if (loading) return;
+    // if (loading) return;
     setLoading(true);
     DataService.getDigest()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
