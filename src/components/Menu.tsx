@@ -13,8 +13,15 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const defaultCount = 4;
-  const { selectedFollower, setSelectedFollower, filterBy, setFilterBy, searchBy } =
-    useContext(ContentContext);
+  const {
+    selectedFollower,
+    setSelectedFollower,
+    filterBy,
+    setFilterBy,
+    searchBy,
+    setSelectedLatestNews,
+    selectedLatestNews
+  } = useContext(ContentContext);
   const [followers, setFollowers] = useState([]);
   const [count, setCount] = useState(defaultCount);
 
@@ -64,8 +71,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
       }) || [];
     setFollowers([...teams, ...player]);
   }, [subscriptions]);
-
-  const isSelected = false;
 
   return (
     <>
@@ -119,15 +124,21 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
         >
           <Flex align="center" className="gap-4 h-full" wrap="wrap">
             <Badge
-              className={`p-4 rounded-lg border border-black ${isSelected ? 'text-white bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
-              onClick={() => {}}
+              className={`p-4 rounded-lg border border-black ${selectedLatestNews ? 'text-white bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+              onClick={() => {
+                setSelectedFollower({});
+                setSelectedLatestNews(true);
+              }}
             >
               <Text>Latest</Text>
             </Badge>
             <div className="border h-[50px] border-black" />
             <Badge
-              className={`p-4 rounded-lg border border-black ${!selectedFollower?.name ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
-              onClick={() => setSelectedFollower({})}
+              className={`p-4 rounded-lg border border-black ${!selectedLatestNews && !selectedFollower?.name ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+              onClick={() => {
+                setSelectedFollower({});
+                setSelectedLatestNews(false);
+              }}
             >
               <Text>{t('following')}</Text>
             </Badge>
@@ -141,7 +152,8 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                     key={name}
                     content={name}
                     isSelected={selectedFollower?.name == name}
-                    onSelect={() =>
+                    onSelect={() => {
+                      setSelectedLatestNews(false);
                       setSelectedFollower({
                         name,
                         icon,
@@ -150,8 +162,8 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                         id,
                         teamId,
                         isPlayer
-                      })
-                    }
+                      });
+                    }}
                     data={[
                       { src: icon, fallback: abbreviation },
                       ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])

@@ -56,7 +56,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const getTranslatedContent = async (data: ISubscriptionsData) => {
     setLoading(true);
     const content = !isEmpty(data) ? JSON.stringify(data) : [];
-    const prompt = `Translate only description field from the array and add as new field "descriptionES" for es language and "descriptionJA" for ja language`;
+    const prompt = `Translate only description field from the data, ignore all other fields and add as new field "descriptionES" for es language and "descriptionJA" for ja language`;
     const result = await runAi(prompt, content);
     setContent(JSON.parse(result));
     setData(JSON.parse(result));
@@ -94,20 +94,21 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
           <Flex direction="column" className="my-3" key={key}>
             {content?.length > 0 ? <Text className="my-2">{key}</Text> : null}
             <ul className="list-disc list-inside">
-              {content?.map((item, index) => (
-                <li key={index}>
-                  <Link
-                    href={`https://www.mlb.com/video/${item.id}`}
-                    size="1"
-                    color="indigo"
-                    className="list-disc"
-                    key={index}
-                    target="_blank"
-                  >
-                    {item[translatedDescription] || item.description}
-                  </Link>
-                </li>
-              ))}
+              {content?.length > 0 &&
+                content?.map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      href={`https://www.mlb.com/video/${item.id}`}
+                      size="1"
+                      color="indigo"
+                      className="list-disc"
+                      key={index}
+                      target="_blank"
+                    >
+                      {item[translatedDescription] || item.description}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </Flex>
         ))

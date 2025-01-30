@@ -17,7 +17,7 @@ export const Home = () => {
   const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
   const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
 
-  const { filterBy, allPlayers } = useContext(ContentContext);
+  const { filterBy, allPlayers, selectedLatestNews } = useContext(ContentContext);
 
   const getSubscription = () => {
     DataService.getSubscription()
@@ -53,20 +53,26 @@ export const Home = () => {
       <Menu subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
       <div className={`bg-stone-100 ${isMobile ? 'px-3' : 'px-32'} py-2 pb-9`}>
         <div className="border-t-2 pt-7 " />
-        <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
-        {displayHighlightClips ? <div className="border-t-2 my-7" /> : null}
-        {displayHighlightClips ? (
-          <HighlightClips
-            subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
-          />
-        ) : null}
-        {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
-        {displayHeadlines ? (
-          <Headlines subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
-        ) : null}
-        {displaySchedule && <div className="border-t-2 my-7" />}
-        <div className="border-t-2 my-7" />
-        <News />
+        {selectedLatestNews ? (
+          <News />
+        ) : (
+          <>
+            <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
+            {displayHighlightClips ? <div className="border-t-2 my-7" /> : null}
+            {displayHighlightClips ? (
+              <HighlightClips
+                subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
+              />
+            ) : null}
+            {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
+            {displayHeadlines ? (
+              <Headlines
+                subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
+              />
+            ) : null}
+            {displaySchedule && <div className="border-t-2 my-7" />}
+          </>
+        )}
       </div>
     </>
   );

@@ -14,7 +14,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [data, setData] = useState<IHighlightClipsGamesData[]>([]);
   const [clips, setClips] = useState({});
-  const [displayItems, setDisplayItems] = useState(2);
+  const [displayItems, setDisplayItems] = useState(4);
   const { players, teams } = subscriptions;
 
   const { setHeadlines, headlinesLoading, setHeadlinesLoading, searchBy, selectedFollower } =
@@ -47,7 +47,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
     await DataService.getMediaByTeamId(id)
       .then((response: IHighlightClipsResponse) => {
         const { games = [] } = response?.data || {};
-        const videoData = [...games, ...data];
+        const videoData = [...games, ...Object.values(data)];
         const groupedData = groupBy?.reduce((result, item) => {
           const id = item?.isPlayer ? item?.teamId : item?.id;
           result[id] = [...videoData]?.filter(
@@ -81,7 +81,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
       setDisplayItems(3);
     } else {
       setClips(data);
-      setDisplayItems(1);
+      setDisplayItems(Object.keys(data).length < 2 ? 3 : 1);
     }
   }, [selectedFollower, data]);
 
@@ -93,7 +93,10 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
       {headlinesLoading ? (
         <LoadingIcon />
       ) : (
-        <Flex direction={isMobile ? 'column' : 'row'} className="w-full gap-9 flex flex-wrap">
+        <Flex
+          direction={isMobile ? 'column' : 'row'}
+          className="w-full gap-9 flex flex-wrap justify-between"
+        >
           {Object.entries(clips)?.map(([, content]) => {
             return content?.slice(0, displayItems)?.map((item, idx) => {
               const { media, name } = item;

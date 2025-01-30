@@ -66,11 +66,11 @@ export const News = () => {
           {data?.map((item, idx) => {
             const translatedTitle = `title${language?.toUpperCase()}`;
             return (
-              <div className="border flex gap-5" key={idx}>
-                <Avatar className={`flex  ${isMobile ? 'w-full' : 'w-[250px] '}`}>
+              <div className="border gap-5 bg-slate-100 rounded-lg p-4" key={idx}>
+                <Avatar className={`rounded-lg ${isMobile ? 'w-full' : 'w-[250px] '}`}>
                   <AvatarImage src={item?.image} alt={item.title} />
                 </Avatar>
-                <div>
+                <div className="pt-4">
                   <Link href={item.link} size="1" color="indigo" className="list-disc">
                     {item[translatedTitle] || item.title}
                   </Link>
