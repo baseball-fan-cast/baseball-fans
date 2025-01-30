@@ -96,7 +96,7 @@ export const ChooseFanLevelStep = () => {
     setSelectedFeed(filteredFeed);
   };
   const handleChange = (value) => {
-    console.log('value', value);
+    console.log('', value);
   };
 
   return (

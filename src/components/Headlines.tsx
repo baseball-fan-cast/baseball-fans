@@ -49,7 +49,6 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
       return result;
     }, {});
     if (!isEmpty(subscriptionsData) && !loading) {
-      console.log('subscriptionsData', subscriptionsData);
       getTranslatedContent(subscriptionsData);
     }
   };

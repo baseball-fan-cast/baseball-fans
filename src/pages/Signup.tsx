@@ -76,21 +76,16 @@ export const Signup = () => {
     if (!!errors.firstName || !!errors.lastName || !!errors.password || !!errors.email) return null;
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, formData.email, formData.password).then(
-        (userCredential) => {
-          setLoading(false);
-          const user = userCredential.user;
-          console.log(user);
-          navigate('/login');
-        }
-      );
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password).then(() => {
+        setLoading(false);
+        // const user = userCredential.user;
+        navigate('/login');
+      });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      const errorCode = error.code;
       const errorMessage = error.message;
       setErrors(errorMessage);
       setLoading(false);
-      console.log(errorCode, errorMessage);
     }
 
     await updateProfile(auth.currentUser, {
@@ -100,7 +95,6 @@ export const Signup = () => {
         console.log('updated successfully');
       })
       .catch((error) => {
-        console.log('error updating name');
         console.log(error);
       });
   };

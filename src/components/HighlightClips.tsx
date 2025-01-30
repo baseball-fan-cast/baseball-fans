@@ -93,11 +93,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
       {headlinesLoading ? (
         <LoadingIcon />
       ) : (
-        <Flex
-          direction={isMobile ? 'column' : 'row'}
-          justify="between"
-          className="w-full gap-9 flex flex-wrap"
-        >
+        <Flex direction={isMobile ? 'column' : 'row'} className="w-full gap-9 flex flex-wrap">
           {Object.entries(clips)?.map(([, content]) => {
             return content?.slice(0, displayItems)?.map((item, idx) => {
               const { media, name } = item;
