@@ -30,7 +30,7 @@ export const Digest = ({
   teamIds: ISubscriptionTeam[];
   playersIds: ISubscriptionPlayer[];
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -90,13 +90,16 @@ export const Digest = ({
             });
           return result;
         }, {}) as IScheduleData;
-
         setScheduleData(groupedData);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
       });
   };
+
+  useEffect(() => {
+    getSeasonSchedule();
+  }, [searchBy, teamIds, playersIds]);
 
   useEffect(() => {
     if (searchBy.length > 0) {
@@ -119,7 +122,6 @@ export const Digest = ({
     } else {
       getDigest();
     }
-    getSeasonSchedule();
   }, [i18n.language, searchBy]);
 
   useEffect(() => {
@@ -135,7 +137,9 @@ export const Digest = ({
     if (isEmpty(data)) return null;
     return (
       <div className="pr-4">
-        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Key Game Results</div>
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">
+          {t('key_game_results')}
+        </div>
         <div className="">
           {data?.map((gameRes) => (
             <div key={gameRes.games} className="py-3">
@@ -154,10 +158,12 @@ export const Digest = ({
     if (isEmpty(data)) return null;
     return (
       <div className="pr-4 pb-3">
-        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Monthly Analysis</div>
-        <div className="text-md font-bold mt-2 py-3">Team Performance Highlights</div>
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">
+          {t('monthly_analysis')}
+        </div>
+        <div className="text-md font-bold mt-2 py-3">{t('team_performance_highlights')}</div>
         <div className="text-gray-500">{data['Team Performance Highlights']}</div>
-        <div className="text-md font-bold mt-2 py-3">Key Player Contributions</div>
+        <div className="text-md font-bold mt-2 py-3">{t('key_player_contributions')}</div>
         <div className="text-gray-500">{data['Key Player Contributions']}</div>
       </div>
     );
@@ -168,7 +174,7 @@ export const Digest = ({
     return (
       <div className="border-t-2 py-3 ">
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">
-          Division Race Implications
+          {t('division_race_implications')}
         </div>
         <div className="text-gray-500">{data.description}</div>
       </div>
@@ -180,7 +186,7 @@ export const Digest = ({
     return (
       <div className="pb-3">
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">
-          Current Division Standings
+          {t('current_division_standings')}
         </div>
         <ol className="list-decimal pl-3">
           {data?.map(({ name, record }) => (
@@ -204,8 +210,12 @@ export const Digest = ({
 
     return (
       <div className={`${hideBorder ? '' : 'py-3'} ${isPlayer || hideBorder ? '' : 'border-t-2'}`}>
-        <div className="text-xl font-bold mb-2 uppercase text-blue-900">Schedule</div>
-        {isPlayer && <div className="font-bold">Current team - {currentTeamName}</div>}
+        <div className="text-xl font-bold mb-2 uppercase text-blue-900">{t('schedule')}</div>
+        {isPlayer && (
+          <div className="font-bold">
+            {t('current_team')} - {currentTeamName}
+          </div>
+        )}
         <ul className="list-disc list-inside ">
           {data?.slice(0, 5)?.map((item, index) => (
             <li key={index} className="text-gray-500">

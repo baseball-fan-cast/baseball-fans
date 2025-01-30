@@ -17,7 +17,7 @@
   "select_lang": "Select your language",
   "select_team": "What team & players are you interested in?",
   "view_players": "View Players",
-  "coming_schedule": "Coming Schedule",
+  "schedule": "Schedule",
   "clear_filters": "Clear Filters",
   "highlight_clips": "Highlight Clips",
   "headlines": "Headlines",
@@ -25,5 +25,12 @@
   "digest": "Digest",
   "news": "News",
   "by": "By",
-  "loading": "Loading ..."
+  "loading": "Loading ...",
+  "key_game_results": "Key Game Results",
+  "monthly_analysis": "Monthly Analysis",
+  "team_performance_highlights": "Team Performance Highlights",
+  "key_player_contributions": "Key Player Contributions",
+  "division_race_implications": "Division Race Implications",
+  "current_division_standings": "Current Division Standings",
+  "current_team": "Current Team"
 }

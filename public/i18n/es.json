@@ -17,7 +17,7 @@
   "select_lang": "Seleccione su idioma",
   "select_team": "¿En qué equipo y jugadores estás interesado?",
   "view_players": "Ver jugadoras",
-  "coming_schedule": "Próximamente",
+  "schedule": "Cronograma",
   "clear_filters": "Limpiar filtros",
   "highlight_clips": "Clips destacados",
   "headlines": "Titulares",
@@ -25,5 +25,12 @@
   "digest": "Digerir",
   "news": "Noticias",
   "by": "Por",
-  "loading": "Cargando ..."
+  "loading": "Cargando ...",
+  "key_game_results": "Resultados clave del juego",
+  "monthly_analysis": "Análisis mensual",
+  "team_performance_highlights": "Aspectos destacados del rendimiento del equipo",
+  "key_player_contributions": "Contribuciones de los jugadores clave",
+  "division_race_implications": "Implicaciones de la carrera divisional",
+  "current_division_standings": "Clasificación actual de la división",
+  "current_team": "Equipo actual"
 }
