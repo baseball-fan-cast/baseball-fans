@@ -32,7 +32,7 @@ export const Digest = ({
 }) => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -125,7 +125,7 @@ export const Digest = ({
   }, [i18n.language, searchBy]);
 
   useEffect(() => {
-    if (selectedFollower?.id) {
+    if (selectedFollower?.id && !isEmpty(content)) {
       const filtered = content?.filter(({ id }) => id == selectedFollower.id);
       setData(filtered);
     } else {
