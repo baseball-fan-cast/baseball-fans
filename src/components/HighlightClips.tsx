@@ -33,7 +33,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
           return result;
         }, {});
         setData(groupedData);
-        setHeadlines(games);
+        setHeadlines(groupedData);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -46,17 +46,14 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
     await DataService.getMediaByTeamId(id)
       .then((response: IHighlightClipsResponse) => {
         const { games = [] } = response?.data || {};
-        const videoData = [...games, ...Object.values(data)];
+
         const groupedData = groupBy?.reduce((result, item) => {
           const id = item?.isPlayer ? item?.teamId : item?.id;
-          result[id] = [...videoData]?.filter(
-            ({ teams }) => teams[0].id == id || teams[1].id == id
-          );
+          result[id] = [...games]?.filter(({ teams }) => teams[0].id == id || teams[1].id == id);
           return result;
         }, {});
-
-        setData(groupedData);
-        setHeadlines(videoData);
+        setData({ ...groupedData, ...data });
+        setHeadlines({ ...groupedData, ...data });
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -102,13 +99,18 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
             return content?.slice(0, displayItems)?.map((item, idx) => {
               const { media, name } = item;
               const { date, url } = media || {};
-              const { icon, playerIcon, abbreviation, teamName, fullName } =
-                groupBy?.find(({ id, teamId }) => key == id || key == teamId) || {};
+              const match = groupBy?.find(({ id, teamId }) => key == id || key == teamId) || {};
+              const { icon, playerIcon, abbreviation, teamName, fullName } = match;
               return (
                 <CustomPlayer
                   key={idx}
                   url={url}
-                  avatarData={{ icon, playerIcon, abbreviation, name: `${fullName || teamName}` }}
+                  avatarData={{
+                    icon,
+                    playerIcon,
+                    abbreviation,
+                    name: `${fullName || teamName || match?.name}`
+                  }}
                   date={date}
                   title={name}
                 />

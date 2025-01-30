@@ -24,7 +24,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const [loading, setLoading] = useState(false);
 
   const language = localStorage.getItem('LANG') || 'en';
-  const defaultCount = 4;
+  const defaultCount = 3;
 
   const {
     headlines = [],
@@ -34,28 +34,23 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   } = useContext(ContentContext);
 
   const getData = () => {
-    const subscriptionsData = [...players, ...teams, ...searchBy]?.reduce((result, curr) => {
-      const id = curr.isPlayer ? curr.teamId : curr.id;
-      if (!headlines.length) return null;
-      const currentTeam = headlines?.find(
-        (item) => id == item.teams[0]?.id || id == item.teams[1]?.id
-      )?.teams;
-      const { id: currentTeamId, name: curName } = currentTeam?.[0] || {};
-      const currentTeamName = currentTeamId == id ? curName : currentTeam?.[1].name;
-
-      const name = curr.isPlayer ? curr.fullName : curr.name;
-
-      result[name] = headlines
-        ?.filter(({ teams }) => teams?.[0]?.id === id || teams?.[1]?.id === id)
-        ?.map(({ media }) => {
+    if (!isEmpty(headlines)) {
+      const subscriptionsData = Object.entries(headlines)?.reduce((acc, [key, content]) => {
+        const match = [...players, ...teams, ...searchBy]?.find(
+          ({ id, teamId }) => id == key || teamId == key
+        );
+        const { name, fullName, teamName } = match || {};
+        const keyName = name || fullName || teamName;
+        acc[keyName] = content?.slice(0, defaultCount).map(({ media }) => {
           const { description, highlightId: id, headline } = media || {};
-          return { description, id, headline, currentTeamName };
-        })
-        ?.slice(0, defaultCount);
-      return result;
-    }, {});
-    if (!isEmpty(subscriptionsData) && !loading) {
-      getTranslatedContent(subscriptionsData);
+          return { description, highlightId: id, headline };
+        });
+        return acc;
+      }, {});
+
+      if (!isEmpty(subscriptionsData) && !loading) {
+        getTranslatedContent(subscriptionsData);
+      }
     }
   };
 
