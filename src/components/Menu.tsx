@@ -4,7 +4,7 @@ import { Flex, Text, Box, Button, Container, Badge } from '@radix-ui/themes';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
 import { ContentContext } from '@/context/ContentContextProvider';
-import { FilterBy } from './FilterBy';
+// import { FilterBy } from './FilterBy';
 import { useMediaQuery } from 'react-responsive';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getIcon } from '@/helpers/helper';
@@ -26,32 +26,32 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const [followers, setFollowers] = useState([]);
   const [count, setCount] = useState(defaultCount);
 
-  const filterByData = [
-    {
-      label: <Text>{t('highlight_clips')}</Text>,
-      value: 'highlight_clips'
-    },
-    {
-      label: <Text>{t('headlines')}</Text>,
-      value: 'headlines'
-    },
-    {
-      label: <Text>{t('coming_schedule')}</Text>,
-      value: 'coming_schedule'
-    }
-  ];
-  const onRemove = (value: string) => {
-    const filtered = filterBy.filter((element) => element !== value);
-    setFilterBy(filtered);
-  };
+  // const filterByData = [
+  //   {
+  //     label: <Text>{t('highlight_clips')}</Text>,
+  //     value: 'highlight_clips'
+  //   },
+  //   {
+  //     label: <Text>{t('headlines')}</Text>,
+  //     value: 'headlines'
+  //   },
+  //   {
+  //     label: <Text>{t('coming_schedule')}</Text>,
+  //     value: 'coming_schedule'
+  //   }
+  // ];
+  // const onRemove = (value: string) => {
+  //   const filtered = filterBy.filter((element) => element !== value);
+  //   setFilterBy(filtered);
+  // };
 
-  const onSelect = (value: string) => {
-    if (filterBy.includes(value)) {
-      onRemove(value);
-    } else {
-      setFilterBy([...filterBy, value]);
-    }
-  };
+  // const onSelect = (value: string) => {
+  //   if (filterBy.includes(value)) {
+  //     onRemove(value);
+  //   } else {
+  //     setFilterBy([...filterBy, value]);
+  //   }
+  // };
 
   useEffect(() => {
     const { teams = [], players = [] } = subscriptions || {};
@@ -73,14 +73,14 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
         </Box>
-        <Box>
+        {/* <Box>
           <FilterBy
             filterData={filterByData}
             onSelect={onSelect}
             onRemove={onRemove}
             selectedItems={filterBy}
           />
-        </Box>
+        </Box> */}
         {filterBy.length ? (
           <Button className="opacity-50" onClick={() => setFilterBy([])}>
             {t('clear_filters')}

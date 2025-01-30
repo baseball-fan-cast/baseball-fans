@@ -3,6 +3,7 @@ import { Flex, Text, Box } from '@radix-ui/themes';
 import ReactPlayer from 'react-player/lazy';
 import { useMediaQuery } from 'react-responsive';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { formatDate } from '@/helpers/helper';
 
 interface IAvatarData {
   icon: string;
@@ -14,7 +15,8 @@ interface ICustomPlayerProps {
   url: string;
   avatarData: IAvatarData;
   title: string;
-  date: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  date: any;
 }
 
 export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProps) => {
@@ -22,7 +24,7 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
   const { icon, playerIcon, abbreviation, name } = avatarData;
   return (
     <Box
-      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-2 min-w-[300px] max-w-[400px] flex-1`}
+      className={` ${isMobile ? 'my-5' : null} bg-slate-100 rounded-lg pb-2 min-w-[350px] max-w-[400px] flex-1`}
       style={{ borderRadius: '10px', overflow: 'hidden' }}
     >
       <ReactPlayer
@@ -30,15 +32,17 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
         style={{ borderRadius: '10px' }}
         controls
         width={'100%'}
-        height="50%"
+        height="60%"
         //  onDuration={onDuration}
       />
       <Box className="p-3">
-        <Text as="div" className="font-bold my-2">
+        <Text as="div" className="font-bold">
           {title}
         </Text>
-        <Text as="div">{date}</Text>
-        <Flex align="center" className="my-5">
+        <Text as="div" className="text-gray-500">
+          {formatDate(new Date(date))}
+        </Text>
+        <Flex align="center" className="mt-5">
           <Flex className="relative">
             {icon && (
               <Avatar className="bg-slate-300 border-black">

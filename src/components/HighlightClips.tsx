@@ -74,15 +74,15 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
     if (selectedFollower.id) {
       const id = selectedFollower.isPlayer ? selectedFollower.teamId : selectedFollower.id;
       setClips({ [id]: data[id] });
-      setDisplayItems(3);
+      setDisplayItems(4);
     } else {
       setClips(data);
-      setDisplayItems(Object.keys(data).length < 3 ? 2 : 1);
+      setDisplayItems(Object.keys(data).length < 4 ? 2 : 1);
     }
   }, [selectedFollower, data]);
 
   if (!groupBy.length) return null;
-
+  console.log('clips', clips);
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">
@@ -93,7 +93,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
       ) : (
         <Flex
           direction={isMobile ? 'column' : 'row'}
-          className="w-full gap-9 flex flex-wrap justify-between"
+          className="w-full gap-9 flex flex-wrap justify-start"
         >
           {Object.entries(clips)?.map(([key, content]) => {
             return content?.slice(0, displayItems)?.map((item, idx) => {

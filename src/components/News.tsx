@@ -7,6 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import { runAi } from '../helpers/index';
 import { useTranslation } from 'react-i18next';
 import { LoadingIcon } from './LoadingIcon';
+import { formatDate } from '@/helpers/helper';
 
 export const News = () => {
   const { t } = useTranslation();
@@ -75,7 +76,7 @@ export const News = () => {
                     {item[translatedTitle] || item.title}
                   </Link>
                   <Text as="div">{`${t('by')} ${item.creator}`}</Text>
-                  <Text as="div">{new Date(item?.displayDate).toUTCString()}</Text>
+                  <Text as="div">{formatDate(new Date(item?.displayDate))}</Text>
                 </div>
               </div>
             );

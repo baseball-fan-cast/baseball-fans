@@ -24,3 +24,11 @@ export const getIcon = (currentTeam, id, isPlayer) => {
 
   return { icon: teamIcon, playerIcon: playerIcon };
 };
+
+export const formatDate = (currentDate) => {
+  return currentDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
