@@ -82,7 +82,7 @@ export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscription
   }, [selectedFollower, data]);
 
   if (!groupBy.length) return null;
-  console.log('clips', clips);
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold mb-5 text-2xl">

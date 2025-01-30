@@ -1,62 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import DataService from '@/services/DataService';
+import React from 'react';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { Text, Link } from '@radix-ui/themes';
-import { INewsItems, INewsResponse } from '@/types';
+import { INewsItems } from '@/types';
 import { useMediaQuery } from 'react-responsive';
-import { runAi } from '../helpers/index';
 import { useTranslation } from 'react-i18next';
 import { LoadingIcon } from './LoadingIcon';
 import { formatDate } from '@/helpers/helper';
 
-export const News = () => {
+export const News = ({ data, loading }: { data: INewsItems[]; loading: boolean }) => {
   const { t } = useTranslation();
-
-  const [data, setData] = useState<INewsItems[]>([]);
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const defaultCount = 4;
-
-  const [loading, setLoading] = useState(true);
 
   const language = localStorage.getItem('LANG') || 'en';
 
-  const getNews = () => {
-    setLoading(true);
-    DataService.getNews()
-      .then((response: INewsResponse) => {
-        const result = response?.data?.items
-          ?.map(({ creator, displayDate, title, link, image }) => {
-            return {
-              creator,
-              displayDate,
-              title,
-              link,
-              image
-            };
-          })
-          ?.slice(0, defaultCount);
-        getTranslatedContent(result);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      });
-  };
-
-  useEffect(() => {
-    getNews();
-  }, []);
-
-  const getTranslatedContent = async (news: INewsItems[] = []) => {
-    setLoading(true);
-    const content = JSON.stringify(news);
-    const prompt = `Translate only description field from the array and add as new field "titleES" for es language and "titleJA" for ja language`;
-    const result = await runAi(prompt, content, language);
-    setData(JSON.parse(result));
-    setLoading(false);
-  };
-
   return (
-    <div className="bg-white p-4 rounded-lg">
+    <div className="bg-white p-4 rounded-lg min-h-[400px]">
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('news')}
       </Text>
@@ -75,8 +33,10 @@ export const News = () => {
                   <Link href={item.link} size="1" color="indigo" className="list-disc">
                     {item[translatedTitle] || item.title}
                   </Link>
+                  <Text as="div" className="text-gray-500 pb-2">
+                    {formatDate(new Date(item?.displayDate))}
+                  </Text>
                   <Text as="div">{`${t('by')} ${item.creator}`}</Text>
-                  <Text as="div">{formatDate(new Date(item?.displayDate))}</Text>
                 </div>
               </div>
             );
