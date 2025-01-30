@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
@@ -16,7 +17,13 @@ type ISubscriptionsData = {
   [key: string | number]: IData[];
 };
 
-export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData }) => {
+export const Headlines = ({
+  subscriptions,
+  headlines
+}: {
+  subscriptions: ISubscriptionData;
+  headlines: any;
+}) => {
   const { t } = useTranslation();
   const [data, setData] = useState<ISubscriptionsData>({});
   const [content, setContent] = useState<ISubscriptionsData>({});
@@ -26,12 +33,7 @@ export const Headlines = ({ subscriptions }: { subscriptions: ISubscriptionData 
   const language = localStorage.getItem('LANG') || 'en';
   const defaultCount = 3;
 
-  const {
-    headlines = [],
-    selectedFollower,
-    searchBy,
-    headlinesLoading
-  } = useContext(ContentContext);
+  const { selectedFollower, searchBy, headlinesLoading } = useContext(ContentContext);
 
   const getData = () => {
     if (!isEmpty(headlines)) {

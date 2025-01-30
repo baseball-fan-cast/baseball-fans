@@ -1,61 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Menu } from '../components/Menu';
 import { Headlines } from '../components/Headlines';
 import { useMediaQuery } from 'react-responsive';
 import { ContentContext } from '../context/ContentContextProvider';
-import DataService from '@/services/DataService';
 import { HighlightClips } from '@/components/HighlightClips';
 import { News } from '@/components/News';
-import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
 import { Digest } from '@/components/Digest';
 import { Header } from '@/components/Header';
-import { getIcon } from '@/helpers/helper';
 import { useNews } from '@/hooks/useNews';
+import { useSubscription } from '@/hooks/useSubscription';
+import { useSeasonSchedule } from '@/hooks/useSeasonSchedule';
+import { useDigest } from '@/hooks/useDigest';
+import { useMedia } from '@/hooks/useMedia';
 
 // import Translator from './Translator';
 
 export const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
-  const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
-  const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
-
-  const { filterBy, allPlayers, selectedLatestNews, searchBy } = useContext(ContentContext);
+  const { filterBy, selectedLatestNews, searchBy } = useContext(ContentContext);
   const { data: newsData, loading: newsLoading } = useNews();
-
-  const getSubscription = () => {
-    DataService.getSubscription()
-      .then((response: ISubscriptionResponse) => {
-        console.log('HOME', response?.data?.teams);
-        const teams = response?.data?.teams?.map((item) => {
-          const { icon } = getIcon({}, item?.id, false) || {};
-          return {
-            ...item,
-            icon
-          };
-        });
-        const players = response?.data?.players?.map((item) => {
-          const teamId = allPlayers.find((allPl) => allPl?.id == item.id)?.teamId;
-          const { icon, playerIcon } = getIcon({ id: teamId }, item?.id, !item.teamName) || {};
-
-          return {
-            ...item,
-            teamId,
-            icon,
-            playerIcon
-          };
-        });
-        setSubscriptionTeams(teams);
-        setSubscriptionPlayers(players);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      });
-  };
-
-  useEffect(() => {
-    getSubscription();
-  }, [allPlayers]);
+  const { subscriptionTeams, subscriptionPlayers } = useSubscription();
+  const { scheduleData, scheduleDataLoading } = useSeasonSchedule();
+  const { data: digest, loading: digestLoading } = useDigest();
+  const { data: mediasData, headlines, headlinesLoading } = useMedia();
 
   console.count();
 
@@ -67,16 +35,27 @@ export const Home = () => {
 
   const content = groupBy?.length ? (
     <>
-      <Digest teamIds={subscriptionTeams} playersIds={subscriptionPlayers} />
+      <Digest
+        playersIds={subscriptionPlayers}
+        content={digest}
+        scheduleData={scheduleData}
+        loading={digestLoading}
+        scheduleDataLoading={scheduleDataLoading}
+      />
       {displayHighlightClips ? <div className="border-t-2 my-7" /> : null}
       {displayHighlightClips ? (
         <HighlightClips
           subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
+          data={mediasData}
+          headlinesLoading={headlinesLoading}
         />
       ) : null}
       {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
       {displayHeadlines ? (
-        <Headlines subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }} />
+        <Headlines
+          subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
+          headlines={headlines}
+        />
       ) : null}
       {displaySchedule && <div className="border-t-2 my-7" />}
     </>

@@ -1,74 +1,26 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Flex, Text } from '@radix-ui/themes';
 import { useMediaQuery } from 'react-responsive';
-import DataService from '@/services/DataService';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
-import { IHighlightClipsGamesData, IHighlightClipsResponse } from '@/types';
-import { ISubscriptionData } from '@/types';
+import { IHighlightClipsGamesData, ISubscriptionData } from '@/types';
 import { CustomPlayer } from './CustomPlayer';
 import { LoadingIcon } from './LoadingIcon';
 
-export const HighlightClips = ({ subscriptions }: { subscriptions: ISubscriptionData }) => {
+type IHighlightClips = {
+  subscriptions: ISubscriptionData;
+  data: IHighlightClipsGamesData[];
+  headlinesLoading: boolean;
+};
+export const HighlightClips = ({ subscriptions, data, headlinesLoading }: IHighlightClips) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const [data, setData] = useState<IHighlightClipsGamesData[]>([]);
   const [clips, setClips] = useState({});
   const [displayItems, setDisplayItems] = useState(4);
   const { players, teams } = subscriptions;
+  const { searchBy, selectedFollower } = useContext(ContentContext);
 
-  const { setHeadlines, headlinesLoading, setHeadlinesLoading, searchBy, selectedFollower } =
-    useContext(ContentContext);
   const groupBy = [...searchBy, ...players, ...teams];
-
-  const getHighlightClips = async () => {
-    if (!groupBy.length) return null;
-    setHeadlinesLoading(true);
-    await DataService.getMedia()
-      .then((response: IHighlightClipsResponse) => {
-        const { games } = response?.data || {};
-        const groupedData = groupBy?.reduce((result, item) => {
-          const id = item?.isPlayer ? item?.teamId : item?.id;
-          result[id] = [...games]?.filter(({ teams }) => teams[0].id == id || teams[1].id == id);
-          return result;
-        }, {});
-        setData(groupedData);
-        setHeadlines(groupedData);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      })
-      .finally(() => setHeadlinesLoading(false));
-  };
-
-  const getHighlightClipById = async (id) => {
-    setHeadlinesLoading(true);
-    await DataService.getMediaByTeamId(id)
-      .then((response: IHighlightClipsResponse) => {
-        const { games = [] } = response?.data || {};
-
-        const groupedData = groupBy?.reduce((result, item) => {
-          const id = item?.isPlayer ? item?.teamId : item?.id;
-          result[id] = [...games]?.filter(({ teams }) => teams[0].id == id || teams[1].id == id);
-          return result;
-        }, {});
-        setData({ ...groupedData, ...data });
-        setHeadlines({ ...groupedData, ...data });
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      })
-      .finally(() => setHeadlinesLoading(false));
-  };
-
-  useEffect(() => {
-    if (searchBy.length) {
-      const ids = searchBy.map(({ id }) => id).join(',');
-      getHighlightClipById(ids);
-    } else {
-      getHighlightClips();
-    }
-  }, [searchBy, players, teams]);
 
   useEffect(() => {
     if (selectedFollower.id) {

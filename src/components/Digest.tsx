@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
-import DataService from '@/services/DataService';
 import { ContentContext } from '@/context/ContentContextProvider';
-import { IScheduleResponse, ISubscriptionPlayer, ISubscriptionTeam } from '@/types';
+import { ISubscriptionPlayer } from '@/types';
 import { isEmpty } from '@/helpers/helper';
 import { IScheduleData } from './ComingSchedule';
 import { LoadingIcon } from './LoadingIcon';
+import { Loader } from 'lucide-react';
 
 const monthNames = [
   'January',
@@ -23,106 +23,28 @@ const monthNames = [
   'December'
 ];
 
-export const Digest = ({
-  teamIds,
-  playersIds
-}: {
-  teamIds: ISubscriptionTeam[];
+type IDigest = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any;
   playersIds: ISubscriptionPlayer[];
-}) => {
-  const { t, i18n } = useTranslation();
+  scheduleData: IScheduleData;
+  loading: boolean;
+  scheduleDataLoading: boolean;
+};
+
+export const Digest = ({
+  content,
+  playersIds,
+  scheduleData,
+  loading,
+  scheduleDataLoading
+}: IDigest) => {
+  const { t } = useTranslation();
   const [data, setData] = useState('');
-  const [content, setContent] = useState([]);
-  const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
-  const { selectedFollower, searchBy, teamSchedule } = useContext(ContentContext);
-  const [scheduleData, setScheduleData] = useState<IScheduleData>({});
-
-  const getDigestByIds = (teams, players) => {
-    setLoading(true);
-    DataService.getDigestByIds(teams, players)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((response: any) => {
-        setData(response?.data);
-        setContent(response?.data);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const getDigest = () => {
-    setLoading(true);
-    DataService.getDigest()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((response: any) => {
-        setData(response?.data);
-        setContent(response?.data);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const getSeasonSchedule = () => {
-    const groupBy = [...searchBy, ...teamIds, ...playersIds];
-    const teamsData = Object.values(teamSchedule);
-
-    DataService.getSeasonSchedule()
-      .then((response: IScheduleResponse) => {
-        const groupedData = groupBy?.reduce((result, item) => {
-          const id = item?.isPlayer ? item?.teamId : item?.id;
-
-          const responseData = response?.data || [];
-          result[id] = [...responseData, ...teamsData]
-            ?.filter(
-              (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
-            )
-            ?.map(({ gameDate, teams }) => {
-              return { gameDate, teams };
-            });
-          return result;
-        }, {}) as IScheduleData;
-        setScheduleData(groupedData);
-      })
-      .catch((err: Error) => {
-        console.error('Error response:', err);
-      });
-  };
-
-  useEffect(() => {
-    getSeasonSchedule();
-  }, [searchBy, teamIds, playersIds]);
-
-  useEffect(() => {
-    if (searchBy.length > 0) {
-      const searchData = searchBy.reduce(
-        (acc, item) => {
-          const { playerIcon, id } = item;
-          const team = !playerIcon ? id : '';
-          const player = playerIcon ? id : '';
-
-          acc['teamIds'] = `${acc['teamIds']},${team}`;
-          acc['playerIds'] = `${acc['playerIds']},${player}`;
-          return acc;
-        },
-        { teamIds: '', playerIds: '' }
-      );
-
-      const teams = teamIds?.map((item) => item.id).join(',') + searchData?.teamIds;
-      const players = playersIds?.map((item) => item.id).join(',') + searchData?.playerIds;
-      getDigestByIds(teams, players);
-    } else {
-      getDigest();
-    }
-  }, [i18n.language, searchBy]);
+  const { selectedFollower } = useContext(ContentContext);
+  console.log('content', content);
 
   useEffect(() => {
     if (selectedFollower?.id && !isEmpty(content)) {
@@ -211,6 +133,7 @@ export const Digest = ({
     return (
       <div className={`${hideBorder ? '' : 'py-3'} ${isPlayer || hideBorder ? '' : 'border-t-2'}`}>
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">{t('schedule')}</div>
+        {scheduleDataLoading && <Loader className="animate-spin w-12 h-12 text-blue-500" />}
         {isPlayer && (
           <div className="font-bold">
             {t('current_team')} - {currentTeamName}
@@ -322,7 +245,7 @@ export const Digest = ({
     );
   };
   const renderContent =
-    isEmpty(selectedFollower) && data.length > 1 ? renderAllContent() : renderSingleContent();
+    isEmpty(selectedFollower) && data?.length > 1 ? renderAllContent() : renderSingleContent();
 
   return (
     <div className="">
