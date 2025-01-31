@@ -7,11 +7,13 @@ import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
 // import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
+import { useSubscription } from '@/hooks/useSubscription';
 
 export const FollowFans = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { followers } = useContext(ContentContext);
+  useSubscription();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -49,10 +51,6 @@ export const FollowFans = () => {
     });
 
     await DataService.updateSubscription(teams, players);
-  };
-
-  const deleteSubscription = async () => {
-    await DataService.deleteSubscription();
   };
 
   const goNext = () => {
@@ -101,9 +99,9 @@ export const FollowFans = () => {
           </button>
         </div>
         <div>
-          {activeStep == 1 ? (
+          {/* {activeStep == 1 ? (
             <button onClick={deleteSubscription}>Remove all subscriptions</button>
-          ) : null}
+          ) : null} */}
         </div>
         <div className="mt-9 m-auto mb-5">{steps[activeStep].component}</div>
         <button

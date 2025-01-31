@@ -5,6 +5,7 @@
   "home": "Home",
   "user": "My name is: {{name}}",
   "following": "Following",
+  "follow_more": "Follow More",
   "viewAll": "View All",
   "searchForTeamPlayers": "Search for team, players",
   "filterBy": "Filter by",

@@ -5,6 +5,7 @@
   "home": "Inicio",
   "user": "Mi nombre es: {{name}}",
   "following": "Siguiente",
+  "follow_more": "Seguir Más",
   "viewAll": "Ver todo",
   "searchForTeamPlayers": "Búsqueda de equipo, jugadores",
   "filterBy": "Filtrar por",

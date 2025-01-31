@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import DataService from '@/services/DataService';
 import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
 import { getIcon } from '@/helpers/helper';
+import { ContentContext } from '@/context/ContentContextProvider';
 
 export const useSubscription = () => {
   const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
   const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
   const [loading, setLoading] = useState(true);
+  const { setFollowers } = useContext(ContentContext);
 
   const getSubscription = () => {
     setLoading(true);
@@ -30,6 +32,7 @@ export const useSubscription = () => {
         });
         setSubscriptionTeams(teams);
         setSubscriptionPlayers(players);
+        setFollowers([...teams, ...players]);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

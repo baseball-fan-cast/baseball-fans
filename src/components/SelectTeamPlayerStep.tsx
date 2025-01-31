@@ -9,6 +9,7 @@ import DataService from '@/services/DataService';
 import { IPlayers, ITeams, ITeamsResponse } from '@/types';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { LoadingIcon } from './LoadingIcon';
 
 export const SelectTeamPlayerStep = () => {
   const { t } = useTranslation();
@@ -18,25 +19,30 @@ export const SelectTeamPlayerStep = () => {
   const [selectedTeam, setSelectedTeam] = useState<ITeams[]>([]);
   const [viewPlayers, setViewPlayers] = useState(false);
   const [selectedTeamDetail, setSelectedTeamDetail] = useState<ITeams>();
+  const [loading, setLoading] = useState(true);
 
   const getAllTeams = async () => {
+    setLoading(true);
     await DataService.getAllTeams()
       .then((response: ITeamsResponse) => {
         setTeams(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const getPlayersByTeam = async (team) => {
+    setLoading(true);
     await DataService.getPlayersByTeam(team)
       .then((response: any) => {
         setPlayers(response.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -171,10 +177,10 @@ export const SelectTeamPlayerStep = () => {
     <div className="flex flex-col w-ful gap-1 min-h-[300px]">
       <Text className="text-2xl font-bold mb-2">{t('select_team')}</Text>
       <Flex align="center" className="gap-4 my-3" wrap="wrap">
-        {followers?.map(({ name, icon, playerIcon, abbreviation }) => (
+        {followers?.map(({ name, icon, fullName, playerIcon, abbreviation }) => (
           <AvatarBadge
-            key={name}
-            content={name}
+            key={name || fullName}
+            content={name || fullName}
             isClearable
             data={[
               { src: icon, fallback: abbreviation },
@@ -186,6 +192,7 @@ export const SelectTeamPlayerStep = () => {
       <div className="w-3/6 m-auto">
         <CustomSearch isFollowing />
       </div>
+      {loading && <LoadingIcon />}
       {viewPlayers ? renderPlayers() : renderTeams()}
     </div>
   );

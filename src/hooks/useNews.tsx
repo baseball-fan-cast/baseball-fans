@@ -11,7 +11,7 @@ export const useNews = () => {
   const getTranslatedContent = async (news: INewsItems[] = []) => {
     setLoading(true);
     const content = JSON.stringify(news);
-    const prompt = `Translate only description field from the array and add as new field "titleES" for es language and "titleJA" for ja language`;
+    const prompt = `Translate only title field from the array and add as new field "titleES" for es language and "titleJA" for ja language`;
     const result = await runAi(prompt, content);
     setData(JSON.parse(result));
     setLoading(false);

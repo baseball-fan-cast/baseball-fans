@@ -10,7 +10,7 @@ import { LANGUAGES } from '../constants/index';
 export const Header = () => {
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const defaultLang = localStorage.getItem('LANG') || 'en';
 
   const handleSignOut = async () => {
@@ -29,10 +29,15 @@ export const Header = () => {
     i18n.changeLanguage(value);
   };
 
+  const onFollow = () => {
+    navigate('/follow');
+  };
+
   return (
     <div className="flex justify-between items-center bg-sky-950">
       <Logo className="w-[100px] mx-9 my-4" />
       <div className="flex text-white items-center gap-4 mr-9">
+        <button onClick={onFollow}>{t('follow_more')}</button>
         <div>
           <select
             id="underline_select"
