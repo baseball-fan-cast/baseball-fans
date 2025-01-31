@@ -8,7 +8,7 @@ export const isEmpty = (value) => {
   }
 
   if (typeof value === 'object') {
-    return Object.keys(value).length === 0;
+    return Object.keys(value).length === 0 || Object.values(value).length === 0;
   }
 
   return false;

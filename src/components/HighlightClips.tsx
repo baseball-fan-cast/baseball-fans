@@ -10,9 +10,9 @@ import { LoadingIcon } from './LoadingIcon';
 type IHighlightClips = {
   subscriptions: ISubscriptionData;
   data: IHighlightClipsGamesData[];
-  headlinesLoading: boolean;
+  loading: boolean;
 };
-export const HighlightClips = ({ subscriptions, data, headlinesLoading }: IHighlightClips) => {
+export const HighlightClips = ({ subscriptions, data, loading }: IHighlightClips) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [clips, setClips] = useState({});
@@ -40,7 +40,7 @@ export const HighlightClips = ({ subscriptions, data, headlinesLoading }: IHighl
       <Text as="div" className="font-bold mb-5 text-2xl">
         {t('highlight_clips_replays')}
       </Text>
-      {headlinesLoading ? (
+      {loading ? (
         <LoadingIcon />
       ) : (
         <Flex

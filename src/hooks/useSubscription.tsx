@@ -1,15 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DataService from '@/services/DataService';
 import { ISubscriptionPlayer, ISubscriptionResponse, ISubscriptionTeam } from '@/types';
-import { ContentContext } from '@/context/ContentContextProvider';
 import { getIcon } from '@/helpers/helper';
 
 export const useSubscription = () => {
   const [subscriptionTeams, setSubscriptionTeams] = useState<ISubscriptionTeam[]>([]);
   const [subscriptionPlayers, setSubscriptionPlayers] = useState<ISubscriptionPlayer[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const { allPlayers } = useContext(ContentContext);
 
   const getSubscription = () => {
     setLoading(true);
@@ -23,12 +20,10 @@ export const useSubscription = () => {
           };
         });
         const players = response?.data?.players?.map((item) => {
-          const teamId = allPlayers.find((allPl) => allPl?.id == item.id)?.teamId;
-          const { icon, playerIcon } = getIcon({ id: teamId }, item?.id, !item.teamName) || {};
+          const { icon, playerIcon } = getIcon({ id: item.teamId }, item?.id, !item.teamName) || {};
 
           return {
             ...item,
-            teamId,
             icon,
             playerIcon
           };
@@ -46,7 +41,7 @@ export const useSubscription = () => {
 
   useEffect(() => {
     getSubscription();
-  }, [allPlayers]);
+  }, []);
 
   return { subscriptionTeams, subscriptionPlayers, loading };
 };

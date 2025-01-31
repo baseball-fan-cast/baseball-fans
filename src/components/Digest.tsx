@@ -44,7 +44,6 @@ export const Digest = ({
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { selectedFollower } = useContext(ContentContext);
-  console.log('content', content);
 
   useEffect(() => {
     if (selectedFollower?.id && !isEmpty(content)) {

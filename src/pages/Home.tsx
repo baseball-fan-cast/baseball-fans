@@ -23,9 +23,7 @@ export const Home = () => {
   const { subscriptionTeams, subscriptionPlayers } = useSubscription();
   const { scheduleData, scheduleDataLoading } = useSeasonSchedule();
   const { data: digest, loading: digestLoading } = useDigest();
-  const { data: mediasData, headlines, headlinesLoading } = useMedia();
-
-  console.count();
+  const { data: mediasData, loading: mediaLoading } = useMedia();
 
   const displaySchedule = filterBy.length == 0 || filterBy.includes('coming_schedule');
   const displayHighlightClips = filterBy.length == 0 || filterBy.includes('highlight_clips');
@@ -47,16 +45,11 @@ export const Home = () => {
         <HighlightClips
           subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
           data={mediasData}
-          headlinesLoading={headlinesLoading}
+          loading={mediaLoading}
         />
       ) : null}
       {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
-      {displayHeadlines ? (
-        <Headlines
-          subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
-          headlines={headlines}
-        />
-      ) : null}
+      {displayHeadlines ? <Headlines /> : null}
       {displaySchedule && <div className="border-t-2 my-7" />}
     </>
   ) : (
