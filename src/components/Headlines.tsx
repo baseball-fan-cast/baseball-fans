@@ -1,14 +1,12 @@
- 
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, Flex, Link } from '@radix-ui/themes';
 import { ContentContext } from '@/context/ContentContextProvider';
 import { useTranslation } from 'react-i18next';
 import { LoadingIcon } from './LoadingIcon';
-import { ISubscriptionsData } from '@/hooks/useHeadlines';
 
 export const Headlines = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState<ISubscriptionsData>({});
+  const [data, setData] = useState({});
   const language = localStorage.getItem('LANG') || 'en';
   const {
     selectedFollower,
@@ -25,7 +23,7 @@ export const Headlines = () => {
   }, [selectedFollower, loading]);
 
   const translatedDescription = `description${language?.toUpperCase()}`;
-  console.log('data', data);
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <Text as="div" className="font-bold my-2 text-xl">

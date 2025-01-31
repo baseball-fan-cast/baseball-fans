@@ -16,10 +16,9 @@ export const useMedia = () => {
   const groupBy = [...searchBy, ...players, ...teams];
   const defaultCount = 4;
 
-  const getTranslatedContent = async (data, prevData = {}) => {
+  const getTranslatedContent = async (data) => {
     if (isEmpty(data)) return null;
     setHeadlinesLoading(true);
-
     const subscriptionsData = Object.entries(data)?.reduce((acc, [key, content]) => {
       const match = [...players, ...teams, ...searchBy]?.find(
         ({ id, teamId }) => id == key || teamId == key
@@ -38,7 +37,7 @@ export const useMedia = () => {
     const result = await runAi(prompt, content);
 
     setHeadlinesLoading(false);
-    setHeadlines({ ...JSON.parse(result), ...prevData });
+    setHeadlines(JSON.parse(result));
   };
 
   const getHighlightClips = async () => {
@@ -80,7 +79,7 @@ export const useMedia = () => {
           return result;
         }, {});
         setData({ ...groupedData, ...data });
-        getTranslatedContent(groupedData, data);
+        getTranslatedContent({ ...groupedData, ...data });
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
