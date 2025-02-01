@@ -43,7 +43,7 @@ export const useSeasonSchedule = () => {
 
   useEffect(() => {
     getSeasonSchedule();
-  }, [searchBy, teamIds, playersIds]);
+  }, [searchBy, teamIds, playersIds, teamSchedule]);
 
   return { scheduleData, scheduleDataLoading };
 };

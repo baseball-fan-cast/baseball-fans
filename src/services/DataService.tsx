@@ -46,8 +46,8 @@ const getSeasonScheduleByIds = (teamIds, playerIds) => {
   return client.get<never>(`/mlb/schedule?teamIds=${teamIds}&playerIds=${playerIds}`);
 };
 
-const getScheduleByTeamId = (teamId) => {
-  return client.get<never>(`/mlb/schedule?teamIds=${teamId}`);
+const getScheduleByTeamId = (teamId, playerIds) => {
+  return client.get<never>(`/mlb/schedule?teamIds=${teamId}&playerIds=${playerIds}`);
 };
 
 const getSeasonSchedule = () => {

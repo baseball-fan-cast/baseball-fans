@@ -17,7 +17,7 @@ export const useMedia = () => {
   const defaultCount = 4;
 
   const getTranslatedContent = async (data) => {
-    if (isEmpty(data)) return null;
+    if (isEmpty(data) || loading) return null;
     setHeadlinesLoading(true);
     const subscriptionsData = Object.entries(data)?.reduce((acc, [key, content]) => {
       const match = [...players, ...teams, ...searchBy]?.find(

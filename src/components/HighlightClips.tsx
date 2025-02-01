@@ -33,7 +33,7 @@ export const HighlightClips = ({ subscriptions, data, loading }: IHighlightClips
     }
   }, [selectedFollower, data]);
 
-  if (!groupBy.length || !clips || !Object.values(clips)?.flat()?.length) return null;
+  if (!groupBy.length) return null;
 
   return (
     <div className="bg-white p-4 rounded-lg">

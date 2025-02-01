@@ -78,8 +78,9 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     })
   };
 
-  const getDataByTeamId = async (id) => {
-    await DataService.getScheduleByTeamId(id)
+  const getDataByTeamId = async (id, isPlayer, teamId) => {
+    const playerId = isPlayer ? id : '';
+    await DataService.getScheduleByTeamId(teamId, playerId)
       .then((response: any) => {
         setTeamSchedule({ ...teamSchedule, ...{ [`${id}`]: response?.data } });
       })
@@ -100,8 +101,11 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     if (isFollowing) {
       setFollowers([...followers, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
     } else {
-      setSearchBy([...searchBy, { id, name, icon: teamIcon, abbreviation, playerIcon }]);
-      await getDataByTeamId(id);
+      setSearchBy([
+        ...searchBy,
+        { id, name, icon: teamIcon, abbreviation, playerIcon, teamId: currentTeam?.id, isPlayer }
+      ]);
+      await getDataByTeamId(id, isPlayer, currentTeam?.id);
     }
   };
 

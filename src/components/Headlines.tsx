@@ -6,13 +6,13 @@ import { LoadingIcon } from './LoadingIcon';
 
 export const Headlines = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState({});
   const language = localStorage.getItem('LANG') || 'en';
   const {
     selectedFollower,
     headlines: content,
     headlinesLoading: loading
   } = useContext(ContentContext);
+  const [data, setData] = useState(content);
 
   useEffect(() => {
     if (selectedFollower?.id) {
@@ -20,10 +20,10 @@ export const Headlines = () => {
     } else {
       setData(content);
     }
-  }, [selectedFollower, loading]);
+  }, [selectedFollower, loading, content]);
 
   const translatedDescription = `description${language?.toUpperCase()}`;
-  if (!data || !Object.entries(data).length) return null;
+  if (!data) return null;
 
   return (
     <div className="bg-white p-4 rounded-lg">

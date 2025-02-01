@@ -34,7 +34,7 @@ export const Home = () => {
   const content = groupBy?.length ? (
     <>
       <Digest
-        playersIds={subscriptionPlayers}
+        playersIds={groupBy}
         content={digest}
         scheduleData={scheduleData}
         loading={digestLoading}
