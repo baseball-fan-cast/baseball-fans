@@ -8,6 +8,7 @@ import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
 import { useSubscription } from '@/hooks/useSubscription';
+import { Loader, LoaderCircle } from 'lucide-react';
 
 export const FollowFans = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export const FollowFans = () => {
   useSubscription();
 
   const [activeStep, setActiveStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const steps = [
     {
@@ -41,7 +43,6 @@ export const FollowFans = () => {
   const followFans = async () => {
     const teams: number[] = [];
     const players: number[] = [];
-
     followers.map(({ id, playerIcon }) => {
       if (playerIcon) {
         players.push(id);
@@ -49,8 +50,16 @@ export const FollowFans = () => {
         teams.push(id);
       }
     });
-
-    await DataService.updateSubscription(teams, players);
+    setLoading(true)
+    await DataService.updateSubscription(teams, players)
+    .then(() => {
+      navigate('/');
+    })
+    .catch((err: Error) => {
+      console.error('Error response:', err);
+    })
+    .finally(() => setLoading(false))
+  
   };
 
   const goNext = () => {
@@ -61,7 +70,7 @@ export const FollowFans = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
     } else {
-      navigate('/');
+      // navigate('/');
     }
   };
 
@@ -108,7 +117,7 @@ export const FollowFans = () => {
           className="flex justify-center bg-slate-800 text-white rounded-md w-2/6 p-2 m-auto"
           onClick={goNext}
         >
-          {t('next')}
+          {loading ? <LoaderCircle className="animate-spin w-5 h-5 text-blue-500 mr-3" /> : null}{t('next')}
         </button>
       </div>
     </div>

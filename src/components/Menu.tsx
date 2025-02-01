@@ -4,13 +4,12 @@ import { Flex, Text, Box, Container, Badge } from '@radix-ui/themes';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
 import { ContentContext } from '@/context/ContentContextProvider';
-// import { FilterBy } from './FilterBy';
 import { useMediaQuery } from 'react-responsive';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getIcon } from '@/helpers/helper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Menu = ({ subscriptions }: { subscriptions: any }) => {
+export const Menu = ({ subscriptions }: { subscriptions: any}) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const defaultCount = 4;
@@ -137,7 +136,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
               <Text>{t('latest')}</Text>
             </Badge>
             <div className="border h-[50px] border-black" />
-            <Badge
+             <Badge
               className={`p-4 rounded-lg border border-black ${!selectedLatestNews && !selectedFollower?.name ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
               onClick={() => {
                 setSelectedFollower({});

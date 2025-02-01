@@ -87,7 +87,7 @@ export const SelectTeamPlayerStep = () => {
   const followedPlayers = players?.filter(({ id }) => ids.includes(id));
 
   const renderTeams = () => (
-    <div className="flex flex-wrap gap-4 mt-9 overflow-y-auto p-1 h-[500px]">
+    <div className="flex flex-wrap gap-4 mt-9 overflow-y-auto p-1 h-[400px]">
       {[...followedTeams, ...filteredTeams]?.slice(0, 30)?.map((team) => {
         return (
           <div

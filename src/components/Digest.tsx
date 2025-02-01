@@ -133,12 +133,12 @@ export const Digest = ({
       <div className={`${hideBorder ? '' : 'py-3'} ${isPlayer || hideBorder ? '' : 'border-t-2'}`}>
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">{t('schedule')}</div>
         {scheduleDataLoading && <Loader className="animate-spin w-12 h-12 text-blue-500" />}
-        {isPlayer && (
+        {isPlayer && currentTeamName && (
           <div className="font-bold">
             {t('current_team')} - {currentTeamName}
           </div>
         )}
-        <ul className="list-disc list-inside ">
+       { data?.length ? <ul className="list-disc list-inside ">
           {data?.slice(0, 5)?.map((item, index) => (
             <li key={index} className="text-gray-500">
               {`${monthNames[new Date(item?.gameDate)?.getMonth()]} ${new Date(item?.gameDate)?.getDate()}  - vs `}
@@ -146,7 +146,7 @@ export const Digest = ({
               {teamId != item.teams.home?.team?.id ? item.teams.home?.team?.name : ''}
             </li>
           ))}
-        </ul>
+        </ul> : "No data"}
       </div>
     );
   };
@@ -184,67 +184,124 @@ export const Digest = ({
       </div>
     );
   };
-
-  const renderAllContent = () => {
+  const chunkArray = (arr, chunkSize) => {
+    let result = [];
+    
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    
+    return result;
+  }
+  const renderMultipleContent = () => {
     if (isEmpty(data) || !data?.length) return null;
-    return (
-      <div className="flex w-full flex-wrap gap-5 p-2">
-        {data?.map((team, idx) => {
-          const idxs = [0, 3, 6, 9, 12];
-          if (!idxs.includes(idx)) return null;
-
-          return (
-            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
-              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+    const chunked = chunkArray(data, 3);
+    return chunked?.map((item) => (
+        <div className="flex gap-2">
+           <div key={item?.[0].id} className="bg-white p-4 rounded-lg mb-5 flex-1">
+              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[0].name}</div>
               <div className="flex mt-5">
-                <div className="mr-2">{getKeyGameResultsSection(team?.keyGameResults)}</div>
+                <div className="mr-2 w-fit">{getKeyGameResultsSection(item?.[0]?.keyGameResults)}</div>
               </div>
             </div>
-          );
-        })}
-        {data?.map((team, idx) => {
-          const idxs = [1, 4, 7, 10, 13];
-          if (!idxs.includes(idx)) return null;
-
-          return (
-            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
-              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-              <div className="flex mt-5">
-                <div className="px-5">
-                  {getMonthlyAnalysis(team?.monthlyAnalysis)}
-                  {team.isPlayer
-                    ? null
-                    : getDivisionRaceImplications(team?.divisionRaceImplications)}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-        {data?.map((team, idx) => {
-          const idxs = [2, 5, 8, 11, 14];
-          if (!idxs.includes(idx)) return null;
-
-          return (
-            <div key={team.id} className="bg-white p-4 rounded-lg mb-5 w-[500px]">
-              <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-              <div className="flex mt-5">
-                <div className=" flex px-5">
-                  {team.isPlayer
-                    ? null
-                    : getCurrentDivisionStandings(team?.currentDivisionStandings)}
-                  <div className={`${team.isPlayer ? '' : 'pl-3 border-l-2'}`}>
-                    {getSchedule(team.id, team.isPlayer, true)}
+         
+          <div className='flex-1'>
+          {(item?.[0]?.id && item?.[1]?.name)? (
+            <div key={item?.[0]?.id} className="bg-white p-4 rounded-lg mb-5">
+                  <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[1]?.name}</div>
+                  <div className="flex mt-5">
+                    <div className="px-5">
+                      {getMonthlyAnalysis(item?.[1]?.monthlyAnalysis)}
                   </div>
-                </div>
+                  </div>
+            </div>
+          ) : null}
+          
+        {item?.[2]?.id ? (
+          <div key={item?.[2]?.id} className="bg-white p-4 rounded-lg mb-5">
+            <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[2]?.name}</div>
+              <div className="flex mt-5">
+                <div className=" flex px-5 mr-2">
+                  {item?.[2]?.isPlayer
+                    ? null
+                    : getCurrentDivisionStandings(item?.[2]?.currentDivisionStandings)}
+                  <div className={`${item?.[2]?.isPlayer ? '' : 'pl-3 border-l-2'}`}>
+                    {getSchedule(item?.[2]?.id, item?.[2]?.isPlayer, true)}
+                  </div>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ) : null}
+
+        </div>
       </div>
-    );
+      )
+      )
+     
+    
   };
+
+  // const renderAllContent = () => {
+  //   if (isEmpty(data) || !data?.length) return null;
+  //   return (
+  //     <div className="flex w-full flex-wrap gap-3 p-2">
+  //       {data?.map((team, idx) => {
+  //         const idxs = [0, 3, 6, 9, 12];
+  //         if (!idxs.includes(idx)) return null;
+
+  //         return (
+  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
+  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+  //             <div className="flex mt-5">
+  //               <div className="mr-2 w-fit">{getKeyGameResultsSection(team?.keyGameResults)}</div>
+  //             </div>
+  //           </div>
+  //         );
+  //       })}
+  //       {data?.map((team, idx) => {
+  //         const idxs = [1, 4, 7, 10, 13];
+  //         if (!idxs.includes(idx)) return null;
+
+  //         return (
+  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
+  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+  //             <div className="flex mt-5">
+  //               <div className="px-5">
+  //                 {getMonthlyAnalysis(team?.monthlyAnalysis)}
+  //                 {team.isPlayer
+  //                   ? null
+  //                   : getDivisionRaceImplications(team?.divisionRaceImplications)}
+  //               </div>
+  //             </div>
+  //           </div>
+  //         );
+  //       })}
+  //       {data?.map((team, idx) => {
+  //         const idxs = [2, 5, 8, 11, 14];
+  //         if (!idxs.includes(idx)) return null;
+
+  //         return (
+  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
+  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
+  //             <div className="flex mt-5">
+  //               <div className=" flex px-5">
+  //                 {team.isPlayer
+  //                   ? null
+  //                   : getCurrentDivisionStandings(team?.currentDivisionStandings)}
+  //                 <div className={`${team.isPlayer ? '' : 'pl-3 border-l-2'}`}>
+  //                   {getSchedule(team.id, team.isPlayer, true)}
+  //                 </div>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // };
+  
   const renderContent =
-    isEmpty(selectedFollower) && data?.length > 1 ? renderAllContent() : renderSingleContent();
+    isEmpty(selectedFollower) && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
 
   return (
     <div className="">
