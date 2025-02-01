@@ -62,8 +62,8 @@ export const Digest = ({
           {t('key_game_results')}
         </div>
         <div className="">
-          {data?.map((gameRes) => (
-            <div key={gameRes.games} className="py-3">
+          {data?.map((gameRes, idx) => (
+            <div key={gameRes.games+idx} className="py-3">
               <div className="font-bold">
                 {gameRes.date} {gameRes.games}
               </div>
@@ -110,8 +110,8 @@ export const Digest = ({
           {t('current_division_standings')}
         </div>
         <ol className="list-decimal pl-3">
-          {data?.map(({ name, record }) => (
-            <li key={name} className="text-gray-500">
+          {data?.map(({ name, record }, idx) => (
+            <li key={name+idx} className="text-gray-500">
               {name} ({record})
             </li>
           ))}
@@ -155,9 +155,9 @@ export const Digest = ({
     if (isEmpty(data) || !data?.length) return null;
     return (
       <div className="p-2">
-        {data?.map((team) => {
+        {data?.map((team, idx) => {
           return (
-            <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
+            <div key={team.id+idx} className="bg-white p-4 rounded-lg mb-5">
               <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
               <div className={`flex  mt-5  ${isMobile ? 'flex-wrap' : ''}`}>
                 <div className={`mr-2 ${isMobile ? '' : 'w-[50%] border-r-2'}`}>
@@ -196,9 +196,9 @@ export const Digest = ({
   const renderMultipleContent = () => {
     if (isEmpty(data) || !data?.length) return null;
     const chunked = chunkArray(data, 3);
-    return chunked?.map((item) => (
+    return chunked?.map((item, idx) => (
         <div className="flex gap-2">
-           <div key={item?.[0].id} className="bg-white p-4 rounded-lg mb-5 flex-1">
+           <div key={item?.[0].id + idx} className="bg-white p-4 rounded-lg mb-5 flex-1">
               <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[0].name}</div>
               <div className="flex mt-5">
                 <div className="mr-2 w-fit">{getKeyGameResultsSection(item?.[0]?.keyGameResults)}</div>
@@ -207,7 +207,7 @@ export const Digest = ({
          
           <div className='flex-1'>
           {(item?.[0]?.id && item?.[1]?.name)? (
-            <div key={item?.[0]?.id} className="bg-white p-4 rounded-lg mb-5">
+            <div key={item?.[0]?.id + idx} className="bg-white p-4 rounded-lg mb-5">
                   <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[1]?.name}</div>
                   <div className="flex mt-5">
                     <div className="px-5">
@@ -218,7 +218,7 @@ export const Digest = ({
           ) : null}
           
         {item?.[2]?.id ? (
-          <div key={item?.[2]?.id} className="bg-white p-4 rounded-lg mb-5">
+          <div key={item?.[2]?.id + idx} className="bg-white p-4 rounded-lg mb-5">
             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[2]?.name}</div>
               <div className="flex mt-5">
                 <div className=" flex px-5 mr-2">
