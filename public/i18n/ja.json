@@ -33,5 +33,18 @@
   "key_player_contributions": "主要プレーヤーの貢献",
   "division_race_implications": "部門別人種の影響",
   "current_division_standings": "現在の部門順位",
-  "current_team": "現在のチーム"
+  "current_team": "現在のチーム",
+  "log_out": "ログアウト",
+  "watch": "時計",
+  "score": "スコア",
+  "stats": "統計",
+  "standings": "順位",
+  "youth": "若者",
+  "mlb_play": "MLB 遊ぶ",
+  "mlb_tv": "MLB.TV",
+  "tickets": "チケット",
+  "shop": "店",
+  "discover": "発見する",
+  "latest": "最新",
+  "warning_msg": "チームまたは選手で検索してください"
 }

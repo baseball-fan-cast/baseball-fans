@@ -60,6 +60,9 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
         return { ...player, name: player.fullName };
       }) || [];
     setFollowers([...teams, ...player]);
+    // if ([...searchBy, ...followers].length == 0) {
+    //   selectedLatestNews(true);
+    // }
   }, [subscriptions]);
 
   return (
@@ -120,7 +123,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
                 setSelectedLatestNews(true);
               }}
             >
-              <Text>Latest</Text>
+              <Text>{t('latest')}</Text>
             </Badge>
             <div className="border h-[50px] border-black" />
             <Badge

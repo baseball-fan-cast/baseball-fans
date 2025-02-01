@@ -80,10 +80,15 @@ export const SelectTeamPlayerStep = () => {
     setViewPlayers(true);
     setSelectedTeamDetail(team);
   };
+  const ids = followers?.map(({ id }) => id);
+  const followedTeams = teams?.filter(({ id }) => ids.includes(id));
+  const filteredTeams = teams?.filter(({ id }) => !ids.includes(id));
+  const filteredPlayers = players?.filter(({ id }) => !ids.includes(id));
+  const followedPlayers = players?.filter(({ id }) => ids.includes(id));
 
   const renderTeams = () => (
-    <div className="flex flex-wrap gap-4 mt-9 m-auto">
-      {teams?.slice(0, 20)?.map((team) => {
+    <div className="flex flex-wrap gap-4 mt-9 overflow-y-auto p-1 h-[500px]">
+      {[...followedTeams, ...filteredTeams]?.slice(0, 30)?.map((team) => {
         return (
           <div
             className={`p-4 border rounded-md relative min-w-[250px] ${selectedTeam.find(({ id }) => id === team?.id) ? 'bg-slate-50' : 'bg-white'}`}
@@ -100,10 +105,8 @@ export const SelectTeamPlayerStep = () => {
               checked={!!selectedTeam.find(({ id }) => id === team?.id)}
               className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
-            <Text as="div">{team?.locationName}</Text>
-            <Text as="div" className="font-bold">
-              {team.name}
-            </Text>
+            <div className="text-wrap">{team?.locationName}</div>
+            <div className="font-bold text-wrap">{team.name}</div>
             <Button
               className="my-3 flex justify-center align-center"
               onClick={() => onSelectPlayers(team)}
@@ -139,8 +142,8 @@ export const SelectTeamPlayerStep = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-4 mt-9 m-auto">
-        {players?.slice(0, 20)?.map((person) => {
+      <div className="flex flex-wrap gap-4 mt-9 ">
+        {[...followedPlayers, ...filteredPlayers]?.slice(0, 20)?.map((person) => {
           return (
             <div
               className={`p-4 border rounded-md relative min-w-[250px] py-9 ${selectedTeam.find(({ id }) => id === person?.id) ? 'bg-slate-50' : 'bg-white'}`}

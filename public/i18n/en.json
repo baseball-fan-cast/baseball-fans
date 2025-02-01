@@ -5,7 +5,7 @@
   "home": "Home",
   "user": "My name is: {{name}}",
   "following": "Following",
-  "follow_more": "Follow More",
+  "follow_more": "Follow",
   "viewAll": "View All",
   "searchForTeamPlayers": "Search for team, players",
   "filterBy": "Filter by",
@@ -33,5 +33,18 @@
   "key_player_contributions": "Key Player Contributions",
   "division_race_implications": "Division Race Implications",
   "current_division_standings": "Current Division Standings",
-  "current_team": "Current Team"
+  "current_team": "Current Team",
+  "log_out": "Log out",
+  "watch": "WATCH",
+  "score": "SCORES",
+  "stats": "STATS",
+  "standings": "STANDINGS",
+  "youth": "YOUTH",
+  "mlb_play": "MLB PLAY",
+  "mlb_tv": "MLB.TV",
+  "tickets": "TICKETS",
+  "shop": "SHOP",
+  "discover": "DISCOVER",
+  "latest": "Latest",
+  "warning_msg": "Please search by teams or players"
 }

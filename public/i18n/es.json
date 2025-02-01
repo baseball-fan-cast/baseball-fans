@@ -5,7 +5,7 @@
   "home": "Inicio",
   "user": "Mi nombre es: {{name}}",
   "following": "Siguiente",
-  "follow_more": "Seguir Más",
+  "follow_more": "Seguir",
   "viewAll": "Ver todo",
   "searchForTeamPlayers": "Búsqueda de equipo, jugadores",
   "filterBy": "Filtrar por",
@@ -33,5 +33,18 @@
   "key_player_contributions": "Contribuciones de los jugadores clave",
   "division_race_implications": "Implicaciones de la carrera divisional",
   "current_division_standings": "Clasificación actual de la división",
-  "current_team": "Equipo actual"
+  "current_team": "Equipo actual",
+  "log_out": "Finalizar la sesión",
+  "watch": "MIRAR",
+  "score": "MONTONES",
+  "stats": "ESTADÍSTICAS",
+  "standings": "CLASIFICACIÓN",
+  "youth": "Juventud",
+  "mlb_play": "MLB JUGAR",
+  "mlb_tv": "MLB.TV",
+  "tickets": "ENTRADAS",
+  "shop": "COMERCIO",
+  "discover": "DESCUBRIR",
+  "latest": "El último",
+  "warning_msg": "Por favor busque por equipos o jugadores"
 }
