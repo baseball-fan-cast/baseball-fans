@@ -25,12 +25,14 @@ export const useMedia = () => {
       );
       const { name, fullName, teamName } = match || {};
       const keyName = name || fullName || teamName;
+      if (!keyName || !content.length) return;
       acc[keyName] = content?.map(({ media }) => {
         const { description, highlightId: id, headline } = media || {};
         return { description, highlightId: id, headline };
       });
       return acc;
     }, {});
+    if (!subscriptionsData) return;
 
     const content = !isEmpty(subscriptionsData) ? JSON.stringify(subscriptionsData) : [];
     const prompt = `Translate only description field from the content and add as a new field "descriptionES" for es language and "descriptionJA" for ja language`;

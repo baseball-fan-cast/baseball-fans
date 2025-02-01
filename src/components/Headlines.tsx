@@ -23,6 +23,7 @@ export const Headlines = () => {
   }, [selectedFollower, loading]);
 
   const translatedDescription = `description${language?.toUpperCase()}`;
+  if (!data || !Object.entries(data).length) return null;
 
   return (
     <div className="bg-white p-4 rounded-lg">

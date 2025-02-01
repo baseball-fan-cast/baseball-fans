@@ -55,7 +55,12 @@ export const AvatarBadge = ({
     >
       <Flex align="center" justify="between" className="gap-2">
         {/* opacity-0 hover:opacity-100  */}
-        {!isClearable ? null : <X className="text-slate-800" onClick={onRemove} />}
+        {!isClearable ? null : (
+          <X
+            className={`${isSelected ? 'text-white' : 'text-slate-800`'} text-slate-800`}
+            onClick={onRemove}
+          />
+        )}
         <Flex className="relative">
           <Avatar className="bg-slate-300 border-black">
             <AvatarImage src={data[0]?.src} />

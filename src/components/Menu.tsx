@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useState, useEffect } from 'react';
-import { Flex, Text, Box, Button, Container, Badge } from '@radix-ui/themes';
+import { Flex, Text, Box, Container, Badge } from '@radix-ui/themes';
 import { AvatarBadge } from '../components/AvatarBadge';
 import { CustomSearch } from '../components/CustomSearch';
 import { ContentContext } from '@/context/ContentContextProvider';
@@ -17,8 +17,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
   const {
     selectedFollower,
     setSelectedFollower,
-    filterBy,
-    setFilterBy,
     searchBy,
     setSelectedLatestNews,
     selectedLatestNews
@@ -84,20 +82,33 @@ export const Menu = ({ subscriptions }: { subscriptions: any }) => {
             selectedItems={filterBy}
           />
         </Box> */}
-        {filterBy.length ? (
+        {/* {filterBy.length ? (
           <Button className="opacity-50" onClick={() => setFilterBy([])}>
             {t('clear_filters')}
           </Button>
-        ) : null}
+        ) : null} */}
       </Flex>
       {searchBy?.length ? (
         <Flex align="center" className={`gap-7 my-5 ${isMobile ? 'mx-16' : 'mx-36'}`} wrap="wrap">
-          {searchBy?.map(({ name, icon, playerIcon, abbreviation, id }) => (
+          {searchBy?.map(({ name, icon, playerIcon, abbreviation, id, teamId, isPlayer }) => (
             <AvatarBadge
               key={name}
               content={name}
               id={id}
+              isSelected={selectedFollower?.name == name}
               isClearable
+              onSelect={() => {
+                setSelectedLatestNews(false);
+                setSelectedFollower({
+                  name,
+                  icon,
+                  playerIcon,
+                  abbreviation,
+                  id,
+                  teamId,
+                  isPlayer
+                });
+              }}
               data={[
                 { src: icon, fallback: abbreviation },
                 ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])
