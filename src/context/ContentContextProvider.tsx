@@ -30,6 +30,8 @@ type IGameContext = {
   setAllPlayers: (data: any) => void;
   selectedLatestNews: false;
   setSelectedLatestNews: (flag: boolean) => void;
+  activeStep: number;
+  setActiveStep: (data: any) => void;
 };
 
 const initialValue = {
@@ -54,7 +56,9 @@ const initialValue = {
   allPlayers: [],
   setAllPlayers: () => {},
   selectedLatestNews: false,
-  setSelectedLatestNews: () => {}
+  setSelectedLatestNews: () => {},
+  activeStep: 0,
+  setActiveStep: () => {},
 };
 
 const ContentContext = createContext<IGameContext>(initialValue);
@@ -71,6 +75,7 @@ const ContentContextProvider = ({ children }: Props) => {
   const [filterBy, setFilterBy] = useState<string[]>([]);
   const [allPlayers, setAllPlayers] = useState<IPlayers[]>([]);
   const [selectedLatestNews, setSelectedLatestNews] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   const value = useMemo(() => {
     return {
@@ -95,7 +100,8 @@ const ContentContextProvider = ({ children }: Props) => {
       allPlayers,
       setAllPlayers,
       selectedLatestNews,
-      setSelectedLatestNews
+      setSelectedLatestNews,
+      activeStep, setActiveStep
     };
   }, [
     searchData,
@@ -119,7 +125,8 @@ const ContentContextProvider = ({ children }: Props) => {
     allPlayers,
     setAllPlayers,
     selectedLatestNews,
-    setSelectedLatestNews
+    setSelectedLatestNews,
+    activeStep, setActiveStep
   ]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;

@@ -34,10 +34,12 @@ export const AvatarBadge = ({
     teamSchedule,
     setTeamSchedule,
     highlightClips,
-    setHighlightClips
+    setHighlightClips,
+    setSelectedFollower
   } = useContext(ContentContext);
 
   const onRemove = () => {
+    setSelectedFollower({});
     const filtered = searchBy.filter(({ name }) => name !== content);
     setSearchBy(filtered);
     const filteredFollowers = followers.filter(({ name = '' }) => name !== content);

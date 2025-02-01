@@ -95,7 +95,7 @@ export const Signup = () => {
         console.log('updated successfully');
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

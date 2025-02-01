@@ -15,8 +15,11 @@ export const useSeasonSchedule = () => {
   const getSeasonSchedule = () => {
     const groupBy = [...searchBy, ...teamIds, ...playersIds];
     const teamsData = Object.values(teamSchedule);
+    const teamsId = teamIds?.map(({id}) => id)?.join(" ,");
+    const playersId = playersIds?.map(({ teamId }) => teamId)?.join(" ,");
+    const list = teamsId + "," +playersId;
     setScheduleDataLoading(true);
-    DataService.getSeasonSchedule()
+    DataService.getSeasonScheduleByIds(list, playersId)
       .then((response: IScheduleResponse) => {
         const groupedData = groupBy?.reduce((result, item) => {
           const id = item?.isPlayer ? item?.teamId : item?.id;
@@ -24,7 +27,9 @@ export const useSeasonSchedule = () => {
           const teamData = teamsData?.length ? teamsData?.flat() : [];
           result[id] = [...responseData, ...teamData]
             ?.filter(
-              (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
+              (item) => {
+              return item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id || item.teams?.away?.team?.id === item?.teamId || item.teams?.home?.team?.id === item?.teamId
+              }
             )
             ?.map(({ gameDate, teams }) => {
               return { gameDate, teams };
@@ -42,7 +47,9 @@ export const useSeasonSchedule = () => {
   };
 
   useEffect(() => {
-    getSeasonSchedule();
+    if(teamIds.length || playersIds.length) {
+      getSeasonSchedule();
+    }
   }, [searchBy, teamIds, playersIds, teamSchedule]);
 
   return { scheduleData, scheduleDataLoading };

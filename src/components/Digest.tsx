@@ -40,19 +40,26 @@ export const Digest = ({
   scheduleDataLoading
 }: IDigest) => {
   const { t } = useTranslation();
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
-  const { selectedFollower } = useContext(ContentContext);
-  console.log('content', content)
+  const { selectedFollower, searchBy } = useContext(ContentContext);
+
   useEffect(() => {
     if (selectedFollower?.id && content && !isEmpty(content)) {
+
       const filtered = content?.filter(({ id }) => id == selectedFollower.id);
+
       setData(filtered);
     } else {
       setData(content);
     }
-  }, [selectedFollower, content]);
+  }, [selectedFollower, content, searchBy, loading]);
+ 
+  useEffect(() => {
+    setData(content)
+    },[content, loading])
+  const isSelected = selectedFollower?.id && content && !isEmpty(content) && content?.find(({ id }) => id == selectedFollower.id);
 
   const getKeyGameResultsSection = (data) => {
     if (isEmpty(data)) return null;
@@ -134,8 +141,8 @@ export const Digest = ({
         <div className="text-xl font-bold mb-2 uppercase text-blue-900">{t('schedule')}</div>
         {scheduleDataLoading && <Loader className="animate-spin w-12 h-12 text-blue-500" />}
         {isPlayer && currentTeamName && (
-          <div className="font-bold">
-            {t('current_team')} - {currentTeamName}
+          <div className="text-gray-600">
+            {currentTeamName}
           </div>
         )}
        { data?.length ? <ul className="list-disc list-inside ">
@@ -152,6 +159,7 @@ export const Digest = ({
   };
 
   const renderSingleContent = () => {
+
     if (isEmpty(data) || !data?.length) return null;
     return (
       <div className="p-2">
@@ -197,7 +205,7 @@ export const Digest = ({
     if (isEmpty(data) || !data?.length) return null;
     const chunked = chunkArray(data, 3);
     return chunked?.map((item, idx) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2" key={idx}>
            <div key={item?.[0].id + idx} className="bg-white p-4 rounded-lg mb-5 flex-1">
               <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[0].name}</div>
               <div className="flex mt-5">
@@ -207,7 +215,7 @@ export const Digest = ({
          
           <div className='flex-1'>
           {(item?.[0]?.id && item?.[1]?.name)? (
-            <div key={item?.[0]?.id + idx} className="bg-white p-4 rounded-lg mb-5">
+            <div key={item?.[1]?.id + idx} className="bg-white p-4 rounded-lg mb-5">
                   <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{item?.[1]?.name}</div>
                   <div className="flex mt-5">
                     <div className="px-5">
@@ -242,8 +250,7 @@ export const Digest = ({
   };
 
 
-  const renderContent =
-    isEmpty(selectedFollower) && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
+  const renderContent = !isSelected && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
 
   return (
     <div className="">

@@ -82,6 +82,7 @@ export const CustomSearch = ({ isFollowing }: { isFollowing?: boolean }) => {
     const playerId = isPlayer ? id : '';
     await DataService.getScheduleByTeamId(teamId, playerId)
       .then((response: any) => {
+
         setTeamSchedule({ ...teamSchedule, ...{ [`${id}`]: response?.data } });
       })
       .catch((err: Error) => {

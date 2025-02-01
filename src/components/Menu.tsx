@@ -10,7 +10,7 @@ import { getIcon } from '@/helpers/helper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Menu = ({ subscriptions }: { subscriptions: any}) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const defaultCount = 10;
   const {
@@ -31,6 +31,12 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
       }) || [];
     setFollowers([...teams, ...player]);
   }, [subscriptions]);
+
+  useEffect(() => {
+      setSelectedFollower({})
+  }, [searchBy, i18n])
+  
+  const isSelected = [...subscriptions?.teams, ...subscriptions?.players, ...searchBy]?.some(({id}) =>id == selectedFollower?.id);
 
   return (
     <>
@@ -94,7 +100,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
             </Badge>
             <div className="border h-[50px] border-black" />
              <Badge
-              className={`p-4 rounded-lg border border-black ${!selectedLatestNews && !selectedFollower?.name ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
+              className={`p-4 rounded-lg border border-black ${!selectedLatestNews && !isSelected ? 'text-white	bg-stone-950	' : 'text-slate-600	bg-stone-100'}`}
               onClick={() => {
                 setSelectedFollower({});
                 setSelectedLatestNews(false);

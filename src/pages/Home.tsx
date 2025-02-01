@@ -23,7 +23,7 @@ export const Home = () => {
   const { subscriptionTeams, subscriptionPlayers } = useSubscription();
   const { scheduleData, scheduleDataLoading } = useSeasonSchedule();
   const { data: digest, loading: digestLoading } = useDigest();
-  const { data: mediasData, loading: mediaLoading } = useMedia();
+  const { data: mediasData, loading: mediaLoading, headlines, headlinesLoading } = useMedia();
 
   const displaySchedule = filterBy.length == 0 || filterBy.includes('coming_schedule');
   const displayHighlightClips = filterBy.length == 0 || filterBy.includes('highlight_clips');
@@ -49,7 +49,7 @@ export const Home = () => {
         />
       ) : null}
       {displayHeadlines ? <div className="my-7" /> : null}
-      {displayHeadlines ? <Headlines /> : null}
+      {displayHeadlines ? <Headlines content={headlines} loading={headlinesLoading} /> : null}
       {displaySchedule && <div className=" my-7" />}
     </>
   ) : (

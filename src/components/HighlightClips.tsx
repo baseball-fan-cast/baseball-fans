@@ -33,7 +33,11 @@ export const HighlightClips = ({ subscriptions, data, loading }: IHighlightClips
     }
   }, [selectedFollower, data]);
 
-  if (!groupBy.length) return null;
+  useEffect(() => {
+    setClips(data)
+  },[data])
+
+  if (!groupBy.length || !Object.entries(clips).length) return null;
 
   return (
     <div className="bg-white p-4 rounded-lg">

@@ -9,42 +9,46 @@ import { runAi } from '../helpers/index';
 export const useMedia = () => {
   const [data, setData] = useState<IHighlightClipsGamesData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [headline, setHeadline] = useState();
+  const [headlineLoading, setHeadlineLoading] = useState(false);
 
-  const { setHeadlines, setHeadlinesLoading, searchBy } = useContext(ContentContext);
+  
+  const { setHeadlines, setHeadlinesLoading, searchBy, teamSchedule, highlightClips } = useContext(ContentContext);
   const { subscriptionTeams: teams, subscriptionPlayers: players } = useSubscription();
 
   const groupBy = [...searchBy, ...players, ...teams];
   const defaultCount = 4;
 
-  const getTranslatedContent = async (data) => {
-    if (isEmpty(data) || loading) return null;
-    setHeadlinesLoading(true);
-    const subscriptionsData = Object.entries(data)?.reduce((acc, [key, content]) => {
-      const match = [...players, ...teams, ...searchBy]?.find(
-        ({ id, teamId }) => id == key || teamId == key
-      );
-      const { name, fullName, teamName } = match || {};
-      const keyName = name || fullName || teamName;
-      if (!keyName || !content.length) return;
-      acc[keyName] = content?.map(({ media }) => {
-        const { description, highlightId: id, headline } = media || {};
-        return { description, highlightId: id, headline };
-      });
-      return acc;
-    }, {});
-    if (!subscriptionsData) return;
+  // const getTranslatedContent = async (data) => {
+  //   if (isEmpty(data) || loading) return null;
 
-    const content = !isEmpty(subscriptionsData) ? JSON.stringify(subscriptionsData) : [];
-    const prompt = `Translate only description field from the content and add as a new field "descriptionES" for es language and "descriptionJA" for ja language`;
-    const result = await runAi(prompt, content);
+  //   const subscriptionsData = Object.entries(data)?.reduce((acc, [key, content]) => {
+  //     const match = [...players, ...teams, ...searchBy]?.find(
+  //       ({ id, teamId }) => id == key || teamId == key
+  //     );
+  //     const { name, fullName, teamName } = match || {};
+  //     const keyName = name || fullName || teamName;
+  //     if (!keyName || !content.length) return;
+  //     acc[keyName] = content?.map(({ media }) => {
+  //       const { description, highlightId: id, headline } = media || {};
+  //       return { description, highlightId: id, headline };
+  //     });
+  //     return acc;
+  //   }, {});
+  //   if (!subscriptionsData) return;
 
-    setHeadlinesLoading(false);
-    setHeadlines(JSON.parse(result));
-  };
+  //   const content = !isEmpty(subscriptionsData) ? JSON.stringify(subscriptionsData) : [];
+  //   const prompt = `Translate only description field from the content and add as a new field "descriptionES" for es language and "descriptionJA" for ja language`;
+  //   const result = await runAi(prompt, content);
+
+  //   setHeadlines(subscriptionsData);
+  // };
 
   const getHighlightClips = async () => {
-    if (!groupBy.length || loading) return null;
+    // if (!groupBy.length || loading) return null;
     setLoading(true);
+    setHeadlinesLoading(true);
+    setHeadlineLoading(true);
     await DataService.getMedia()
       .then((response: IHighlightClipsResponse) => {
         const { games } = response?.data || {};
@@ -55,21 +59,30 @@ export const useMedia = () => {
             ?.slice(0, defaultCount);
           return result;
         }, {});
+
         setData(groupedData);
-        getTranslatedContent(groupedData);
+        setHeadlines(groupedData);
+        setHeadline(groupedData);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
       })
       .finally(() => {
         setLoading(false);
+        setHeadlinesLoading(false);
+        setHeadlineLoading(false);
+
       });
   };
 
   const getHighlightClipById = async (id) => {
     if (loading) return null;
     setLoading(true);
-    await DataService.getMediaByTeamId(id)
+    setHeadlinesLoading(true);
+    setHeadlineLoading(true);
+    const teamId = searchBy.map(({ id, teamId }) => teamId ? teamId : id).join(',');
+    
+    await DataService.getMediaByTeamId(teamId)
       .then((response: IHighlightClipsResponse) => {
         const { games = [] } = response?.data || {};
 
@@ -81,13 +94,17 @@ export const useMedia = () => {
           return result;
         }, {});
         setData({ ...groupedData, ...data });
-        getTranslatedContent({ ...groupedData, ...data });
+        setHeadlines({ ...groupedData, ...data });
+        setHeadline({ ...groupedData, ...data })
+        // getTranslatedContent({ ...groupedData, ...data });
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
       })
       .finally(() => {
         setLoading(false);
+        setHeadlinesLoading(false);
+        setHeadlineLoading(false);
       });
   };
 
@@ -98,7 +115,7 @@ export const useMedia = () => {
     } else {
       getHighlightClips();
     }
-  }, [searchBy, players, teams]);
+  }, [searchBy, players, teams, teamSchedule, highlightClips]);
 
-  return { data, loading };
+  return { data, loading, headlines: headline, headlinesLoading: headlineLoading };
 };

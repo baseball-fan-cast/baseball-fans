@@ -13,10 +13,10 @@ import { Loader, LoaderCircle } from 'lucide-react';
 export const FollowFans = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { followers } = useContext(ContentContext);
+  const { followers, activeStep, setActiveStep } = useContext(ContentContext);
   useSubscription();
 
-  const [activeStep, setActiveStep] = useState(0);
+  
   const [loading, setLoading] = useState(false);
 
   const steps = [
@@ -63,7 +63,7 @@ export const FollowFans = () => {
   };
 
   const goNext = () => {
-    if (activeStep == 1) {
+    if (activeStep == 1 && followers?.length > 0) {
       followFans();
       // deleteSubscription();
     }
@@ -114,8 +114,9 @@ export const FollowFans = () => {
         </div>
         <div className="mt-9 m-auto mb-5">{steps[activeStep].component}</div>
         <button
-          className="flex justify-center bg-slate-800 text-white rounded-md w-2/6 p-2 m-auto"
+          className="flex justify-center bg-slate-800 text-white rounded-md w-2/6 p-2 m-auto disabled:bg-gray-300"
           onClick={goNext}
+          disabled={activeStep == 1 && followers?.length === 0}
         >
           {loading ? <LoaderCircle className="animate-spin w-5 h-5 text-blue-500 mr-3" /> : null}{t('next')}
         </button>

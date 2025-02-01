@@ -46,6 +46,7 @@ export const useDigest = () => {
   };
 
   useEffect(() => {
+
     if (searchBy.length > 0) {
       const searchData = searchBy.reduce(
         (acc, item) => {
