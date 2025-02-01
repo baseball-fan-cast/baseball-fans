@@ -41,10 +41,10 @@ export const Headlines = () => {
                 content?.map((item, index) => (
                   <li key={index}>
                     <Link
-                      href={`https://www.mlb.com/video/${item.id}`}
+                      href={`https://www.mlb.com/video/${item.highlightId}`}
                       size="1"
                       color="indigo"
-                      className="list-disc"
+                      className="list-disc cursor-pointer"
                       key={index}
                       target="_blank"
                     >
