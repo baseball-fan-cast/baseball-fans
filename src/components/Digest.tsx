@@ -46,7 +46,8 @@ export const Digest = ({
   const { selectedFollower } = useContext(ContentContext);
 
   useEffect(() => {
-    if (selectedFollower?.id && !isEmpty(content)) {
+    if (selectedFollower?.id && content && !isEmpty(content)) {
+      console.log('content', content);
       const filtered = content?.filter(({ id }) => id == selectedFollower.id);
       setData(filtered);
     } else {
