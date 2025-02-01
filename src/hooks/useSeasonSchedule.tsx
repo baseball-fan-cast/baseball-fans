@@ -20,9 +20,9 @@ export const useSeasonSchedule = () => {
       .then((response: IScheduleResponse) => {
         const groupedData = groupBy?.reduce((result, item) => {
           const id = item?.isPlayer ? item?.teamId : item?.id;
-
           const responseData = response?.data || [];
-          result[id] = [...responseData, ...teamsData]
+          const teamData = teamsData?.length ? teamsData?.flat() : [];
+          result[id] = [...responseData, ...teamData]
             ?.filter(
               (item) => item.teams?.away?.team?.id === id || item.teams?.home?.team?.id === id
             )
@@ -31,7 +31,6 @@ export const useSeasonSchedule = () => {
             });
           return result;
         }, {}) as IScheduleData;
-
         setScheduleData(groupedData);
       })
       .catch((err: Error) => {
