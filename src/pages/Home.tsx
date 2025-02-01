@@ -40,7 +40,7 @@ export const Home = () => {
         loading={digestLoading}
         scheduleDataLoading={scheduleDataLoading}
       />
-      {displayHighlightClips ? <div className="border-t-2 my-7" /> : null}
+      {/* {displayHighlightClips ? <div className="border-t-2 my-7" /> : null} */}
       {displayHighlightClips ? (
         <HighlightClips
           subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}
@@ -48,9 +48,9 @@ export const Home = () => {
           loading={mediaLoading}
         />
       ) : null}
-      {displayHeadlines ? <div className="border-t-2 my-7" /> : null}
+      {displayHeadlines ? <div className="my-7" /> : null}
       {displayHeadlines ? <Headlines /> : null}
-      {displaySchedule && <div className="border-t-2 my-7" />}
+      {displaySchedule && <div className=" my-7" />}
     </>
   ) : (
     <div className="min-h-[500px] flex justify-center items-center">

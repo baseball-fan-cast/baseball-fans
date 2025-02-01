@@ -40,7 +40,7 @@ export const AvatarBadge = ({
   const onRemove = () => {
     const filtered = searchBy.filter(({ name }) => name !== content);
     setSearchBy(filtered);
-    const filteredFollowers = followers.filter(({ name }) => name !== content);
+    const filteredFollowers = followers.filter(({ name = '' }) => name !== content);
     setFollowers(filteredFollowers);
     delete teamSchedule[`${id}`];
     delete highlightClips[`${id}`];

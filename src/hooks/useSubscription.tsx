@@ -27,7 +27,8 @@ export const useSubscription = () => {
           return {
             ...item,
             icon,
-            playerIcon
+            playerIcon,
+            name: item?.name || item?.fullName
           };
         });
         setSubscriptionTeams(teams);

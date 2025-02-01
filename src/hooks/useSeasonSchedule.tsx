@@ -31,6 +31,7 @@ export const useSeasonSchedule = () => {
             });
           return result;
         }, {}) as IScheduleData;
+
         setScheduleData(groupedData);
       })
       .catch((err: Error) => {
