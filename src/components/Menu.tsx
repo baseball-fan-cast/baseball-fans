@@ -12,7 +12,7 @@ import { getIcon } from '@/helpers/helper';
 export const Menu = ({ subscriptions }: { subscriptions: any}) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const defaultCount = 4;
+  const defaultCount = 10;
   const {
     selectedFollower,
     setSelectedFollower,
@@ -23,33 +23,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
   const [followers, setFollowers] = useState([]);
   const [count, setCount] = useState(defaultCount);
 
-  // const filterByData = [
-  //   {
-  //     label: <Text>{t('highlight_clips')}</Text>,
-  //     value: 'highlight_clips'
-  //   },
-  //   {
-  //     label: <Text>{t('headlines')}</Text>,
-  //     value: 'headlines'
-  //   },
-  //   {
-  //     label: <Text>{t('coming_schedule')}</Text>,
-  //     value: 'coming_schedule'
-  //   }
-  // ];
-  // const onRemove = (value: string) => {
-  //   const filtered = filterBy.filter((element) => element !== value);
-  //   setFilterBy(filtered);
-  // };
-
-  // const onSelect = (value: string) => {
-  //   if (filterBy.includes(value)) {
-  //     onRemove(value);
-  //   } else {
-  //     setFilterBy([...filterBy, value]);
-  //   }
-  // };
-
   useEffect(() => {
     const { teams = [], players = [] } = subscriptions || {};
     const player =
@@ -57,9 +30,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
         return { ...player, name: player.fullName };
       }) || [];
     setFollowers([...teams, ...player]);
-    // if ([...searchBy, ...followers].length == 0) {
-    //   selectedLatestNews(true);
-    // }
   }, [subscriptions]);
 
   return (
@@ -73,19 +43,6 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
         <Box className="w-[300px] justify-between items-center flex-1">
           <CustomSearch />
         </Box>
-        {/* <Box>
-          <FilterBy
-            filterData={filterByData}
-            onSelect={onSelect}
-            onRemove={onRemove}
-            selectedItems={filterBy}
-          />
-        </Box> */}
-        {/* {filterBy.length ? (
-          <Button className="opacity-50" onClick={() => setFilterBy([])}>
-            {t('clear_filters')}
-          </Button>
-        ) : null} */}
       </Flex>
       {searchBy?.length ? (
         <Flex align="center" className={`gap-7 my-5 ${isMobile ? 'mx-16' : 'mx-36'}`} wrap="wrap">
@@ -148,8 +105,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
             {followers
               ?.slice(0, count)
               ?.map(({ name, abbreviation, teamName, currentTeam, id, teamId, isPlayer }) => {
-                const { icon, playerIcon } = getIcon(currentTeam, id, !teamName) || {};
-
+                const { icon, playerIcon } = getIcon({...currentTeam, id: teamId}, id, isPlayer) || {};
                 return (
                   <AvatarBadge
                     key={name}
@@ -169,7 +125,7 @@ export const Menu = ({ subscriptions }: { subscriptions: any}) => {
                     }}
                     data={[
                       { src: icon, fallback: abbreviation },
-                      ...(playerIcon ? [{ src: playerIcon, fallback: abbreviation }] : [])
+                      ...(isPlayer ? [{ src: playerIcon, fallback: abbreviation }] : [])
                     ]}
                   />
                 );

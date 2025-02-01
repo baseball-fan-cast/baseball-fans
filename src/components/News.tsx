@@ -30,7 +30,7 @@ export const News = ({ data, loading }: { data: INewsItems[]; loading: boolean }
                   <AvatarImage src={item?.image} alt={item.title} />
                 </Avatar>
                 <div className="pt-4">
-                  <Link href={item.link} size="1" color="indigo" className="list-disc">
+                  <Link href={item.link} size="1" color="indigo" className="list-disc" target="_blank">
                     {item[translatedTitle] || item.title}
                   </Link>
                   <Text as="div" className="text-gray-500 pb-2">

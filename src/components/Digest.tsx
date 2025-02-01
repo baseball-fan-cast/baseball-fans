@@ -44,7 +44,7 @@ export const Digest = ({
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { selectedFollower } = useContext(ContentContext);
-
+  console.log('content', content)
   useEffect(() => {
     if (selectedFollower?.id && content && !isEmpty(content)) {
       const filtered = content?.filter(({ id }) => id == selectedFollower.id);
@@ -241,65 +241,7 @@ export const Digest = ({
     
   };
 
-  // const renderAllContent = () => {
-  //   if (isEmpty(data) || !data?.length) return null;
-  //   return (
-  //     <div className="flex w-full flex-wrap gap-3 p-2">
-  //       {data?.map((team, idx) => {
-  //         const idxs = [0, 3, 6, 9, 12];
-  //         if (!idxs.includes(idx)) return null;
 
-  //         return (
-  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
-  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-  //             <div className="flex mt-5">
-  //               <div className="mr-2 w-fit">{getKeyGameResultsSection(team?.keyGameResults)}</div>
-  //             </div>
-  //           </div>
-  //         );
-  //       })}
-  //       {data?.map((team, idx) => {
-  //         const idxs = [1, 4, 7, 10, 13];
-  //         if (!idxs.includes(idx)) return null;
-
-  //         return (
-  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
-  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-  //             <div className="flex mt-5">
-  //               <div className="px-5">
-  //                 {getMonthlyAnalysis(team?.monthlyAnalysis)}
-  //                 {team.isPlayer
-  //                   ? null
-  //                   : getDivisionRaceImplications(team?.divisionRaceImplications)}
-  //               </div>
-  //             </div>
-  //           </div>
-  //         );
-  //       })}
-  //       {data?.map((team, idx) => {
-  //         const idxs = [2, 5, 8, 11, 14];
-  //         if (!idxs.includes(idx)) return null;
-
-  //         return (
-  //           <div key={team.id} className="bg-white p-4 rounded-lg mb-5">
-  //             <div className="text-2xl font-bold mb-2 border-b-2 pb-3">{team.name}</div>
-  //             <div className="flex mt-5">
-  //               <div className=" flex px-5">
-  //                 {team.isPlayer
-  //                   ? null
-  //                   : getCurrentDivisionStandings(team?.currentDivisionStandings)}
-  //                 <div className={`${team.isPlayer ? '' : 'pl-3 border-l-2'}`}>
-  //                   {getSchedule(team.id, team.isPlayer, true)}
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         );
-  //       })}
-  //     </div>
-  //   );
-  // };
-  
   const renderContent =
     isEmpty(selectedFollower) && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
 
