@@ -249,8 +249,9 @@ export const Digest = ({
     
   };
 
+  // const renderContent = !isSelected && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
 
-  const renderContent = !isSelected && data?.length > 1 ? renderMultipleContent() : renderSingleContent();
+  const renderContent =  renderSingleContent();
 
   return (
     <div className="">

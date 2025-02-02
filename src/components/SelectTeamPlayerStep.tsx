@@ -60,11 +60,11 @@ export const SelectTeamPlayerStep = () => {
       const filteredFollowers = followers.filter(({ id }) => id !== team.id);
       setFollowers(filteredFollowers);
     } else {
-      const { id, name, abbreviation, currentTeam, teamName } = team || {};
-      const teamIcon = !teamName
-        ? `https://midfield.mlbstatic.com/v1/team/${currentTeam?.id}/spots/96`
+      const { id, name, abbreviation, fullName, teamName, teamId } = team || {};
+      const teamIcon = fullName
+        ? `https://midfield.mlbstatic.com/v1/team/${teamId}/spots/96`
         : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
-      const playerIcon = !teamName
+      const playerIcon = fullName
         ? `https://img.mlbstatic.com/mlb-photos/image/upload/t_w60/t_headshot_silo/v1/people/${id}/headshot/silo/current`
         : null;
 
@@ -159,7 +159,7 @@ export const SelectTeamPlayerStep = () => {
                 id="checkbox"
                 type="checkbox"
                 value=""
-                onClick={() => onSelectTeam({ ...person, name: person.fullName })}
+                onClick={() => onSelectTeam({ ...person, name: person.fullName , teamId: selectedTeamDetail?.id})}
                 checked={!!selectedTeam.find(({ id }) => id === person?.id)}
                 className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
