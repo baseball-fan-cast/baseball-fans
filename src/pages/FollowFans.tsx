@@ -8,11 +8,14 @@ import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Loader, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import { auth } from '../config/firebase';
+import { updateProfile } from 'firebase/auth';
 
 export const FollowFans = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [displayName, setDisplayName] = useState(auth?.currentUser?.displayName);
   const { followers, activeStep, setActiveStep } = useContext(ContentContext);
   useSubscription();
 
@@ -22,7 +25,7 @@ export const FollowFans = () => {
   const steps = [
     {
       step: 0,
-      component: <WelcomeStep />
+      component: <WelcomeStep setDisplayName={setDisplayName}/>
     },
     {
       step: 1,
@@ -61,11 +64,24 @@ export const FollowFans = () => {
     .finally(() => setLoading(false))
   
   };
+  const updateName = async () => {
+    await updateProfile(auth.currentUser, {displayName})
+      .then(() => {
+        console.log('updated successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   const goNext = () => {
     if (activeStep == 1 && followers?.length > 0) {
       followFans();
       // deleteSubscription();
+    }
+    if(activeStep == 0 && displayName.length) {
+      updateName();
+      setActiveStep(activeStep + 1);
     }
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
