@@ -4,11 +4,8 @@
 
 ## **Technologies 🧪**
 
-- React JS **18.2.0**
-- i18next **22.4.9**
-- Vite JS **4.0.0**
+- React JS
 - TypeScript **4.9.3**
-- CSS vanilla
 
 &nbsp;
 
