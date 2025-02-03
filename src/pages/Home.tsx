@@ -40,7 +40,6 @@ export const Home = () => {
         loading={digestLoading}
         scheduleDataLoading={scheduleDataLoading}
       />
-      {/* {displayHighlightClips ? <div className="border-t-2 my-7" /> : null} */}
       {displayHighlightClips ? (
         <HighlightClips
           subscriptions={{ teams: subscriptionTeams, players: subscriptionPlayers }}

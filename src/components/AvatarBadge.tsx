@@ -54,7 +54,6 @@ export const AvatarBadge = ({
       onClick={onSelect}
     >
       <Flex align="center" justify="between" className="gap-2">
-        {/* opacity-0 hover:opacity-100  */}
         {!isClearable ? null : (
           <X
             className={`${isSelected ? 'text-white' : 'text-slate-800`'} text-slate-800`}

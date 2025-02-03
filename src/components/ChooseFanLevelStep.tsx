@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Text } from '@radix-ui/themes';
-// import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import { X } from 'lucide-react';
 
 export const ChooseFanLevelStep = () => {
-  //   const { t } = useTranslation();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selectedLevel, setSelectedLevel] = useState({ id: 1, level: '', description: '' });
   const [selectedTab, setSelectedTab] = useState('View All');
@@ -185,7 +183,6 @@ export const ChooseFanLevelStep = () => {
         className="relative block w-3/6	mb-9 appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
         placeholder="Enter your email"
       />
-      {/* </div> */}
     </div>
   );
 };

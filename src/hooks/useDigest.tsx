@@ -12,13 +12,11 @@ export const useDigest = () => {
   const { subscriptionTeams: teamIds, subscriptionPlayers: playersIds } = useSubscription();
 
   const getDigestByIds = (teams, players) => {
-    // if (loading) return;
     setLoading(true);
     DataService.getDigestByIds(teams, players)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        // setContent(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);
@@ -29,13 +27,11 @@ export const useDigest = () => {
   };
 
   const getDigest = () => {
-    // if (loading) return;
     setLoading(true);
     DataService.getDigest()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
         setData(response?.data);
-        // setContent(response?.data);
       })
       .catch((err: Error) => {
         console.error('Error response:', err);

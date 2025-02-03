@@ -4,7 +4,6 @@ import { Logo } from '@/components/Logo';
 import { WelcomeStep } from '@/components/WelcomeStep';
 import { useTranslation } from 'react-i18next';
 import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
-// import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -56,7 +55,6 @@ export const FollowFans = () => {
   const goNext = () => {
     if (activeStep == 1) {
       followFans();
-      // deleteSubscription();
     }
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
