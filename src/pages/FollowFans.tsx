@@ -4,7 +4,6 @@ import { Logo } from '@/components/Logo';
 import { WelcomeStep } from '@/components/WelcomeStep';
 import { useTranslation } from 'react-i18next';
 import { SelectTeamPlayerStep } from '@/components/SelectTeamPlayerStep';
-// import { ChooseFanLevelStep } from '@/components/ChooseFanLevelStep';
 import { ContentContext } from '@/context/ContentContextProvider';
 import DataService from '@/services/DataService';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -77,7 +76,6 @@ export const FollowFans = () => {
   const goNext = () => {
     if (activeStep == 1 && followers?.length > 0) {
       followFans();
-      // deleteSubscription();
     }
     if(activeStep == 0 && displayName.length) {
       updateName();

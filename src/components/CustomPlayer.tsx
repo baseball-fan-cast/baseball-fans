@@ -33,7 +33,6 @@ export const CustomPlayer = ({ url, avatarData, title, date }: ICustomPlayerProp
         controls
         width={'100%'}
         height="60%"
-        //  onDuration={onDuration}
       />
       <Box className="p-3">
         <Text as="div" className="font-bold">

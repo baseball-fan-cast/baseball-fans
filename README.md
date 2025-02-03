@@ -5,9 +5,7 @@
 ## **Technologies 🧪**
 
 - React JS
-- i18next
-- TypeScript
-- GoogleGenerativeAI
+- TypeScript **4.9.3**
 
 &nbsp;
 

@@ -19,7 +19,6 @@ i18n
     backend: {
       loadPath: `${getCurrentHost}/i18n/{{lng}}.json`
     }
-    // requestOptions: { method: 'GET', mode: 'no-cors' }
   });
 
 export default i18n;
