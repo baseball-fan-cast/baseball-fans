@@ -15,16 +15,15 @@ export const FollowFans = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [displayName, setDisplayName] = useState(auth?.currentUser?.displayName);
-  const { followers, activeStep, setActiveStep } = useContext(ContentContext);
+  const { followers, activeStep, setActiveStep, isHomeRedirected } = useContext(ContentContext);
   useSubscription();
 
-  
   const [loading, setLoading] = useState(false);
 
   const steps = [
     {
       step: 0,
-      component: <WelcomeStep setDisplayName={setDisplayName}/>
+      component: <WelcomeStep setDisplayName={setDisplayName} />
     },
     {
       step: 1,
@@ -37,8 +36,10 @@ export const FollowFans = () => {
   ];
 
   const goBack = () => {
-    if (activeStep > 0) {
+    if (activeStep > 0 && !isHomeRedirected) {
       setActiveStep(activeStep - 1);
+    } else {
+      navigate('/');
     }
   };
 
@@ -52,32 +53,34 @@ export const FollowFans = () => {
         teams.push(id);
       }
     });
-    setLoading(true)
+    setLoading(true);
     await DataService.updateSubscription(teams, players)
-    .then(() => {
-      navigate('/');
-    })
-    .catch((err: Error) => {
-      console.error('Error response:', err);
-    })
-    .finally(() => setLoading(false))
-  
+      .then(() => {
+        navigate('/');
+      })
+      .catch((err: Error) => {
+        console.error('Error response:', err);
+      })
+      .finally(() => setLoading(false));
   };
   const updateName = async () => {
-    await updateProfile(auth.currentUser, {displayName})
+    const name = displayName || auth?.currentUser?.displayName;
+    await updateProfile(auth.currentUser, { displayName: name })
       .then(() => {
         console.log('updated successfully');
       })
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   const goNext = () => {
     if (activeStep == 1 && followers?.length > 0) {
       followFans();
     }
-    if(activeStep == 0 && displayName.length) {
+    console.log('displayName', displayName);
+
+    if (activeStep == 0) {
       updateName();
       setActiveStep(activeStep + 1);
     }
@@ -132,7 +135,8 @@ export const FollowFans = () => {
           onClick={goNext}
           disabled={activeStep == 1 && followers?.length === 0}
         >
-          {loading ? <LoaderCircle className="animate-spin w-5 h-5 text-blue-500 mr-3" /> : null}{t('next')}
+          {loading ? <LoaderCircle className="animate-spin w-5 h-5 text-blue-500 mr-3" /> : null}
+          {t('next')}
         </button>
       </div>
     </div>

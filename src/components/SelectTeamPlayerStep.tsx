@@ -60,7 +60,7 @@ export const SelectTeamPlayerStep = () => {
       const filteredFollowers = followers.filter(({ id }) => id !== team.id);
       setFollowers(filteredFollowers);
     } else {
-      const { id, name, abbreviation, fullName, teamName, teamId } = team || {};
+      const { id, name, abbreviation, fullName, teamId } = team || {};
       const teamIcon = fullName
         ? `https://midfield.mlbstatic.com/v1/team/${teamId}/spots/96`
         : `https://midfield.mlbstatic.com/v1/team/${id}/spots/96`;
@@ -101,7 +101,7 @@ export const SelectTeamPlayerStep = () => {
               id="checkbox"
               type="checkbox"
               value=""
-              onClick={() => onSelectTeam(team)}
+              onChange={() => onSelectTeam(team)}
               checked={!!selectedTeam.find(({ id }) => id === team?.id)}
               className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
@@ -142,7 +142,7 @@ export const SelectTeamPlayerStep = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-4 mt-9 ">
+      <div className="flex flex-wrap gap-4 mt-9 n overflow-y-auto h-[400px]">
         {[...followedPlayers, ...filteredPlayers]?.slice(0, 20)?.map((person) => {
           return (
             <div
@@ -159,8 +159,10 @@ export const SelectTeamPlayerStep = () => {
                 id="checkbox"
                 type="checkbox"
                 value=""
-                onClick={() => onSelectTeam({ ...person, name: person.fullName , teamId: selectedTeamDetail?.id})}
-                checked={!!selectedTeam.find(({ id }) => id === person?.id)}
+                onChange={() =>
+                  onSelectTeam({ ...person, name: person.fullName, teamId: selectedTeamDetail?.id })
+                }
+                checked={!!selectedTeam?.find(({ id }) => id === person?.id) || false}
                 className="absolute right-2 top-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-100 rounded-lx focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
               <Text as="div" className="text-center mt-4">

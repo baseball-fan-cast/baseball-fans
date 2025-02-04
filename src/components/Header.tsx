@@ -15,6 +15,8 @@ export const Header = () => {
   const { i18n, t } = useTranslation();
   const defaultLang = localStorage.getItem('LANG') || 'en';
   const { setActiveStep } = useContext(ContentContext);
+  const { setHomeRedirected } = useContext(ContentContext);
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -32,7 +34,8 @@ export const Header = () => {
   };
 
   const onFollow = () => {
-    setActiveStep(1)
+    setActiveStep(1);
+    setHomeRedirected(true);
     navigate('/follow');
   };
 
@@ -41,19 +44,8 @@ export const Header = () => {
       <div className="flex gap-4 items-center text-gray-50 uppercase">
         <Logo className="w-[100px] ml-9 my-4" />
         <div className="underline">{t('discover')}</div>
-        {/* <div>{t('news')}</div>
-        <div>{t('watch')}</div>
-        <div>{t('score')}</div>
-        <div>{t('schedule')}</div>
-        <div>{t('stats')}</div>
-        <div>{t('standings')}</div>
-        <div>{t('youth')}</div>
-        <div>{t('players')}</div> */}
       </div>
       <div className="flex text-white items-center gap-4 mr-9 text-gray-50 uppercase">
-        {/* <div>{t('tickets')}</div>
-        <div>{t('tickets')}</div>
-        <div>{t('shop')}</div> */}
         <button className="text-gray-50 uppercase" onClick={onFollow}>
           {t('follow_more')}
         </button>
